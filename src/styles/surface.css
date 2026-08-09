@@ -1,137 +1,72 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   The material.
+   The glass material.
 
-   A pane of smoked glass hung between two lights: cold bone from above,
-   ember from below. Four layers, none of them a gradient:
+   Four declarations, and that is genuinely all of it:
 
-     1. body      — translucent fill, backdrop blur + brightness, and the
-                    dual edge lighting that carries the whole concept
-     2. .ob-sheen — two flat bands raked across the pane (specular)
-     3. .ob-grain — fractal noise, so flat fills aren't dead plastic
-     4. ::before  — the halo arc, on `haloed` surfaces
+     background      flat translucent white — never a gradient
+     backdrop-filter blur + saturate, so what's behind it bends
+     border          hairline on all sides
+     border-top      the same hairline, brighter — the specular catch
 
-   Why the blur is actually visible here: `brightness()` lifts whatever
-   sits behind the pane, and the backdrop (see Emberfall) is deliberately
-   full of hard structure — hairlines, a halo ring, cinders. Blur only
-   reads as glass when it has something sharp to soften.
+   The bright top edge is doing most of the work. It's what your eye reads
+   as the lit rim of a thick pane, and it's why the surface holds up over
+   photography as well as over flat colour.
    ═══════════════════════════════════════════════════════════════════════ */
 
 .ob-surface {
   position: relative;
-  isolation: isolate;
-  border-radius: var(--ob-radius);
-  color: var(--ob-text);
+  border-radius: var(--ob-r-xl);
+  color: var(--ob-ink);
   font-family: var(--ob-font);
 
-  background-color: var(--ob-glass-bg);
+  background: var(--ob-glass-fill);
+  -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
   border: 1px solid var(--ob-line);
-
-  -webkit-backdrop-filter: blur(var(--ob-glass-blur))
-    saturate(var(--ob-glass-saturate)) brightness(var(--ob-glass-brightness));
-  backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-saturate))
-    brightness(var(--ob-glass-brightness));
-
-  /* Angel above, hell below. The two inset lines are the entire idea. */
-  box-shadow:
-    inset 0 1px 0 0 var(--ob-edge-divine),
-    inset 0 -1px 0 0 var(--ob-edge-infernal),
-    var(--ob-shadow);
+  border-top-color: var(--ob-line-top);
+  box-shadow: var(--ob-shadow);
 
   transition:
-    box-shadow var(--ob-dur) var(--ob-ease),
-    border-color var(--ob-dur) var(--ob-ease),
-    transform var(--ob-dur) var(--ob-ease),
-    background-color var(--ob-dur) var(--ob-ease);
+    background var(--ob-dur) var(--ob-spring),
+    border-color var(--ob-dur) var(--ob-spring),
+    box-shadow var(--ob-dur) var(--ob-spring),
+    transform var(--ob-dur) var(--ob-spring);
 }
 
-/* ── Specular ────────────────────────────────────────────────────────
-   Two hard-edged bands raked across the pane at an angle. Sits above the
-   fill and below the text, so it lights the glass without washing copy. */
-.ob-surface > .ob-sheen {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  border-radius: inherit;
-  pointer-events: none;
-}
-
-.ob-surface > .ob-sheen::before,
-.ob-surface > .ob-sheen::after {
-  content: '';
-  position: absolute;
-  top: -60%;
-  bottom: -60%;
-  transform: rotate(18deg);
-  transition: transform var(--ob-dur-slow) var(--ob-ease);
-}
-
-.ob-surface > .ob-sheen::before {
-  left: -4%;
-  width: 24%;
-  background-color: var(--ob-sheen);
-}
-
-.ob-surface > .ob-sheen::after {
-  left: 24%;
-  width: 8%;
-  background-color: var(--ob-sheen-thin);
-}
-
-/* ── Grain ───────────────────────────────────────────────────────────── */
-.ob-surface[data-ob-grain='true'] > .ob-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  pointer-events: none;
-  background-image: var(--ob-grain);
-  opacity: var(--ob-grain-opacity);
-}
-
-/* ═══ Elevation ═══════════════════════════════════════════════════════ */
+/* ── Elevation ───────────────────────────────────────────────────────── */
 
 .ob-surface--flush {
-  box-shadow:
-    inset 0 1px 0 0 var(--ob-edge-divine),
-    inset 0 -1px 0 0 var(--ob-edge-infernal);
+  box-shadow: none;
 }
 
 .ob-surface--raised {
-  box-shadow:
-    inset 0 1px 0 0 var(--ob-edge-divine),
-    inset 0 -1px 0 0 var(--ob-edge-infernal),
-    var(--ob-shadow-lg);
+  box-shadow: var(--ob-shadow-lg);
 }
 
-/* Both registers turned up: gold breaking over the top edge, heat
-   pooling underneath. */
-.ob-surface--haloed {
-  border-color: var(--ob-line-strong);
-  box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-halo) / 0.5),
-    inset 0 -1px 0 0 rgb(var(--ob-ember) / 0.55),
-    var(--ob-shadow-lg),
-    var(--ob-bloom),
-    var(--ob-halo-cast);
+/* Overlays sit on a darker, more opaque plate so text stays legible no
+   matter what they're floating over. */
+.ob-surface--overlay {
+  background: rgb(20 16 16 / 0.75);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  border-color: rgb(var(--ob-white) / 0.14);
+  border-top-color: rgb(var(--ob-white) / 0.28);
+  box-shadow: var(--ob-shadow-lg);
 }
 
-/* The halo itself: a thin gold arc riding the top edge. */
-.ob-surface--haloed::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: 18%;
-  right: 18%;
-  height: 1px;
-  background-color: rgb(var(--ob-halo));
-  opacity: 0.75;
-  pointer-events: none;
+/* ── Recessed: cut into the glass rather than sitting on it ──────────
+   Same material, inverted lighting — dark fill, dimmer top edge.       */
+
+.ob-surface--well {
+  background: var(--ob-well);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-color: var(--ob-line);
+  border-top-color: var(--ob-well-top);
+  box-shadow: none;
 }
 
-/* ═══ Interaction ═════════════════════════════════════════════════════
-   Smooth and buoyant — the pane rises toward the light, the heat under
-   it intensifies. No snap, no hard translate.                           */
+/* ── Interaction: lift on hover, settle on press ─────────────────────── */
 
 .ob-surface--interactive {
   cursor: pointer;
@@ -140,39 +75,32 @@
 }
 
 .ob-surface--interactive:hover {
-  transform: translateY(-2px);
-  border-color: var(--ob-line-strong);
-  background-color: rgb(var(--ob-glass-tint) / calc(var(--ob-glass-opacity) * 1.7));
+  transform: translateY(-4px);
   box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.34),
-    inset 0 -1px 0 0 rgb(var(--ob-ember) / 0.55),
     var(--ob-shadow-lg),
-    var(--ob-bloom);
-}
-
-/* The light rakes across as the pane turns. */
-.ob-surface--interactive:hover > .ob-sheen::before,
-.ob-surface--interactive:hover > .ob-sheen::after {
-  transform: rotate(18deg) translateX(52px);
+    0 0 0 1px rgb(var(--ob-accent-edge) / 0.25);
 }
 
 .ob-surface--interactive:active {
-  transform: translateY(0) scale(0.994);
-  transition-duration: var(--ob-dur-fast);
+  transform: translateY(0) scale(0.985);
 }
 
-/* ═══ Focus ═══════════════════════════════════════════════════════════ */
+/* ── Focus ───────────────────────────────────────────────────────────── */
 
 .ob-focusable:focus-visible {
-  outline: 1px solid rgb(var(--ob-halo) / 0.9);
-  outline-offset: 3px;
+  outline: none;
+  border-color: rgb(var(--ob-accent-edge) / 0.55);
+  box-shadow: var(--ob-ring);
 }
 
-/* ═══ No backdrop-filter: fall back to opaque char ════════════════════ */
+/* ═══ Fallback where backdrop-filter is unsupported ════════════════════ */
 
 @supports not (backdrop-filter: blur(1px)) {
   .ob-surface {
-    background-color: var(--ob-char-2);
+    background: rgb(28 24 24 / 0.92);
+  }
+  .ob-surface--overlay {
+    background: rgb(20 16 16 / 0.97);
   }
 }
 
@@ -201,9 +129,72 @@
   border: 0;
 }
 
+/* Mono label used for section eyebrows across the kit. */
+.ob-eyebrow {
+  margin: 0;
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: var(--ob-track);
+  color: var(--ob-ink-3);
+}
+
+/* ═══ Keyframes ═══════════════════════════════════════════════════════ */
+
 @keyframes ob-spin {
   to {
-    transform: rotate(1turn);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ob-float-a {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(70px, -50px) scale(1.12);
+  }
+  100% {
+    transform: translate(-40px, 40px) scale(0.95);
+  }
+}
+
+@keyframes ob-float-b {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-80px, 60px) scale(1.08);
+  }
+  100% {
+    transform: translate(50px, -30px) scale(0.92);
+  }
+}
+
+/* Springs in with a slight overshoot past its resting position. */
+@keyframes ob-pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ob-modal-in {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -216,13 +207,31 @@
   }
 }
 
-@keyframes ob-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.985);
+@keyframes ob-indeterminate {
+  0% {
+    left: -35%;
   }
-  to {
-    opacity: 1;
-    transform: none;
+  100% {
+    left: 105%;
+  }
+}
+
+@keyframes ob-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes ob-eq {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
   }
 }

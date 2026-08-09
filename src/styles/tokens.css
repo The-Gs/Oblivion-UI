@@ -1,12 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   Oblivion UI — design tokens
+   ObsidianUI — design tokens
 
-   The conceit: every pane of glass hangs between two light sources.
-   Cold bone-white falls on it from above. Ember burns up at it from
-   below. Nothing is lit evenly, and nothing is neutral.
+   Ported from the ObsidianUI design project. Three rules the system holds:
 
-   One hard rule: no gradients, anywhere. Not in fills, borders, or text.
-   Softness comes from blur and shadow — never from colour interpolation.
+     1. No gradients. Glass is a flat translucent fill + backdrop blur +
+        one brighter top edge for the specular catch. Nothing interpolates.
+     2. One accent. Oxblood red, used sparingly — primary actions, active
+        states, focus, glow. Everything else is white at low alpha.
+     3. One motion curve. cubic-bezier(0.34, 1.56, 0.64, 1) drives every
+        hover, toggle and overlay. Ambient motion lives only in the orbs.
 
    Override any variable below on :root, or scope it to a subtree, to
    retheme the whole library without touching component CSS.
@@ -14,138 +16,143 @@
 
 :root,
 [data-oblivion] {
-  /* ── Char: the substrate. Warm — cool blacks read as space, not ash. ─ */
-  --ob-char-0: #080706;
-  --ob-char-1: #0e0c0a;
-  --ob-char-2: #15120f;
-  --ob-char-3: #1e1a16;
-  --ob-char-4: #2a241d;
+  /* ── Ground ───────────────────────────────────────────────────────── */
+  --ob-bg: #0a0908;
+  --ob-bg-sunk: #141010;
 
-  /* ── Above: the divine register ───────────────────────────────────── */
-  --ob-bone: 246 241 233;   /* angelic white */
-  --ob-halo: 231 193 121;   /* soft sanctuary gold */
+  /* ── Ink ──────────────────────────────────────────────────────────── */
+  --ob-ink-strong: #f4f1f0;
+  --ob-ink: #efeceb;
+  --ob-ink-2: rgb(239 236 235 / 0.6);
+  --ob-ink-3: rgb(239 236 235 / 0.45);
+  --ob-ink-4: rgb(239 236 235 / 0.3);
 
-  /* ── Below: the infernal register ─────────────────────────────────── */
-  --ob-ember: 214 92 32;    /* the primary heat */
-  --ob-cinder: 232 76 44;   /* hotter, closer */
-  --ob-blood: 136 26 26;    /* deep, arterial */
+  /* ── Accent: oxblood. Bare RGB so it composes with alpha. ─────────── */
+  --ob-accent: 179 31 51;        /* #b31f33 — fills   */
+  --ob-accent-lit: 204 43 64;    /* #cc2b40 — hover   */
+  --ob-accent-bright: 224 89 106; /* #e0596a — marks  */
+  --ob-accent-hot: 255 139 152;  /* #ff8b98 — links   */
+  --ob-accent-soft: 255 179 187; /* #ffb3bb — on-dark text */
+  --ob-accent-pale: 255 217 221; /* #ffd9dd — icon glyphs  */
+  --ob-accent-edge: 255 120 130; /* borders */
+  --ob-accent-edge-lit: 255 170 178; /* top borders */
 
-  --ob-ash: 142 130 120;    /* warm neutral grey */
+  --ob-white: 255 255 255;
 
-  --ob-accent: var(--ob-ember);
+  /* ── The glass recipe ─────────────────────────────────────────────── */
+  --ob-glass-fill: rgb(var(--ob-white) / 0.055);
+  --ob-glass-fill-lit: rgb(var(--ob-white) / 0.09);
+  --ob-glass-blur: 22px;
+  --ob-glass-sat: 150%;
 
-  /* ── Semantic ─────────────────────────────────────────────────────── */
-  --ob-danger: var(--ob-cinder);
-  --ob-success: 132 146 86;  /* sickly olive — nothing here is healthy */
-  --ob-warning: var(--ob-halo);
+  /* Hairline border, plus the brighter top edge that reads as specular.
+     This pair is the whole material — there is nothing else to it. */
+  --ob-line: rgb(var(--ob-white) / 0.11);
+  --ob-line-top: rgb(var(--ob-white) / 0.22);
+  --ob-line-lit: rgb(var(--ob-white) / 0.16);
+  --ob-line-lit-top: rgb(var(--ob-white) / 0.32);
 
-  /* ── The material ─────────────────────────────────────────────────── */
-  --ob-glass-tint: 255 240 224;
-  --ob-glass-opacity: 0.055;
-  --ob-glass-bg: rgb(var(--ob-glass-tint) / var(--ob-glass-opacity));
-  --ob-glass-blur: 24px;
-  --ob-glass-saturate: 140%;
-  /* Lifts what sits behind the pane so it reads brighter than its
-     surroundings. Half of what makes glass legible at all. */
-  --ob-glass-brightness: 1.4;
+  /* Recessed surfaces — inputs, tracks, table headers — go darker, and
+     their top edge goes *dimmer*, so they read as cut into the glass. */
+  --ob-well: rgb(0 0 0 / 0.3);
+  --ob-well-deep: rgb(0 0 0 / 0.4);
+  --ob-well-top: rgb(var(--ob-white) / 0.06);
 
-  /* ── Edge lighting: the duality, made literal ─────────────────────── */
-  --ob-edge-divine: rgb(var(--ob-bone) / 0.24);   /* lit from above */
-  --ob-edge-infernal: rgb(var(--ob-ember) / 0.34); /* burning from below */
+  /* ── Depth ────────────────────────────────────────────────────────── */
+  --ob-shadow-sm: 0 5px 16px rgb(0 0 0 / 0.35);
+  --ob-shadow: 0 12px 40px rgb(0 0 0 / 0.4);
+  --ob-shadow-lg: 0 20px 60px rgb(0 0 0 / 0.5);
+  --ob-shadow-xl: 0 30px 80px rgb(0 0 0 / 0.6);
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-white) / 0.15);
 
-  /* Specular streaks. Flat bands raked across the pane — a radial
-     falloff would be a gradient; a skewed solid bar is not. */
-  --ob-sheen: rgb(255 246 232 / 0.06);
-  --ob-sheen-thin: rgb(255 246 232 / 0.035);
-
-  /* ── Hairlines ────────────────────────────────────────────────────── */
-  --ob-line: rgb(var(--ob-ash) / 0.2);
-  --ob-line-strong: rgb(var(--ob-ash) / 0.34);
-  --ob-line-hot: rgb(var(--ob-ember) / 0.7);
-  --ob-line-holy: rgb(var(--ob-halo) / 0.55);
-
-  /* ── Text ─────────────────────────────────────────────────────────── */
-  --ob-text: #ece5da;
-  --ob-text-dim: #a99b8e;
-  --ob-text-faint: #6f6458;
-  --ob-text-on-accent: #0a0806;
+  /* Accent glow, for primary actions and active states. */
+  --ob-glow: 0 6px 20px rgb(var(--ob-accent) / 0.28);
+  --ob-glow-lg: 0 12px 30px rgb(var(--ob-accent) / 0.45);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.2);
 
   /* ── Geometry ─────────────────────────────────────────────────────── */
-  --ob-radius-sm: 8px;
-  --ob-radius: 12px;
-  --ob-radius-lg: 16px;
-  --ob-radius-xl: 22px;
-  --ob-radius-full: 999px;
+  --ob-r-xs: 9px;
+  --ob-r-sm: 12px;
+  --ob-r-md: 14px;
+  --ob-r-lg: 18px;
+  --ob-r-xl: 20px;
+  --ob-r-2xl: 24px;
+  --ob-r-full: 999px;
 
   --ob-space-1: 4px;
   --ob-space-2: 8px;
   --ob-space-3: 12px;
   --ob-space-4: 16px;
-  --ob-space-5: 24px;
-  --ob-space-6: 32px;
-  --ob-space-7: 48px;
+  --ob-space-5: 22px;
+  --ob-space-6: 28px;
+  --ob-space-7: 40px;
 
-  /* ── Depth ────────────────────────────────────────────────────────── */
-  --ob-shadow-sm: 0 2px 10px -3px rgb(0 0 0 / 0.7);
-  --ob-shadow: 0 18px 44px -18px rgb(0 0 0 / 0.85);
-  --ob-shadow-lg: 0 34px 74px -26px rgb(0 0 0 / 0.92);
-
-  /* Heat pooling under a pane, and gold breaking over the top of it. */
-  --ob-bloom: 0 14px 44px -16px rgb(var(--ob-ember) / 0.5);
-  --ob-halo-cast: 0 -10px 34px -14px rgb(var(--ob-halo) / 0.4);
-
-  /* ── Motion: long, smooth, decelerating. Nothing snaps. ───────────── */
-  --ob-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --ob-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ob-dur-fast: 160ms;
-  --ob-dur: 300ms;
-  --ob-dur-slow: 560ms;
+  /* ── Motion: one overshoot curve, everywhere ──────────────────────── */
+  --ob-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ob-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ob-dur-fast: 0.25s;
+  --ob-dur: 0.35s;
+  --ob-dur-slow: 0.4s;
 
   /* ── Type ─────────────────────────────────────────────────────────── */
-  --ob-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Inter,
-    Roboto, sans-serif;
-  --ob-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
-  --ob-tracking-wide: 0.11em;
-
-  /* ── Grain: fractal noise, not a gradient. Keeps flat fills alive. ── */
-  --ob-grain-opacity: 0.04;
-  --ob-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --ob-font-display: 'Sora', ui-sans-serif, system-ui, sans-serif;
+  --ob-font: 'Hind', system-ui, -apple-system, sans-serif;
+  --ob-font-mono: ui-monospace, Menlo, SFMono-Regular, monospace;
+  --ob-track: 2px; /* letter-spacing for mono section labels */
 }
 
-/* ── Preset: "Seraph" — the angel wins. Gold above, heat banked low. ─── */
-[data-ob-theme='seraph'] {
-  --ob-ember: 226 176 92;
-  --ob-cinder: 240 206 138;
-  --ob-blood: 150 106 34;
-  --ob-accent: var(--ob-halo);
-  --ob-edge-infernal: rgb(var(--ob-halo) / 0.36);
-}
+/* ═══ Light theme ══════════════════════════════════════════════════════
+   Flips the recipe: white translucency, bright top edge, and shadow does
+   the lifting instead of glow. Accent deepens for contrast on light.     */
 
-/* ── Preset: "Ichor" — the demon wins. Arterial, close, wet. ────────── */
-[data-ob-theme='ichor'] {
-  --ob-ember: 176 34 34;
-  --ob-cinder: 214 52 46;
-  --ob-halo: 198 108 82;
-  --ob-char-0: #080404;
-  --ob-char-1: #0f0707;
-  --ob-char-2: #170b0b;
-}
+[data-ob-theme='light'] {
+  --ob-bg: #e9e7e3;
+  --ob-bg-sunk: #ffffff;
 
-/* ── Preset: "Ash" — both left. The fire is out. ────────────────────── */
-[data-ob-theme='ash'] {
-  --ob-ember: 138 128 118;
-  --ob-cinder: 166 156 146;
-  --ob-halo: 196 188 176;
-  --ob-blood: 88 82 76;
-  --ob-glass-opacity: 0.042;
-  --ob-edge-infernal: rgb(var(--ob-ash) / 0.3);
+  --ob-ink-strong: #14100f;
+  --ob-ink: #2a2626;
+  --ob-ink-2: rgb(20 16 16 / 0.65);
+  --ob-ink-3: rgb(20 16 16 / 0.45);
+  --ob-ink-4: rgb(20 16 16 / 0.3);
+
+  --ob-accent: 139 17 35; /* #8b1123 — deepened for contrast */
+  --ob-accent-lit: 163 24 45;
+  --ob-accent-bright: 139 17 35;
+  --ob-accent-hot: 163 24 45;
+  --ob-accent-soft: 139 17 35;
+  --ob-accent-pale: 255 255 255;
+  --ob-accent-edge: 139 17 35;
+  --ob-accent-edge-lit: 255 255 255;
+
+  --ob-glass-fill: rgb(var(--ob-white) / 0.55);
+  --ob-glass-fill-lit: rgb(var(--ob-white) / 0.75);
+  --ob-glass-blur: 14px;
+
+  --ob-line: rgb(var(--ob-white) / 0.8);
+  --ob-line-top: rgb(var(--ob-white) / 1);
+  --ob-line-lit: rgb(var(--ob-white) / 0.9);
+  --ob-line-lit-top: rgb(var(--ob-white) / 1);
+
+  --ob-well: rgb(var(--ob-white) / 0.6);
+  --ob-well-deep: rgb(var(--ob-white) / 0.45);
+  --ob-well-top: rgb(var(--ob-white) / 1);
+
+  --ob-shadow-sm: 0 2px 8px rgb(0 0 0 / 0.06);
+  --ob-shadow: 0 4px 14px rgb(0 0 0 / 0.08);
+  --ob-shadow-lg: 0 12px 36px rgb(0 0 0 / 0.12);
+  --ob-shadow-xl: 0 24px 60px rgb(0 0 0 / 0.16);
+  --ob-inset-top: inset 0 1px 0 #fff;
+
+  --ob-glow: 0 6px 20px rgb(var(--ob-accent) / 0.3);
+  --ob-glow-lg: 0 12px 30px rgb(var(--ob-accent) / 0.4);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.12);
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root,
   [data-oblivion] {
-    --ob-dur-fast: 0ms;
-    --ob-dur: 0ms;
-    --ob-dur-slow: 0ms;
+    --ob-dur-fast: 0s;
+    --ob-dur: 0s;
+    --ob-dur-slow: 0s;
   }
 }

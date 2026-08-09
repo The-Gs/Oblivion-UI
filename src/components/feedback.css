@@ -1,0 +1,106 @@
+/* ══ Progress ═════════════════════════════════════════════════════════ */
+
+.ob-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--ob-font);
+}
+
+.ob-progress__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.ob-progress__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ob-ink-2);
+}
+
+.ob-progress__value {
+  font-family: var(--ob-font-mono);
+  font-size: 12px;
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-progress__track {
+  position: relative;
+  height: 10px;
+  overflow: hidden;
+  border-radius: var(--ob-r-full);
+  background: rgb(0 0 0 / 0.38);
+  border: 1px solid rgb(var(--ob-white) / 0.09);
+}
+
+.ob-progress__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: var(--ob-r-full);
+  background: rgb(var(--ob-accent) / 0.75);
+  box-shadow: 0 0 12px rgb(var(--ob-accent) / 0.55);
+  transition: width 0.2s var(--ob-ease);
+}
+
+/* Indeterminate sweeps a fixed-width bar across the track rather than
+   growing one — no value is implied. */
+.ob-progress__fill--indeterminate {
+  width: 30%;
+  background: rgb(var(--ob-accent-bright) / 0.85);
+  box-shadow: 0 0 14px rgb(var(--ob-accent) / 0.6);
+  transition: none;
+  animation: ob-indeterminate 1.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* ══ Spinner ══════════════════════════════════════════════════════════ */
+
+.ob-spinner {
+  display: inline-block;
+  flex: none;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: rgb(var(--ob-white) / 0.12);
+  border-top-color: rgb(var(--ob-accent-bright));
+  animation: ob-spin 0.9s linear infinite;
+}
+
+.ob-spinner--sm {
+  width: 18px;
+  height: 18px;
+  border-width: 2px;
+}
+.ob-spinner--md {
+  width: 26px;
+  height: 26px;
+  border-width: 3px;
+}
+.ob-spinner--lg {
+  width: 40px;
+  height: 40px;
+  border-width: 4px;
+}
+
+/* ══ Skeleton ═════════════════════════════════════════════════════════ */
+
+.ob-skeleton {
+  border-radius: 6px;
+  background: rgb(var(--ob-white) / 0.08);
+  animation: ob-pulse 1.6s ease-in-out infinite;
+}
+
+.ob-skeleton-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-skeleton,
+  .ob-spinner,
+  .ob-progress__fill--indeterminate {
+    animation: none;
+  }
+}

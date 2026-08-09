@@ -1,0 +1,93 @@
+.ob-select {
+  position: relative;
+}
+
+.ob-select__trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ob-select__trigger:hover {
+  border-color: rgb(var(--ob-white) / 0.25);
+}
+
+.ob-select__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--ob-ink);
+}
+
+.ob-select__value--placeholder {
+  color: var(--ob-ink-3);
+}
+
+.ob-select__caret {
+  flex: none;
+  font-size: 10px;
+  color: var(--ob-ink-3);
+  transition: transform var(--ob-dur) var(--ob-spring);
+}
+
+.ob-select[data-open='true'] .ob-select__caret {
+  transform: rotate(180deg);
+}
+
+.ob-select__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 260px;
+  overflow-y: auto;
+  border-radius: var(--ob-r-md);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  animation: ob-modal-in var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-select__option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 16px;
+  text-align: left;
+  font-family: var(--ob-font);
+  font-size: 14px;
+  color: rgb(239 236 235 / 0.85);
+  cursor: pointer;
+  transition: background var(--ob-dur-fast) var(--ob-ease);
+}
+
+/* One highlight class covers hover and keyboard cursor, so the two can
+   never disagree about which row is active. */
+.ob-select__option:hover,
+.ob-select__option[data-active='true'] {
+  background: rgb(var(--ob-accent) / 0.22);
+  color: #fff;
+}
+
+.ob-select__option[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ob-select__mark {
+  flex: none;
+  font-size: 11px;
+  color: rgb(var(--ob-accent-hot));
+}

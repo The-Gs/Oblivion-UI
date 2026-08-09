@@ -2,32 +2,28 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 import './GlassBadge.css';
 
-export type BadgeTone =
-  | 'neutral'
-  | 'ember'
-  | 'cinder'
-  | 'blood'
-  | 'halo'
-  | 'success'
-  | 'danger';
+export type BadgeVariant = 'accent' | 'neutral' | 'outline' | 'status' | 'solid';
 
 export interface GlassBadgeProps extends HTMLAttributes<HTMLSpanElement> {
   children?: ReactNode;
-  /** @default 'neutral' */
-  tone?: BadgeTone;
-  /** Filled instead of tinted. @default false */
-  solid?: boolean;
+  /** @default 'accent' */
+  variant?: BadgeVariant;
+  /** Monospace, for versions, tags and code-adjacent labels. @default false */
+  mono?: boolean;
+  /** @default 'md' */
+  size?: 'sm' | 'md';
   /** Leading status dot. @default false */
   dot?: boolean;
-  /** Animates the dot. Implies `dot`. @default false */
+  /** Fades the dot in and out. Implies `dot`. @default false */
   pulse?: boolean;
 }
 
-/** A compact status pill. Tones map onto the theme's chroma tokens. */
+/** A compact status pill. */
 export function GlassBadge({
   children,
-  tone = 'neutral',
-  solid = false,
+  variant = 'accent',
+  mono = false,
+  size = 'md',
   dot = false,
   pulse = false,
   className,
@@ -37,8 +33,9 @@ export function GlassBadge({
     <span
       className={cn(
         'ob-badge',
-        `ob-badge--tone-${tone}`,
-        solid && 'ob-badge--solid',
+        `ob-badge--${variant}`,
+        mono && 'ob-badge--mono',
+        size === 'sm' && 'ob-badge--sm',
         pulse && 'ob-badge--pulse',
         className,
       )}

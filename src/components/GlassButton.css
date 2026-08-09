@@ -1,120 +1,185 @@
 .ob-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--ob-space-2);
   white-space: nowrap;
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 550;
-  letter-spacing: 0.005em;
+  font-family: var(--ob-font-display);
+  font-weight: 600;
   line-height: 1;
+  border-radius: var(--ob-r-md);
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
+  transition: all var(--ob-dur) var(--ob-spring);
 }
 
 .ob-btn:disabled,
 .ob-btn[aria-disabled='true'] {
-  opacity: 0.35;
+  color: var(--ob-ink-4);
+  background: rgb(var(--ob-white) / 0.03);
+  border-color: rgb(var(--ob-white) / 0.07);
+  box-shadow: none;
+  transform: none;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 /* ── Sizes ───────────────────────────────────────────────────────────── */
 .ob-btn--sm {
-  height: 34px;
-  padding: 0 var(--ob-space-4);
-  font-size: 12.5px;
+  font-size: 13px;
+  padding: 9px 20px;
+  border-radius: var(--ob-r-sm);
 }
 .ob-btn--md {
-  height: 42px;
-  padding: 0 var(--ob-space-5);
+  font-size: 14px;
+  padding: 12px 26px;
 }
 .ob-btn--lg {
-  height: 52px;
-  padding: 0 var(--ob-space-6);
   font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 15px;
 }
 
 .ob-btn--block {
   width: 100%;
 }
 
-/* ── Solid — flat ember, lit from above like everything else ─────────── */
-.ob-btn--solid {
-  color: var(--ob-text-on-accent);
-  background-color: rgb(var(--ob-ember));
-  border-color: rgb(var(--ob-ember));
+/* ── Primary: red glass. The only filled surface in the system. ──────── */
+.ob-btn--primary {
+  color: #fff;
+  background: rgb(var(--ob-accent) / 0.45);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(var(--ob-accent-edge) / 0.42);
+  border-top-color: rgb(var(--ob-accent-edge-lit) / 0.6);
   box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.45),
-    inset 0 -1px 0 0 rgb(0 0 0 / 0.25),
-    var(--ob-shadow),
-    var(--ob-bloom);
+    var(--ob-glow),
+    inset 0 1px 0 rgb(var(--ob-white) / 0.22);
 }
 
-.ob-btn--solid:hover {
-  background-color: rgb(var(--ob-cinder));
-  border-color: rgb(var(--ob-cinder));
+.ob-btn--primary:hover {
+  background: rgb(var(--ob-accent-lit) / 0.58);
+  transform: translateY(-2px);
   box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.6),
-    var(--ob-shadow-lg),
-    0 16px 50px -14px rgb(var(--ob-ember) / 0.75);
+    var(--ob-glow-lg),
+    inset 0 1px 0 rgb(var(--ob-white) / 0.3);
 }
 
-/* ── Ghost — no material until touched ───────────────────────────────── */
+.ob-btn--primary:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ── Secondary: clear glass ──────────────────────────────────────────── */
+.ob-btn--secondary {
+  color: var(--ob-ink);
+  background: rgb(var(--ob-white) / 0.08);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ob-line-lit);
+  border-top-color: var(--ob-line-lit-top);
+  box-shadow: inset 0 1px 0 rgb(var(--ob-white) / 0.15);
+}
+
+.ob-btn--secondary:hover {
+  background: rgb(var(--ob-white) / 0.14);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 rgb(var(--ob-white) / 0.22);
+}
+
+.ob-btn--secondary:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ── Ghost: outline only ─────────────────────────────────────────────── */
 .ob-btn--ghost {
-  background-color: transparent;
-  border-color: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: none;
-  color: var(--ob-text-dim);
-}
-
-.ob-btn--ghost > .ob-sheen {
-  display: none;
+  color: rgb(239 236 235 / 0.8);
+  background: transparent;
+  border: 1px solid rgb(var(--ob-white) / 0.18);
+  transition: all var(--ob-dur-fast) var(--ob-spring);
 }
 
 .ob-btn--ghost:hover {
-  color: var(--ob-text);
-  background-color: rgb(var(--ob-glass-tint) / 0.06);
-  border-color: transparent;
-  box-shadow: none;
-  transform: none;
+  color: rgb(var(--ob-accent-hot));
+  background: rgb(var(--ob-accent) / 0.08);
+  border-color: rgb(var(--ob-accent-edge) / 0.5);
 }
 
-/* ── Outline — the halo register ─────────────────────────────────────── */
-.ob-btn--outline {
-  background-color: transparent;
-  border-color: rgb(var(--ob-halo) / 0.4);
-  color: rgb(var(--ob-halo));
-  box-shadow: inset 0 1px 0 0 var(--ob-edge-divine);
+.ob-btn--ghost:active {
+  transform: scale(0.97);
 }
 
-.ob-btn--outline:hover {
-  background-color: rgb(var(--ob-halo) / 0.08);
-  border-color: rgb(var(--ob-halo) / 0.8);
+/* ── Quiet: text only ────────────────────────────────────────────────── */
+.ob-btn--quiet {
+  color: rgb(var(--ob-accent-bright));
+  background: transparent;
+  border: 1px solid transparent;
+  padding-left: 18px;
+  padding-right: 18px;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-btn--quiet:hover {
+  background: rgb(var(--ob-accent) / 0.1);
+}
+
+/* ── Icon: circular, rotates into its action ─────────────────────────── */
+.ob-btn--icon {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 20px;
+  color: var(--ob-ink);
+  background: rgb(var(--ob-white) / 0.08);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--ob-line-lit);
+  border-top-color: var(--ob-line-lit-top);
+}
+
+.ob-btn--icon.ob-btn--sm {
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+}
+
+.ob-btn--icon.ob-btn--lg {
+  width: 52px;
+  height: 52px;
+}
+
+.ob-btn--icon:hover {
+  color: rgb(var(--ob-accent-pale));
+  background: rgb(var(--ob-accent) / 0.35);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+  transform: rotate(90deg) scale(1.08);
+}
+
+.ob-btn--icon:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* Round icon buttons that shouldn't spin — play/pause, media transport. */
+.ob-btn--icon.ob-btn--still:hover {
+  transform: scale(1.1);
+}
+.ob-btn--icon.ob-btn--still:active {
+  transform: scale(0.95);
+}
+
+.ob-btn--icon.ob-btn--primary {
+  color: #fff;
+  background: rgb(var(--ob-accent) / 0.5);
+  border-color: rgb(var(--ob-accent-edge) / 0.45);
+  border-top-color: rgb(var(--ob-accent-edge-lit) / 0.6);
   box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.3),
-    var(--ob-halo-cast);
-}
-
-/* ── Danger ──────────────────────────────────────────────────────────── */
-.ob-btn--danger {
-  color: rgb(var(--ob-cinder));
-  background-color: rgb(var(--ob-blood) / 0.2);
-  border-color: rgb(var(--ob-cinder) / 0.45);
-}
-
-.ob-btn--danger:hover {
-  color: var(--ob-text);
-  background-color: rgb(var(--ob-blood) / 0.45);
-  border-color: rgb(var(--ob-cinder));
-  box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.2),
-    var(--ob-shadow-lg),
-    0 14px 44px -16px rgb(var(--ob-cinder) / 0.55);
+    var(--ob-glow),
+    inset 0 1px 0 rgb(var(--ob-white) / 0.25);
 }
 
 /* ── Parts ───────────────────────────────────────────────────────────── */
@@ -122,12 +187,6 @@
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  opacity: 0.85;
-}
-
-.ob-btn__label {
-  display: inline-flex;
-  align-items: center;
 }
 
 .ob-btn--loading .ob-btn__label,
@@ -137,10 +196,10 @@
 
 .ob-btn__spinner {
   position: absolute;
-  width: 0.95em;
-  height: 0.95em;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
-  border: 1.5px solid currentColor;
-  border-top-color: transparent;
-  animation: ob-spin 700ms linear infinite;
+  border: 2px solid rgb(var(--ob-white) / 0.25);
+  border-top-color: currentColor;
+  animation: ob-spin 0.9s linear infinite;
 }

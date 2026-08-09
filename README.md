@@ -1,83 +1,85 @@
 # Oblivion UI
 
-Smoked-glass React components hung between two lights.
+Liquid glass React components — frosted surfaces, oxblood accents, motion that
+breathes.
 
-Cold bone falls on every pane from above. Ember burns up at it from below.
-Nothing is lit evenly and nothing is neutral — that duality is the whole design,
-and it's carried by two inset hairlines on every surface.
+Implements the **ObsidianUI** design system. Three rules it holds to:
 
-**No gradients. Anywhere.** Not in fills, borders, or text. Softness comes from
-blur and shadow; never from colour interpolation.
+1. **No gradients, anywhere.** Glass is a flat translucent fill + backdrop blur
+   + one brighter top edge for the specular catch. Nothing interpolates.
+2. **One accent.** Oxblood red, used sparingly — primary actions, active
+   states, focus, glow. Everything else is white at low alpha.
+3. **One motion curve.** `cubic-bezier(0.34, 1.56, 0.64, 1)` drives every
+   hover, toggle and overlay. Ambient motion lives only in the backdrop orbs.
 
 ```bash
 npm install oblivion-ui
 ```
 
 ```tsx
-import { Emberfall, GlassCard, GlassButton } from 'oblivion-ui';
+import { Orbs, GlassCard, GlassButton, ToastProvider } from 'oblivion-ui';
 import 'oblivion-ui/styles.css';
 
 export function App() {
   return (
-    <>
-      <Emberfall />
+    <ToastProvider>
+      <Orbs />
       <GlassCard
-        eyebrow="01"
-        title="Surface"
-        description="Bone above, ember below, blur between."
-        footer={<GlassButton variant="solid">Summon</GlassButton>}
+        title="Substrata EP"
+        description="Flat fill, backdrop blur, hairline border, bright top edge."
+        footer={<GlassButton variant="primary">Summon</GlassButton>}
       />
-    </>
+    </ToastProvider>
   );
 }
 ```
 
-> **`<Emberfall />` is not decoration.** Smoked glass needs something behind it
-> to be worth blurring. On a plain background the surfaces read as flat grey
-> boxes. Render one at the root of your app.
+> **`<Orbs />` is not decoration.** Glass needs something behind it worth
+> blurring — on flat colour the panes read as grey boxes. Render one at the
+> root of your app.
 
-## The rules this system holds to
-
-1. **No gradients.** Not in fills, not in borders, not in text. Flat colour
-   only. A masked gradient ring is the fastest way to make a UI look generated.
-2. **Two light sources, always.** `inset 0 1px 0` in bone on the top edge,
-   `inset 0 -1px 0` in ember on the bottom. Every surface, every variant.
-3. **Every black is warm.** Cool blue-blacks read as space. Warm blacks read as
-   char and cooling metal — `#080706`, not `#05060a`.
-4. **Muted pigment, not neon.** Burnt orange `#d65c20`, sanctuary gold
-   `#e7c179`. Nothing fluoresces.
-5. **Nothing snaps.** 300ms on a decelerating curve. Panes rise toward the
-   light on hover and settle on press.
+The design specifies **Sora** (display) and **Hind** (body). The library only
+names them in `--ob-font-display` / `--ob-font` with fallbacks; load them
+yourself, or override the variables.
 
 ## Components
 
 | Component | What it's for |
 | --- | --- |
 | `GlassSurface` | The material primitive. Everything else is this plus layout. |
-| `Emberfall` | Backdrop: turning halo, hairline lattice, cinders off a hot seam. |
-| `GlassButton` | `glass` · `solid` · `ghost` · `outline` · `danger`, three sizes, loading state. |
+| `Orbs` | Ambient backdrop — three drifting discs. `midnight` · `oxblood` · `charcoal`. |
+| `GlassButton` | `primary` · `secondary` · `ghost` · `quiet` · `icon`, three sizes, loading. |
 | `GlassCard` | Panel with optional eyebrow, title, description, media, aside, footer. |
-| `GlassInput` / `GlassTextarea` | Text fields with label, hint, error, affixes, fully wired for a11y. |
-| `GlassBadge` | Status pills across seven tones, with optional pulsing dot. |
-| `GlassList<T>` | Renders any array as rows. Accessors or a full `renderItem` escape hatch. |
-| `GlassTable<T>` | Generic columns, opt-in client-side sorting, sticky header. |
-| `GlassTabs<T>` | Segmented control with a sliding glass pane and arrow-key navigation. |
-| `GlassModal` | Portalled dialog: focus trap, scroll lock, Escape, scrim, focus restore. |
+| `GlassInput` / `GlassTextarea` | Text fields with label, hint, error, affixes. |
+| `GlassSelect<T>` | Listbox-backed select with full keyboard support. |
+| `GlassSwitch` | Binary toggle, `role="switch"`. |
+| `GlassCheckbox` | Checkbox with an inline label inside the hit target. |
+| `GlassRadioGroup<T>` | Radio group with arrow-key navigation. |
+| `GlassSlider` | Draggable slider with the standard keyboard contract. |
+| `GlassBadge` | `accent` · `neutral` · `outline` · `status` · `solid`, optional dot. |
+| `GlassAvatar` / `GlassAvatarGroup` | Image or initials; group collapses to `+N`. |
+| `GlassTooltip` | Frosted tooltip on hover **and** focus. |
+| `GlassProgress` | Determinate and indeterminate bars. |
+| `GlassSpinner` / `GlassSkeleton` / `GlassSkeletonText` | Loading states. |
+| `GlassList<T>` | Renders any array as rows. |
+| `GlassTable<T>` | Generic columns, opt-in sorting, sticky header. |
+| `GlassTabs<T>` | Segmented control with a sliding pill. |
+| `GlassModal` | Portalled dialog: focus trap, scroll lock, Escape, scrim. |
+| `ToastProvider` / `useToast` | Queued toasts that stack and self-dismiss. |
 
 ## Data-driven by design
 
 Nothing in the library knows the shape of your data. You describe how to read
-it and the component handles layout, truncation, selection, empty and loading
-states:
+it; the component handles layout, truncation, selection, empty and loading:
 
 ```tsx
 <GlassList
   items={users}
   getKey={(u) => u.id}
-  leading={(u) => <Avatar src={u.avatar} />}
+  leading={(u) => <GlassAvatar name={u.name} />}
   primary={(u) => u.name}
   secondary={(u) => u.email}
-  trailing={(u) => <GlassBadge tone="halo">{u.plan}</GlassBadge>}
+  trailing={(u) => <GlassBadge>{u.plan}</GlassBadge>}
   onSelect={(u) => open(u)}
 />
 ```
@@ -87,88 +89,86 @@ states:
   items={rows}
   columns={[
     { id: 'name', cell: (r) => r.name, sortBy: (r) => r.name },
-    { id: 'spend', header: 'Spend', align: 'end',
-      cell: (r) => `$${r.spend}`, sortBy: (r) => r.spend },
+    { id: 'bpm', header: 'BPM', align: 'end',
+      cell: (r) => r.bpm, sortBy: (r) => r.bpm },
   ]}
 />
 ```
 
-When accessors aren't enough, `GlassList` takes `renderItem` and you own the
-row entirely.
-
 ## Polymorphic
 
-Any component can become a different element and keeps that element's prop
-types:
+Any component can become a different element and keeps that element's props:
 
 ```tsx
 <GlassButton as="a" href="/docs">Docs</GlassButton>   {/* href is typed */}
-<GlassCard as="article" />
-<GlassSurface as="aside" elevation="haloed" />
+<GlassSurface as="section" elevation="raised" />
 ```
 
 ## Elevation
 
 | Value | What it does |
 | --- | --- |
-| `flush` | Edge lighting only, no cast shadow. |
-| `default` | Edge lighting plus an ambient shadow. |
-| `raised` | Longer, softer shadow. |
-| `haloed` | Both registers turned up: a gold arc breaking over the top edge, heat pooling beneath. |
+| `flush` | No cast shadow. |
+| `default` | Hairline border, bright top edge, ambient shadow. |
+| `raised` | Deeper shadow. |
+| `overlay` | Darker, more opaque plate for modals, menus, toasts. |
+| `well` | Inverted lighting — reads as cut into the glass. Inputs and tracks. |
 
-`sheen` (on by default) rakes two flat specular bands across the pane, which
-slide as you hover. They're skewed solid bars — a radial falloff would be a
-gradient.
+## Toasts
+
+```tsx
+const { toast } = useToast();
+
+toast('Render queued — 174 BPM');
+toast('Deleted', { tone: 'danger', duration: 6000 });
+toast('Saved', { tone: 'neutral', duration: 0 }); // stays until dismissed
+```
 
 ## Theming
 
-Every visual decision resolves to a CSS variable. Override them anywhere —
-globally, or scoped to a subtree:
+Every visual decision resolves to a CSS variable:
 
 ```css
 :root {
-  --ob-ember: 168 32 32;      /* note: space-separated RGB, no commas */
-  --ob-halo: 231 193 121;
-  --ob-char-0: #0a0505;
-  --ob-glass-blur: 24px;
-  --ob-glass-brightness: 1.4; /* how much the pane lifts what's behind it */
+  --ob-accent: 179 31 51;   /* note: space-separated RGB, no commas */
+  --ob-bg: #0a0908;
+  --ob-glass-blur: 22px;
+  --ob-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 ```
 
 Colour tokens are bare RGB triplets so they compose with alpha via
-`rgb(var(--ob-ember) / 0.4)`.
+`rgb(var(--ob-accent) / 0.4)`.
 
-Three presets ship built in — apply with `data-ob-theme`:
+A light theme ships built in — apply it anywhere, including to a single
+subtree:
 
 ```tsx
-<div data-ob-theme="ichor">…</div>   {/* also: "seraph", "ash" */}
+<div data-ob-theme="light">…</div>
 ```
 
-`seraph` is the angel winning — gold above, heat banked low. `ichor` is the
-demon winning: arterial, close, wet. `ash` is what's left when both leave.
+It flips the recipe: white translucency, bright top edge, shadow doing the
+lifting instead of glow, and the accent deepened to `#8b1123` for contrast.
 
-See [`src/styles/tokens.css`](./src/styles/tokens.css) for the full token list.
+See [`src/styles/tokens.css`](./src/styles/tokens.css) for the full list.
 
 ## How the material works
 
-Each surface is four layers, none of them a gradient:
+```css
+background:       rgb(255 255 255 / 0.055);   /* flat, never a gradient */
+backdrop-filter:  blur(22px) saturate(150%);  /* what's behind it bends */
+border:           1px solid rgb(255 255 255 / 0.11);
+border-top-color: rgb(255 255 255 / 0.22);    /* the specular catch */
+```
 
-1. **Body** — translucent warm fill, `backdrop-filter: blur() saturate()
-   brightness()`, a hairline border, and the two inset edge lights.
-2. **Sheen** — two hard-edged bands skewed across the pane, above the fill and
-   below the text so they light the glass without washing the copy.
-3. **Grain** — `feTurbulence` noise at 4%, so flat fills aren't dead plastic.
-4. **`::before`** — the gold halo arc, on `haloed` surfaces.
+That last line does most of the work. It's what the eye reads as the lit rim of
+a thick pane, and it's why the surface holds up over photography as well as
+over flat colour. Recessed elements — inputs, slider tracks, table headers —
+invert it: dark fill, *dimmer* top edge, so they read as cut in rather than
+sitting on top.
 
-**Why the glass is actually visible.** Two things, and both are required.
-`brightness()` makes the pane read lighter than what surrounds it. And the
-backdrop is deliberately full of hard structure — `Emberfall` draws a hairline
-lattice, concentric halo rings, and hard cinders. `backdrop-filter` can only be
-seen where it has something sharp to soften; over a flat background it does
-nothing at all, and the panes collapse into grey boxes.
-
-`prefers-reduced-motion` zeroes every duration and parks the embers and the
-halo. Browsers without `backdrop-filter` fall back to opaque char.
+`prefers-reduced-motion` zeroes every duration and stops the orbs. Browsers
+without `backdrop-filter` fall back to an opaque plate.
 
 ## Development
 
@@ -178,6 +178,9 @@ npm run dev        # playground at localhost:5173
 npm run build      # dist/ via tsup — ESM, CJS, .d.ts, styles.css
 npm run typecheck
 ```
+
+The playground has two pages: the landing page, and `#components` for the full
+component sheet.
 
 ## License
 

@@ -1,7 +1,7 @@
 {
   "name": "oblivion-ui",
-  "version": "0.2.0",
-  "description": "Smoked-glass React components in char and ember. No gradients anywhere.",
+  "version": "0.3.0",
+  "description": "Liquid glass React components \u2014 frosted surfaces, oxblood accents, no gradients.",
   "license": "Apache-2.0",
   "author": "The G's",
   "type": "module",
@@ -51,8 +51,8 @@
     "react",
     "ui",
     "components",
+    "glassmorphism",
     "dark-theme",
-    "brutalist",
     "design-system"
   ]
 }

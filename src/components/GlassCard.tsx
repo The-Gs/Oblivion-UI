@@ -22,6 +22,8 @@ export interface GlassCardOwnProps {
   padding?: 'none' | 'sm' | 'md' | 'lg';
   /** @default 'default' */
   elevation?: SurfaceElevation;
+  /** Corner rounding token. @default 'xl' */
+  radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
   interactive?: boolean;
 }
 
@@ -44,6 +46,7 @@ export const GlassCard = (<T extends ElementType = 'div'>({
   dividedFooter = false,
   padding = 'md',
   elevation = 'default',
+  radius = 'xl',
   interactive = false,
   className,
   ...rest
@@ -53,7 +56,7 @@ export const GlassCard = (<T extends ElementType = 'div'>({
   return (
     <GlassSurface
       as={(as ?? 'div') as ElementType}
-      radius="lg"
+      radius={radius}
       elevation={elevation}
       interactive={interactive}
       className={cn('ob-card', `ob-card--pad-${padding}`, className)}

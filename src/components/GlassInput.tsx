@@ -1,6 +1,11 @@
-import { forwardRef, useId, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from 'react';
+import {
+  forwardRef,
+  useId,
+  type InputHTMLAttributes,
+  type ReactNode,
+  type TextareaHTMLAttributes,
+} from 'react';
 import { cn } from '../lib/cn';
-import { GlassSurface } from './GlassSurface';
 import './GlassInput.css';
 
 interface FieldShellProps {
@@ -11,6 +16,8 @@ interface FieldShellProps {
   leading?: ReactNode;
   trailing?: ReactNode;
   size?: 'sm' | 'md' | 'lg';
+  /** Monospace the control — suits keys, tokens and IDs. @default false */
+  mono?: boolean;
   /** Wrapper class. Use `inputClassName` to reach the control itself. */
   className?: string;
   inputClassName?: string;
@@ -37,10 +44,56 @@ function useFieldIds(explicitId: string | undefined, hint: ReactNode, error: Rea
   };
 }
 
-/**
- * A text field on a glass surface, with label, hint, and error wired up for
- * accessibility. Focus lights the whole surface instead of drawing a ring.
- */
+function FieldLabel({
+  id,
+  label,
+  required,
+}: {
+  id: string;
+  label: ReactNode;
+  required?: boolean;
+}) {
+  return (
+    <label className="ob-field__label" htmlFor={id}>
+      {label}
+      {required ? (
+        <span className="ob-field__req" aria-hidden="true">
+          *
+        </span>
+      ) : null}
+    </label>
+  );
+}
+
+function FieldNote({
+  error,
+  hint,
+  errorId,
+  hintId,
+}: {
+  error: ReactNode;
+  hint: ReactNode;
+  errorId?: string;
+  hintId?: string;
+}) {
+  if (error) {
+    return (
+      <p id={errorId} className="ob-field__note ob-field__note--error" role="alert">
+        {error}
+      </p>
+    );
+  }
+  if (hint) {
+    return (
+      <p id={hintId} className="ob-field__note">
+        {hint}
+      </p>
+    );
+  }
+  return null;
+}
+
+/** A single-line text field with label, hint and error wired for a11y. */
 export const GlassInput = forwardRef<HTMLInputElement, GlassInputProps>(function GlassInput(
   {
     label,
@@ -50,6 +103,7 @@ export const GlassInput = forwardRef<HTMLInputElement, GlassInputProps>(function
     leading,
     trailing,
     size = 'md',
+    mono = false,
     className,
     inputClassName,
     id: explicitId,
@@ -61,24 +115,14 @@ export const GlassInput = forwardRef<HTMLInputElement, GlassInputProps>(function
   const { id, hintId, errorId, describedBy } = useFieldIds(explicitId, hint, error);
 
   return (
-    <div className={cn('ob-field', className)}>
-      {label ? (
-        <label className="ob-field__label" htmlFor={id}>
-          {label}
-          {required ? (
-            <span className="ob-field__req" aria-hidden="true">
-              *
-            </span>
-          ) : null}
-        </label>
-      ) : null}
+    <div className={cn('ob-field', error && 'ob-field--invalid', className)}>
+      {label ? <FieldLabel id={id} label={label} required={required} /> : null}
 
-      <GlassSurface
-        radius="sm"
-        grain={false}
+      <div
         className={cn(
           'ob-input',
           size !== 'md' && `ob-input--${size}`,
+          mono && 'ob-input--mono',
           error && 'ob-input--invalid',
           disabled && 'ob-input--disabled',
         )}
@@ -99,17 +143,9 @@ export const GlassInput = forwardRef<HTMLInputElement, GlassInputProps>(function
           {...rest}
         />
         {trailing ? <span className="ob-input__affix">{trailing}</span> : null}
-      </GlassSurface>
+      </div>
 
-      {error ? (
-        <p id={errorId} className="ob-field__note ob-field__note--error" role="alert">
-          {error}
-        </p>
-      ) : hint ? (
-        <p id={hintId} className="ob-field__note">
-          {hint}
-        </p>
-      ) : null}
+      <FieldNote error={error} hint={hint} errorId={errorId} hintId={hintId} />
     </div>
   );
 });
@@ -117,28 +153,33 @@ export const GlassInput = forwardRef<HTMLInputElement, GlassInputProps>(function
 /** Multi-line sibling of {@link GlassInput}. */
 export const GlassTextarea = forwardRef<HTMLTextAreaElement, GlassTextareaProps>(
   function GlassTextarea(
-    { label, hint, error, required, size = 'md', className, inputClassName, id: explicitId, disabled, ...rest },
+    {
+      label,
+      hint,
+      error,
+      required,
+      mono = false,
+      className,
+      inputClassName,
+      id: explicitId,
+      disabled,
+      ...rest
+    },
     ref,
   ) {
     const { id, hintId, errorId, describedBy } = useFieldIds(explicitId, hint, error);
 
     return (
-      <div className={cn('ob-field', className)}>
-        {label ? (
-          <label className="ob-field__label" htmlFor={id}>
-            {label}
-            {required ? (
-              <span className="ob-field__req" aria-hidden="true">
-                *
-              </span>
-            ) : null}
-          </label>
-        ) : null}
+      <div className={cn('ob-field', error && 'ob-field--invalid', className)}>
+        {label ? <FieldLabel id={id} label={label} required={required} /> : null}
 
-        <GlassSurface
-          radius="sm"
-          grain={false}
-          className={cn('ob-input', error && 'ob-input--invalid', disabled && 'ob-input--disabled')}
+        <div
+          className={cn(
+            'ob-input',
+            mono && 'ob-input--mono',
+            error && 'ob-input--invalid',
+            disabled && 'ob-input--disabled',
+          )}
         >
           <textarea
             ref={ref}
@@ -150,17 +191,9 @@ export const GlassTextarea = forwardRef<HTMLTextAreaElement, GlassTextareaProps>
             aria-describedby={describedBy}
             {...rest}
           />
-        </GlassSurface>
+        </div>
 
-        {error ? (
-          <p id={errorId} className="ob-field__note ob-field__note--error" role="alert">
-            {error}
-          </p>
-        ) : hint ? (
-          <p id={hintId} className="ob-field__note">
-            {hint}
-          </p>
-        ) : null}
+        <FieldNote error={error} hint={hint} errorId={errorId} hintId={hintId} />
       </div>
     );
   },

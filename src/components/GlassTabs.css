@@ -1,19 +1,19 @@
+/* A segmented control: recessed track, red glass pill on the active tab.
+   The pill is a positioned element measured from the real tab geometry, so
+   labels can be any width. */
+
 .ob-tabs {
   position: relative;
   display: inline-block;
   padding: 5px;
+  border-radius: var(--ob-r-md);
+  background: rgb(0 0 0 / 0.32);
+  border: 1px solid rgb(var(--ob-white) / 0.09);
 }
 
-.ob-tabs--block {
-  display: block;
-  width: 100%;
-}
+.ob-tabs--block { display: block; width: 100%; }
 
-.ob-tabs__list {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
+.ob-tabs__list { display: flex; align-items: center; gap: 4px; }
 
 .ob-tabs__tab {
   position: relative;
@@ -21,68 +21,43 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--ob-space-2);
-  padding: 0 var(--ob-space-4);
-  height: 34px;
-  border-radius: var(--ob-radius-sm);
-  font-family: var(--ob-font);
+  gap: 8px;
+  height: 36px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-family: var(--ob-font-display);
   font-size: 13px;
-  font-weight: 550;
+  font-weight: 600;
   white-space: nowrap;
-  color: var(--ob-text-faint);
-  transition: color var(--ob-dur) var(--ob-ease);
+  color: rgb(239 236 235 / 0.55);
+  transition: color var(--ob-dur) var(--ob-spring);
 }
 
-.ob-tabs--block .ob-tabs__tab {
-  flex: 1;
-}
+.ob-tabs--block .ob-tabs__tab { flex: 1; }
 
-.ob-tabs__tab:hover:not([aria-selected='true']) {
-  color: var(--ob-text-dim);
-}
+.ob-tabs__tab:hover:not([aria-selected='true']) { color: rgb(239 236 235 / 0.8); }
 
-.ob-tabs__tab[aria-selected='true'] {
-  color: var(--ob-text);
-}
+.ob-tabs__tab[aria-selected='true'] { color: rgb(var(--ob-accent-pale)); }
 
-.ob-tabs__tab:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
+.ob-tabs__tab:disabled { opacity: 0.35; cursor: not-allowed; }
 
-/* The travelling pane — a smaller sheet of the same glass, lit the same
-   way, sliding under the active label. */
 .ob-tabs__thumb {
   position: absolute;
   top: 5px;
   left: 0;
-  height: 34px;
-  border-radius: var(--ob-radius-sm);
-  background-color: rgb(var(--ob-glass-tint) / 0.08);
+  height: 36px;
+  border-radius: 10px;
+  background: rgb(var(--ob-accent) / 0.4);
+  border: 1px solid rgb(var(--ob-accent-edge) / 0.4);
   box-shadow:
-    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.22),
-    inset 0 -1px 0 0 rgb(var(--ob-ember) / 0.4),
-    0 6px 18px -8px rgb(0 0 0 / 0.8);
+    0 4px 14px rgb(var(--ob-accent) / 0.3),
+    inset 0 1px 0 rgb(var(--ob-white) / 0.2);
   pointer-events: none;
   opacity: 0;
   transition:
-    transform var(--ob-dur) var(--ob-ease),
-    width var(--ob-dur) var(--ob-ease),
-    opacity var(--ob-dur) var(--ob-ease);
+    transform var(--ob-dur) var(--ob-spring),
+    width var(--ob-dur) var(--ob-spring),
+    opacity var(--ob-dur) var(--ob-spring);
 }
 
-.ob-tabs__thumb--ready {
-  opacity: 1;
-}
-
-/* A thread of gold along the top of the active pane. */
-.ob-tabs__thumb::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 26%;
-  right: 26%;
-  height: 1px;
-  background-color: rgb(var(--ob-halo));
-  opacity: 0.6;
-}
+.ob-tabs__thumb--ready { opacity: 1; }

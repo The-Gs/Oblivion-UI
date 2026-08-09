@@ -1,20 +1,23 @@
+/* Hairline rows on near-transparent glass; hover tints red. */
+
 .ob-table-wrap {
   overflow-x: auto;
-  border-radius: inherit;
+  border-radius: var(--ob-r-md);
+  border: 1px solid rgb(var(--ob-white) / 0.1);
 }
 
 .ob-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  font-family: var(--ob-font-mono);
-  font-size: 12.5px;
-  color: var(--ob-text);
+  font-family: var(--ob-font);
+  font-size: 14px;
+  color: var(--ob-ink);
 }
 
 .ob-table th,
 .ob-table td {
-  padding: var(--ob-space-3) var(--ob-space-4);
+  padding: 13px 18px;
   text-align: left;
   vertical-align: middle;
 }
@@ -23,54 +26,39 @@
   position: sticky;
   top: 0;
   z-index: 1;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: var(--ob-tracking-wide);
-  text-transform: uppercase;
-  color: var(--ob-text-faint);
+  font-family: var(--ob-font-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  color: var(--ob-ink-3);
   white-space: nowrap;
-  background-color: rgb(var(--ob-glass-tint) / 0.04);
+  background: rgb(0 0 0 / 0.35);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--ob-line-strong);
-}
-
-.ob-table tbody td {
-  border-bottom: 1px solid var(--ob-line);
-}
-
-.ob-table tbody tr:last-child td {
-  border-bottom: 0;
 }
 
 .ob-table tbody tr {
-  transition: background-color var(--ob-dur-fast) var(--ob-ease);
+  background: rgb(var(--ob-white) / 0.02);
+  transition: background var(--ob-dur-fast) var(--ob-ease);
 }
 
-.ob-table--hoverable tbody tr:hover {
-  background-color: rgb(var(--ob-glass-tint) / 0.045);
-}
+.ob-table tbody td { border-top: 1px solid rgb(var(--ob-white) / 0.06); }
 
-.ob-table--selectable tbody tr {
-  cursor: pointer;
-}
+.ob-table--hoverable tbody tr:hover { background: rgb(var(--ob-accent) / 0.1); }
 
-/* Left ember rule marks the active row. Applied to the first cell so it
-   sits inside the border-collapse model without shifting the row. */
-.ob-table tbody tr[data-ob-active='true'] {
-  background-color: rgb(var(--ob-ember) / 0.1);
-}
+.ob-table--selectable tbody tr { cursor: pointer; }
+
+.ob-table tbody tr[data-ob-active='true'] { background: rgb(var(--ob-accent) / 0.16); }
 
 .ob-table tbody tr[data-ob-active='true'] td:first-child {
-  box-shadow: inset 2px 0 0 0 rgb(var(--ob-ember));
+  box-shadow: inset 2px 0 0 0 rgb(var(--ob-accent-bright));
 }
 
-.ob-table__align-end {
-  text-align: right;
-}
-.ob-table__align-center {
-  text-align: center;
-}
+.ob-table__align-end { text-align: right; }
+.ob-table__align-center { text-align: center; }
+
+/* Numeric columns line up only in a tabular face. */
+.ob-table__mono { font-family: var(--ob-font-mono); font-size: 13px; color: rgb(239 236 235 / 0.65); }
 
 .ob-table__sort {
   display: inline-flex;
@@ -78,14 +66,11 @@
   gap: 6px;
   font: inherit;
   letter-spacing: inherit;
-  text-transform: inherit;
   color: inherit;
   transition: color var(--ob-dur-fast) var(--ob-ease);
 }
 
-.ob-table__sort:hover {
-  color: var(--ob-text);
-}
+.ob-table__sort:hover { color: var(--ob-ink); }
 
 .ob-table__caret {
   font-size: 8px;
@@ -93,21 +78,14 @@
   transition: opacity var(--ob-dur-fast) var(--ob-ease);
 }
 
-.ob-table__sort:hover .ob-table__caret {
-  opacity: 0.5;
-}
+.ob-table__sort:hover .ob-table__caret { opacity: 0.5; }
 
-.ob-table__sort[data-ob-sorted='true'] {
-  color: rgb(var(--ob-ember));
-}
-
-.ob-table__sort[data-ob-sorted='true'] .ob-table__caret {
-  opacity: 1;
-}
+.ob-table__sort[data-ob-sorted='true'] { color: rgb(var(--ob-accent-hot)); }
+.ob-table__sort[data-ob-sorted='true'] .ob-table__caret { opacity: 1; }
 
 .ob-table__empty {
-  padding: var(--ob-space-7);
+  padding: 48px;
   text-align: center;
-  color: var(--ob-text-faint);
-  font-size: 13px;
+  color: var(--ob-ink-3);
+  font-size: 13.5px;
 }

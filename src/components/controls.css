@@ -1,0 +1,235 @@
+/* Switch · Checkbox · Radio · Slider
+   All four share one idea: the off state is a dark well cut into the glass,
+   the on state fills with red and glows. */
+
+/* ══ Switch ═══════════════════════════════════════════════════════════ */
+
+.ob-switch {
+  position: relative;
+  flex: none;
+  width: 52px;
+  height: 30px;
+  border-radius: var(--ob-r-full);
+  cursor: pointer;
+  background: var(--ob-well-deep);
+  border: 1px solid rgb(var(--ob-white) / 0.14);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.4);
+  transition: all var(--ob-dur) var(--ob-spring);
+}
+
+.ob-switch[aria-checked='true'] {
+  background: rgb(var(--ob-accent) / 0.55);
+  border-color: rgb(var(--ob-accent-edge) / 0.5);
+  box-shadow:
+    0 0 16px rgb(var(--ob-accent) / 0.4),
+    inset 0 1px 2px rgb(0 0 0 / 0.3);
+}
+
+.ob-switch:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ob-switch__knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgb(var(--ob-white) / 0.92);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
+  transition: transform var(--ob-dur) var(--ob-spring);
+}
+
+.ob-switch[aria-checked='true'] .ob-switch__knob {
+  transform: translateX(22px);
+}
+
+/* ══ Checkbox ═════════════════════════════════════════════════════════ */
+
+.ob-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: var(--ob-font);
+  font-size: 14px;
+  color: rgb(239 236 235 / 0.85);
+}
+
+.ob-check:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ob-check__box {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  background: rgb(0 0 0 / 0.32);
+  border: 1px solid rgb(var(--ob-white) / 0.16);
+  transition: all var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-check[aria-checked='true'] .ob-check__box {
+  background: rgb(var(--ob-accent) / 0.55);
+  border-color: rgb(var(--ob-accent-edge) / 0.55);
+  box-shadow: 0 0 12px rgb(var(--ob-accent) / 0.35);
+}
+
+/* ══ Radio ════════════════════════════════════════════════════════════ */
+
+.ob-radios {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ob-radios--column {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ob-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: var(--ob-font);
+  font-size: 14px;
+  color: rgb(239 236 235 / 0.85);
+}
+
+.ob-radio:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* The selected state is a thick border collapsing inward, not a nested
+   dot — one element, and it animates cleanly. */
+.ob-radio__dot {
+  flex: none;
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.32);
+  border: 1px solid rgb(var(--ob-white) / 0.18);
+  transition: all var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-radio[aria-checked='true'] .ob-radio__dot {
+  border: 6px solid rgb(var(--ob-accent-bright));
+  box-shadow: 0 0 12px rgb(var(--ob-accent-bright) / 0.45);
+}
+
+/* ══ Slider ═══════════════════════════════════════════════════════════ */
+
+.ob-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--ob-font);
+}
+
+.ob-slider__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.ob-slider__label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ob-ink-2);
+}
+
+.ob-slider__value {
+  font-family: var(--ob-font-mono);
+  font-size: 12px;
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-slider__rail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.ob-slider__rail:focus-visible {
+  outline: none;
+}
+
+.ob-slider__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  border-radius: var(--ob-r-full);
+  background: rgb(0 0 0 / 0.38);
+  border: 1px solid rgb(var(--ob-white) / 0.1);
+  border-top-color: rgb(var(--ob-white) / 0.04);
+}
+
+.ob-slider__fill {
+  position: absolute;
+  left: 0;
+  height: 8px;
+  border-radius: var(--ob-r-full);
+  background: rgb(var(--ob-accent) / 0.7);
+  box-shadow: 0 0 12px rgb(var(--ob-accent) / 0.5);
+}
+
+.ob-slider__knob {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgb(var(--ob-white) / 0.95);
+  border: 1px solid rgb(var(--ob-white) / 0.6);
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 0.45),
+    0 0 14px rgb(var(--ob-accent-bright) / 0.35);
+  transition: box-shadow var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-slider__rail:focus-visible .ob-slider__knob {
+  box-shadow:
+    0 2px 8px rgb(0 0 0 / 0.45),
+    0 0 0 4px rgb(var(--ob-accent) / 0.35);
+}
+
+/* Dragging is driven by pointermove, so the fill and knob must not lerp
+   behind the cursor. A short linear step keeps them from looking rigid
+   when the value is set by keyboard instead. */
+.ob-slider__fill,
+.ob-slider__knob {
+  transition-property: none;
+}
+
+.ob-slider--animated .ob-slider__fill {
+  transition: width 0.08s linear;
+}
+
+.ob-slider--animated .ob-slider__knob {
+  transition: left 0.08s linear;
+}
+
+.ob-slider--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}

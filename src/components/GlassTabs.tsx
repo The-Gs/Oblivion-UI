@@ -1,6 +1,5 @@
 import { useCallback, useLayoutEffect, useRef, useState, type Key, type ReactNode } from 'react';
 import { cn } from '../lib/cn';
-import { GlassSurface } from './GlassSurface';
 import './GlassTabs.css';
 
 export interface GlassTabsProps<T> {
@@ -19,6 +18,7 @@ export interface GlassTabsProps<T> {
   /** Fill the container and split evenly. @default false */
   block?: boolean;
   className?: string;
+  style?: React.CSSProperties;
   'aria-label'?: string;
 }
 
@@ -38,6 +38,7 @@ export function GlassTabs<T>({
   onChange,
   block = false,
   className,
+  style,
   'aria-label': ariaLabel,
 }: GlassTabsProps<T>) {
   const listRef = useRef<HTMLDivElement>(null);
@@ -90,11 +91,7 @@ export function GlassTabs<T>({
   );
 
   return (
-    <GlassSurface
-      radius="md"
-      grain={false}
-      className={cn('ob-tabs', block && 'ob-tabs--block', className)}
-    >
+    <div className={cn('ob-tabs', block && 'ob-tabs--block', className)} style={style}>
       <span
         className={cn('ob-tabs__thumb', thumb && 'ob-tabs__thumb--ready')}
         style={thumb ? { transform: `translateX(${thumb.x}px)`, width: thumb.w } : undefined}
@@ -129,6 +126,6 @@ export function GlassTabs<T>({
           );
         })}
       </div>
-    </GlassSurface>
+    </div>
   );
 }

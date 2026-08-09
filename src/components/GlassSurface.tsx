@@ -2,36 +2,35 @@ import { forwardRef, type ElementType, type ReactNode } from 'react';
 import { cn } from '../lib/cn';
 import type { PolymorphicComponentWithRef, PolymorphicProps } from '../lib/polymorphic';
 
-export type SurfaceElevation = 'flush' | 'default' | 'raised' | 'haloed';
+export type SurfaceElevation = 'flush' | 'default' | 'raised' | 'overlay' | 'well';
 
 export interface GlassSurfaceOwnProps {
   children?: ReactNode;
   /**
-   * `flush` sits flat, `raised` throws a longer shadow, `haloed` turns both
-   * registers up — a gold arc over the top edge and heat pooling beneath.
+   * `flush` drops the shadow, `raised` deepens it, `overlay` switches to the
+   * darker plate used for modals and popovers, `well` inverts the lighting so
+   * the surface reads as cut into the glass rather than sitting on it.
    * @default 'default'
    */
   elevation?: SurfaceElevation;
-  /** Corner rounding token. @default 'md' */
-  radius?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
-  /** Lifts toward the light on hover; settles on press. */
+  /** Corner rounding token. @default 'xl' */
+  radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full';
+  /** Lifts on hover, settles on press. */
   interactive?: boolean;
-  /** Raked specular bands across the pane. @default true */
-  sheen?: boolean;
-  /** Film-grain overlay. @default true */
-  grain?: boolean;
 }
 
 const RADIUS: Record<string, string> = {
-  sm: 'var(--ob-radius-sm)',
-  md: 'var(--ob-radius)',
-  lg: 'var(--ob-radius-lg)',
-  xl: 'var(--ob-radius-xl)',
-  full: 'var(--ob-radius-full)',
+  xs: 'var(--ob-r-xs)',
+  sm: 'var(--ob-r-sm)',
+  md: 'var(--ob-r-md)',
+  lg: 'var(--ob-r-lg)',
+  xl: 'var(--ob-r-xl)',
+  '2xl': 'var(--ob-r-2xl)',
+  full: 'var(--ob-r-full)',
 };
 
 /**
- * The material primitive. Every other Oblivion component is this plus layout.
+ * The material primitive. Every other component is this plus layout.
  *
  * Renders as a `<div>` by default; pass `as` to become anything else while
  * keeping that element's prop types. Forwards its ref to the rendered element.
@@ -41,10 +40,8 @@ export const GlassSurface = forwardRef(function GlassSurface<T extends ElementTy
     as,
     children,
     elevation = 'default',
-    radius = 'md',
+    radius = 'xl',
     interactive = false,
-    sheen = true,
-    grain = true,
     className,
     style,
     ...rest
@@ -63,11 +60,8 @@ export const GlassSurface = forwardRef(function GlassSurface<T extends ElementTy
         className,
       )}
       style={{ borderRadius: RADIUS[radius], ...(style as object) }}
-      data-ob-grain={grain}
       {...rest}
     >
-      {sheen ? <span className="ob-sheen" aria-hidden="true" /> : null}
-      {grain ? <span className="ob-grain" aria-hidden="true" /> : null}
       {children}
     </Tag>
   );

@@ -132,8 +132,8 @@ export function GlassModal({
         aria-labelledby={title ? labelId : undefined}
         aria-describedby={description ? descId : undefined}
         tabIndex={-1}
-        radius="lg"
-        elevation="haloed"
+        radius="2xl"
+        elevation="overlay"
         className={cn('ob-modal__panel', `ob-modal__panel--${size}`, className)}
       >
         {title || showClose ? (

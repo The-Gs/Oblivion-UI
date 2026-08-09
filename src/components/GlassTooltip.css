@@ -1,0 +1,42 @@
+.ob-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.ob-tooltip__bubble {
+  position: absolute;
+  z-index: 40;
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-family: var(--ob-font);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ob-ink);
+  pointer-events: none;
+  animation: ob-pop-in var(--ob-dur) var(--ob-spring);
+}
+
+.ob-tooltip__bubble--top {
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ob-tooltip__bubble--bottom {
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ob-tooltip__bubble--left {
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ob-tooltip__bubble--right {
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+}

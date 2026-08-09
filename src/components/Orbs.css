@@ -1,0 +1,63 @@
+/* Ambient backdrop: three heavily-blurred solid discs drifting on long,
+   offset cycles. Solid fills run through `filter: blur()` — no gradients.
+
+   This is the only ambient motion in the system. Everything else moves
+   on interaction, which keeps the page calm while still feeling alive. */
+
+.ob-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ob-orbs--absolute {
+  position: absolute;
+}
+
+.ob-orbs__orb {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.ob-orbs__orb--a {
+  top: -12%;
+  left: -6%;
+  width: 560px;
+  height: 560px;
+  filter: blur(115px);
+  opacity: 0.8;
+  animation: ob-float-a 24s ease-in-out infinite alternate;
+}
+
+.ob-orbs__orb--b {
+  right: -8%;
+  bottom: -18%;
+  width: 640px;
+  height: 640px;
+  filter: blur(120px);
+  opacity: 0.9;
+  animation: ob-float-b 30s ease-in-out infinite alternate;
+}
+
+.ob-orbs__orb--c {
+  top: 30%;
+  right: 24%;
+  width: 360px;
+  height: 360px;
+  filter: blur(105px);
+  opacity: 0.5;
+  animation: ob-float-a 27s ease-in-out infinite alternate-reverse;
+}
+
+.ob-orbs--still .ob-orbs__orb {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-orbs__orb {
+    animation: none;
+  }
+}

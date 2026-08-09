@@ -10,100 +10,57 @@
 .ob-list__row {
   display: flex;
   align-items: center;
-  gap: var(--ob-space-3);
+  gap: 12px;
   width: 100%;
+  padding: 12px 13px;
   text-align: left;
-  padding: var(--ob-space-3) var(--ob-space-3);
-  border-radius: var(--ob-radius-sm);
-  color: var(--ob-text);
-  /* Reserve the space the active marker will occupy so selecting a row
-     doesn't shove its contents sideways. */
-  border-left: 2px solid transparent;
-  transition:
-    background-color var(--ob-dur-fast) var(--ob-ease),
-    border-color var(--ob-dur-fast) var(--ob-ease);
+  border-radius: var(--ob-r-sm);
+  color: var(--ob-ink);
+  transition: background var(--ob-dur-fast) var(--ob-ease);
 }
 
-.ob-list__row--selectable {
-  cursor: pointer;
-}
+.ob-list__row--selectable { cursor: pointer; }
 
-.ob-list__row--selectable:hover {
-  background-color: rgb(var(--ob-glass-tint) / 0.045);
-  border-left-color: var(--ob-line-strong);
-}
+.ob-list__row--selectable:hover { background: rgb(var(--ob-accent) / 0.1); }
 
 .ob-list__row--active {
-  background-color: rgb(var(--ob-ember) / 0.1);
-  border-left-color: rgb(var(--ob-ember));
+  background: rgb(var(--ob-accent) / 0.18);
+  box-shadow: inset 2px 0 0 0 rgb(var(--ob-accent-bright));
 }
 
 .ob-list__row--divided:not(:last-child) {
-  border-bottom: 1px solid var(--ob-line);
+  border-bottom: 1px solid rgb(var(--ob-white) / 0.06);
+  border-radius: 0;
 }
 
 .ob-list__lead,
-.ob-list__trail {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-}
+.ob-list__trail { flex-shrink: 0; display: flex; align-items: center; }
 
-.ob-list__trail {
-  margin-left: auto;
-  color: var(--ob-text-faint);
-  font-size: 12px;
-}
+.ob-list__trail { margin-left: auto; font-size: 12px; color: var(--ob-ink-3); }
 
-.ob-list__text {
-  min-width: 0;
-  flex: 1;
-}
+.ob-list__text { flex: 1; min-width: 0; }
 
 .ob-list__primary {
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--ob-text);
+  color: var(--ob-ink);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .ob-list__secondary {
-  font-size: 12px;
-  color: var(--ob-text-faint);
-  margin-top: 3px;
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: rgb(239 236 235 / 0.5);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* ── Empty / loading ─────────────────────────────────────────────────── */
 .ob-list__empty {
-  padding: var(--ob-space-7) var(--ob-space-5);
+  padding: 48px 24px;
   text-align: center;
-  color: var(--ob-text-faint);
-  font-size: 13px;
-}
-
-/* A flat opacity pulse. The usual shimmer needs a moving gradient. */
-.ob-skeleton {
-  background-color: rgb(var(--ob-ash) / 0.12);
-  animation: ob-throb 1.3s var(--ob-ease-in-out) infinite;
-}
-
-@keyframes ob-throb {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.9;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ob-skeleton {
-    animation: none;
-  }
+  font-size: 13.5px;
+  color: var(--ob-ink-3);
 }

@@ -1,19 +1,18 @@
 import type { ElementType, ReactNode } from 'react';
 import { cn } from '../lib/cn';
-import type { PolymorphicComponent, PolymorphicProps } from '../lib/polymorphic';
-import { GlassSurface } from './GlassSurface';
+import type { PolymorphicComponentWithRef, PolymorphicProps } from '../lib/polymorphic';
 import './GlassButton.css';
 
-export type ButtonVariant = 'glass' | 'solid' | 'ghost' | 'outline' | 'danger';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'quiet' | 'icon';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface GlassButtonOwnProps {
   children?: ReactNode;
-  /** @default 'glass' */
+  /** @default 'secondary' */
   variant?: ButtonVariant;
   /** @default 'md' */
   size?: ButtonSize;
-  /** Node before the label — an icon, a sigil, a dot. */
+  /** Node before the label. */
   leading?: ReactNode;
   /** Node after the label. */
   trailing?: ReactNode;
@@ -21,24 +20,32 @@ export interface GlassButtonOwnProps {
   loading?: boolean;
   /** Stretch to the container's width. */
   block?: boolean;
+  /**
+   * `icon` buttons rotate 90° on hover by default, which suits add/close/menu
+   * affordances but not transport controls. Set this for those.
+   */
+  noSpin?: boolean;
   disabled?: boolean;
+  /** Required for `icon` buttons — there's no visible label to read. */
+  'aria-label'?: string;
 }
 
 /**
- * A button cut from glass.
+ * A button in glass.
  *
- * Renders `<button>` by default. `as="a"` gives you a link with identical
- * styling and correctly typed `href`.
+ * Renders `<button>` by default. `as="a"` gives a link with identical styling
+ * and a correctly typed `href`.
  */
 export const GlassButton = (<T extends ElementType = 'button'>({
   as,
   children,
-  variant = 'glass',
+  variant = 'secondary',
   size = 'md',
   leading,
   trailing,
   loading = false,
   block = false,
+  noSpin = false,
   disabled = false,
   className,
   ...rest
@@ -48,19 +55,15 @@ export const GlassButton = (<T extends ElementType = 'button'>({
   const inert = disabled || loading;
 
   return (
-    <GlassSurface
-      as={Tag}
-      radius={size === 'lg' ? 'md' : 'sm'}
-      interactive={!inert}
-      grain={false}
+    <Tag
       className={cn(
         'ob-btn',
-        'ob-focusable',
         `ob-btn--${variant}`,
         `ob-btn--${size}`,
         block && 'ob-btn--block',
         loading && 'ob-btn--loading',
-        className as string | undefined,
+        noSpin && 'ob-btn--still',
+        className,
       )}
       // Native buttons get the real attribute; anything else needs the ARIA
       // equivalent plus removal from the tab order.
@@ -82,6 +85,6 @@ export const GlassButton = (<T extends ElementType = 'button'>({
           {trailing}
         </span>
       ) : null}
-    </GlassSurface>
+    </Tag>
   );
-}) as PolymorphicComponent<'button', GlassButtonOwnProps>;
+}) as PolymorphicComponentWithRef<'button', GlassButtonOwnProps>;

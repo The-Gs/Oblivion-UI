@@ -1,0 +1,83 @@
+.ob-toasts {
+  position: fixed;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* The stack itself must not eat clicks on the page behind it; only the
+     individual toasts take pointer events back. */
+  pointer-events: none;
+}
+
+.ob-toasts--bottom-right {
+  right: 24px;
+  bottom: 24px;
+}
+.ob-toasts--bottom-left {
+  left: 24px;
+  bottom: 24px;
+}
+.ob-toasts--top-right {
+  right: 24px;
+  top: 24px;
+  flex-direction: column-reverse;
+}
+.ob-toasts--top-left {
+  left: 24px;
+  top: 24px;
+  flex-direction: column-reverse;
+}
+
+.ob-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 380px;
+  padding: 13px 18px;
+  border-left: 3px solid rgb(var(--ob-accent));
+  animation: ob-pop-in var(--ob-dur-slow) var(--ob-spring);
+}
+
+.ob-toast__dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgb(var(--ob-accent-bright));
+  box-shadow: 0 0 10px rgb(var(--ob-accent-bright) / 0.9);
+}
+
+.ob-toast--danger {
+  border-left-color: rgb(var(--ob-accent-lit));
+}
+
+.ob-toast--neutral {
+  border-left-color: rgb(var(--ob-white) / 0.3);
+}
+
+.ob-toast--neutral .ob-toast__dot {
+  background: rgb(var(--ob-white) / 0.6);
+  box-shadow: none;
+}
+
+.ob-toast__msg {
+  flex: 1;
+  font-family: var(--ob-font);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ob-ink);
+}
+
+.ob-toast__close {
+  flex: none;
+  padding: 0 0 0 6px;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ob-ink-3);
+  transition: color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-toast__close:hover {
+  color: #fff;
+}
