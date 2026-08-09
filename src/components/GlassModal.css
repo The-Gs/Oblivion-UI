@@ -1,0 +1,106 @@
+.ob-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--ob-z-modal, 1000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ob-space-5);
+}
+
+.ob-modal__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(6 4 3 / 0.78);
+  -webkit-backdrop-filter: blur(3px) saturate(60%);
+  backdrop-filter: blur(3px) saturate(60%);
+  animation: ob-fade var(--ob-dur) var(--ob-ease);
+}
+
+.ob-modal__panel {
+  position: relative;
+  width: 100%;
+  max-height: calc(100vh - var(--ob-space-7));
+  display: flex;
+  flex-direction: column;
+  animation: ob-rise var(--ob-dur) var(--ob-ease);
+  outline: none;
+}
+
+.ob-modal__panel--sm {
+  max-width: 380px;
+}
+.ob-modal__panel--md {
+  max-width: 540px;
+}
+.ob-modal__panel--lg {
+  max-width: 800px;
+}
+
+.ob-modal__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ob-space-4);
+  padding: var(--ob-space-5) var(--ob-space-5) var(--ob-space-4);
+  border-bottom: 1px solid var(--ob-line);
+}
+
+.ob-modal__titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.ob-modal__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ob-text);
+}
+
+.ob-modal__desc {
+  margin: var(--ob-space-3) 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ob-text-dim);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.ob-modal__close {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--ob-radius-full);
+  border: 1px solid var(--ob-line);
+  color: var(--ob-text-faint);
+  font-size: 12px;
+  line-height: 1;
+  transition:
+    color var(--ob-dur-fast) var(--ob-ease),
+    border-color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-modal__close:hover {
+  color: rgb(var(--ob-cinder));
+  border-color: rgb(var(--ob-cinder));
+}
+
+.ob-modal__body {
+  padding: var(--ob-space-5);
+  overflow-y: auto;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ob-text-dim);
+}
+
+.ob-modal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ob-space-3);
+  padding: var(--ob-space-4) var(--ob-space-5);
+  border-top: 1px solid var(--ob-line);
+}

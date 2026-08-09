@@ -1,0 +1,78 @@
+.ob-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: var(--ob-radius-full);
+  font-family: var(--ob-font);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: rgb(var(--ob-badge-tone));
+  background-color: rgb(var(--ob-badge-tone) / 0.12);
+  border: 1px solid rgb(var(--ob-badge-tone) / 0.3);
+  box-shadow: inset 0 1px 0 0 rgb(var(--ob-bone) / 0.08);
+}
+
+.ob-badge--tone-neutral {
+  --ob-badge-tone: var(--ob-ash);
+}
+.ob-badge--tone-ember {
+  --ob-badge-tone: var(--ob-ember);
+}
+.ob-badge--tone-cinder {
+  --ob-badge-tone: var(--ob-cinder);
+}
+.ob-badge--tone-blood {
+  --ob-badge-tone: var(--ob-blood);
+}
+.ob-badge--tone-halo {
+  --ob-badge-tone: var(--ob-halo);
+}
+.ob-badge--tone-success {
+  --ob-badge-tone: var(--ob-success);
+}
+.ob-badge--tone-danger {
+  --ob-badge-tone: var(--ob-danger);
+}
+
+.ob-badge--solid {
+  color: var(--ob-text-on-accent);
+  background-color: rgb(var(--ob-badge-tone));
+  border-color: rgb(var(--ob-badge-tone));
+  box-shadow:
+    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.4),
+    0 6px 20px -8px rgb(var(--ob-badge-tone) / 0.8);
+}
+
+.ob-badge__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.ob-badge--pulse .ob-badge__dot {
+  animation: ob-blink 1.8s var(--ob-ease-in-out) infinite;
+}
+
+@keyframes ob-blink {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-badge--pulse .ob-badge__dot {
+    animation: none;
+  }
+}

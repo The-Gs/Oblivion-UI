@@ -1,0 +1,133 @@
+.ob-emberfall {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--ob-char-0);
+  z-index: 0;
+}
+
+.ob-emberfall--fixed {
+  position: fixed;
+}
+
+/* ── Lattice ─────────────────────────────────────────────────────────
+   A hairline grid, drawn as real 1px elements rather than a repeating
+   gradient. Its job is to be sharp: the panes above it blur it locally,
+   and that local softening is what makes the glass visible at all. On a
+   featureless backdrop, backdrop-filter has nothing to work with.      */
+.ob-emberfall__rule {
+  position: absolute;
+  background-color: rgb(var(--ob-ash) / 0.07);
+}
+
+.ob-emberfall__rule--v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.ob-emberfall__rule--h {
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+/* ── Halo: the register above ────────────────────────────────────────
+   Concentric rings of sacred geometry. One turns, slowly enough that you
+   register it as drift rather than animation.                          */
+.ob-emberfall__ring {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgb(var(--ob-halo) / 0.09);
+}
+
+.ob-emberfall__ring--outer {
+  width: 104vmin;
+  height: 104vmin;
+  border-color: rgb(var(--ob-halo) / 0.05);
+}
+
+.ob-emberfall__ring--mid {
+  width: 74vmin;
+  height: 74vmin;
+}
+
+.ob-emberfall__ring--spin {
+  width: 52vmin;
+  height: 52vmin;
+  border-color: transparent;
+  border-top-color: rgb(var(--ob-halo) / 0.28);
+  border-left-color: rgb(var(--ob-halo) / 0.1);
+  animation: ob-orbit 72s linear infinite;
+}
+
+@keyframes ob-orbit {
+  to {
+    transform: translate(-50%, -50%) rotate(1turn);
+  }
+}
+
+/* ── Cinders: the register below ─────────────────────────────────────
+   Solid squares, not blurred dots. A blurred dot is a glow; a hard
+   cinder is something that was on fire.                                */
+.ob-emberfall__mote {
+  position: absolute;
+  bottom: -12px;
+  width: var(--m-size);
+  height: var(--m-size);
+  left: var(--m-x);
+  background-color: rgb(var(--m-tone));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: ob-mote-rise var(--m-dur) linear var(--m-delay) infinite;
+}
+
+@keyframes ob-mote-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--m-opacity);
+  }
+  60% {
+    opacity: var(--m-opacity);
+  }
+  100% {
+    transform: translate3d(var(--m-drift), -104vh, 0);
+    opacity: 0;
+  }
+}
+
+/* The seam the cinders come off. */
+.ob-emberfall__seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: rgb(var(--ob-ember));
+  opacity: 0.4;
+}
+
+.ob-emberfall__grain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--ob-grain);
+  opacity: calc(var(--ob-grain-opacity) * 1.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-emberfall__mote {
+    animation: none;
+    opacity: var(--m-opacity);
+    transform: translate3d(0, -45vh, 0);
+  }
+  .ob-emberfall__ring--spin {
+    animation: none;
+  }
+}

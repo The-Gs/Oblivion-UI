@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Oblivion UI — design tokens
+
+   The conceit: every pane of glass hangs between two light sources.
+   Cold bone-white falls on it from above. Ember burns up at it from
+   below. Nothing is lit evenly, and nothing is neutral.
+
+   One hard rule: no gradients, anywhere. Not in fills, borders, or text.
+   Softness comes from blur and shadow — never from colour interpolation.
+
+   Override any variable below on :root, or scope it to a subtree, to
+   retheme the whole library without touching component CSS.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root,
+[data-oblivion] {
+  /* ── Char: the substrate. Warm — cool blacks read as space, not ash. ─ */
+  --ob-char-0: #080706;
+  --ob-char-1: #0e0c0a;
+  --ob-char-2: #15120f;
+  --ob-char-3: #1e1a16;
+  --ob-char-4: #2a241d;
+
+  /* ── Above: the divine register ───────────────────────────────────── */
+  --ob-bone: 246 241 233;   /* angelic white */
+  --ob-halo: 231 193 121;   /* soft sanctuary gold */
+
+  /* ── Below: the infernal register ─────────────────────────────────── */
+  --ob-ember: 214 92 32;    /* the primary heat */
+  --ob-cinder: 232 76 44;   /* hotter, closer */
+  --ob-blood: 136 26 26;    /* deep, arterial */
+
+  --ob-ash: 142 130 120;    /* warm neutral grey */
+
+  --ob-accent: var(--ob-ember);
+
+  /* ── Semantic ─────────────────────────────────────────────────────── */
+  --ob-danger: var(--ob-cinder);
+  --ob-success: 132 146 86;  /* sickly olive — nothing here is healthy */
+  --ob-warning: var(--ob-halo);
+
+  /* ── The material ─────────────────────────────────────────────────── */
+  --ob-glass-tint: 255 240 224;
+  --ob-glass-opacity: 0.055;
+  --ob-glass-bg: rgb(var(--ob-glass-tint) / var(--ob-glass-opacity));
+  --ob-glass-blur: 24px;
+  --ob-glass-saturate: 140%;
+  /* Lifts what sits behind the pane so it reads brighter than its
+     surroundings. Half of what makes glass legible at all. */
+  --ob-glass-brightness: 1.4;
+
+  /* ── Edge lighting: the duality, made literal ─────────────────────── */
+  --ob-edge-divine: rgb(var(--ob-bone) / 0.24);   /* lit from above */
+  --ob-edge-infernal: rgb(var(--ob-ember) / 0.34); /* burning from below */
+
+  /* Specular streaks. Flat bands raked across the pane — a radial
+     falloff would be a gradient; a skewed solid bar is not. */
+  --ob-sheen: rgb(255 246 232 / 0.06);
+  --ob-sheen-thin: rgb(255 246 232 / 0.035);
+
+  /* ── Hairlines ────────────────────────────────────────────────────── */
+  --ob-line: rgb(var(--ob-ash) / 0.2);
+  --ob-line-strong: rgb(var(--ob-ash) / 0.34);
+  --ob-line-hot: rgb(var(--ob-ember) / 0.7);
+  --ob-line-holy: rgb(var(--ob-halo) / 0.55);
+
+  /* ── Text ─────────────────────────────────────────────────────────── */
+  --ob-text: #ece5da;
+  --ob-text-dim: #a99b8e;
+  --ob-text-faint: #6f6458;
+  --ob-text-on-accent: #0a0806;
+
+  /* ── Geometry ─────────────────────────────────────────────────────── */
+  --ob-radius-sm: 8px;
+  --ob-radius: 12px;
+  --ob-radius-lg: 16px;
+  --ob-radius-xl: 22px;
+  --ob-radius-full: 999px;
+
+  --ob-space-1: 4px;
+  --ob-space-2: 8px;
+  --ob-space-3: 12px;
+  --ob-space-4: 16px;
+  --ob-space-5: 24px;
+  --ob-space-6: 32px;
+  --ob-space-7: 48px;
+
+  /* ── Depth ────────────────────────────────────────────────────────── */
+  --ob-shadow-sm: 0 2px 10px -3px rgb(0 0 0 / 0.7);
+  --ob-shadow: 0 18px 44px -18px rgb(0 0 0 / 0.85);
+  --ob-shadow-lg: 0 34px 74px -26px rgb(0 0 0 / 0.92);
+
+  /* Heat pooling under a pane, and gold breaking over the top of it. */
+  --ob-bloom: 0 14px 44px -16px rgb(var(--ob-ember) / 0.5);
+  --ob-halo-cast: 0 -10px 34px -14px rgb(var(--ob-halo) / 0.4);
+
+  /* ── Motion: long, smooth, decelerating. Nothing snaps. ───────────── */
+  --ob-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ob-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ob-dur-fast: 160ms;
+  --ob-dur: 300ms;
+  --ob-dur-slow: 560ms;
+
+  /* ── Type ─────────────────────────────────────────────────────────── */
+  --ob-font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Inter,
+    Roboto, sans-serif;
+  --ob-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  --ob-tracking-wide: 0.11em;
+
+  /* ── Grain: fractal noise, not a gradient. Keeps flat fills alive. ── */
+  --ob-grain-opacity: 0.04;
+  --ob-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Preset: "Seraph" — the angel wins. Gold above, heat banked low. ─── */
+[data-ob-theme='seraph'] {
+  --ob-ember: 226 176 92;
+  --ob-cinder: 240 206 138;
+  --ob-blood: 150 106 34;
+  --ob-accent: var(--ob-halo);
+  --ob-edge-infernal: rgb(var(--ob-halo) / 0.36);
+}
+
+/* ── Preset: "Ichor" — the demon wins. Arterial, close, wet. ────────── */
+[data-ob-theme='ichor'] {
+  --ob-ember: 176 34 34;
+  --ob-cinder: 214 52 46;
+  --ob-halo: 198 108 82;
+  --ob-char-0: #080404;
+  --ob-char-1: #0f0707;
+  --ob-char-2: #170b0b;
+}
+
+/* ── Preset: "Ash" — both left. The fire is out. ────────────────────── */
+[data-ob-theme='ash'] {
+  --ob-ember: 138 128 118;
+  --ob-cinder: 166 156 146;
+  --ob-halo: 196 188 176;
+  --ob-blood: 88 82 76;
+  --ob-glass-opacity: 0.042;
+  --ob-edge-infernal: rgb(var(--ob-ash) / 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-oblivion] {
+    --ob-dur-fast: 0ms;
+    --ob-dur: 0ms;
+    --ob-dur-slow: 0ms;
+  }
+}

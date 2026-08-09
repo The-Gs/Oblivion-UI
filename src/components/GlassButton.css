@@ -1,0 +1,146 @@
+.ob-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ob-space-2);
+  white-space: nowrap;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 550;
+  letter-spacing: 0.005em;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ob-btn:disabled,
+.ob-btn[aria-disabled='true'] {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Sizes ───────────────────────────────────────────────────────────── */
+.ob-btn--sm {
+  height: 34px;
+  padding: 0 var(--ob-space-4);
+  font-size: 12.5px;
+}
+.ob-btn--md {
+  height: 42px;
+  padding: 0 var(--ob-space-5);
+}
+.ob-btn--lg {
+  height: 52px;
+  padding: 0 var(--ob-space-6);
+  font-size: 15px;
+}
+
+.ob-btn--block {
+  width: 100%;
+}
+
+/* ── Solid — flat ember, lit from above like everything else ─────────── */
+.ob-btn--solid {
+  color: var(--ob-text-on-accent);
+  background-color: rgb(var(--ob-ember));
+  border-color: rgb(var(--ob-ember));
+  box-shadow:
+    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.45),
+    inset 0 -1px 0 0 rgb(0 0 0 / 0.25),
+    var(--ob-shadow),
+    var(--ob-bloom);
+}
+
+.ob-btn--solid:hover {
+  background-color: rgb(var(--ob-cinder));
+  border-color: rgb(var(--ob-cinder));
+  box-shadow:
+    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.6),
+    var(--ob-shadow-lg),
+    0 16px 50px -14px rgb(var(--ob-ember) / 0.75);
+}
+
+/* ── Ghost — no material until touched ───────────────────────────────── */
+.ob-btn--ghost {
+  background-color: transparent;
+  border-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  color: var(--ob-text-dim);
+}
+
+.ob-btn--ghost > .ob-sheen {
+  display: none;
+}
+
+.ob-btn--ghost:hover {
+  color: var(--ob-text);
+  background-color: rgb(var(--ob-glass-tint) / 0.06);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ── Outline — the halo register ─────────────────────────────────────── */
+.ob-btn--outline {
+  background-color: transparent;
+  border-color: rgb(var(--ob-halo) / 0.4);
+  color: rgb(var(--ob-halo));
+  box-shadow: inset 0 1px 0 0 var(--ob-edge-divine);
+}
+
+.ob-btn--outline:hover {
+  background-color: rgb(var(--ob-halo) / 0.08);
+  border-color: rgb(var(--ob-halo) / 0.8);
+  box-shadow:
+    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.3),
+    var(--ob-halo-cast);
+}
+
+/* ── Danger ──────────────────────────────────────────────────────────── */
+.ob-btn--danger {
+  color: rgb(var(--ob-cinder));
+  background-color: rgb(var(--ob-blood) / 0.2);
+  border-color: rgb(var(--ob-cinder) / 0.45);
+}
+
+.ob-btn--danger:hover {
+  color: var(--ob-text);
+  background-color: rgb(var(--ob-blood) / 0.45);
+  border-color: rgb(var(--ob-cinder));
+  box-shadow:
+    inset 0 1px 0 0 rgb(var(--ob-bone) / 0.2),
+    var(--ob-shadow-lg),
+    0 14px 44px -16px rgb(var(--ob-cinder) / 0.55);
+}
+
+/* ── Parts ───────────────────────────────────────────────────────────── */
+.ob-btn__affix {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.ob-btn__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ob-btn--loading .ob-btn__label,
+.ob-btn--loading .ob-btn__affix {
+  opacity: 0;
+}
+
+.ob-btn__spinner {
+  position: absolute;
+  width: 0.95em;
+  height: 0.95em;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  border-top-color: transparent;
+  animation: ob-spin 700ms linear infinite;
+}
