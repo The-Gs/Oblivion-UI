@@ -97,7 +97,7 @@
 
 /* ── Ghost: outline only ─────────────────────────────────────────────── */
 .ob-btn--ghost {
-  color: rgb(239 236 235 / 0.8);
+  color: rgb(var(--ob-ink-rgb) / 0.8);
   background: transparent;
   border: 1px solid rgb(var(--ob-white) / 0.18);
   transition: all var(--ob-dur-fast) var(--ob-spring);

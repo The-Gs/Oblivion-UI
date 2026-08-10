@@ -20,12 +20,15 @@
   --ob-bg: #0a0908;
   --ob-bg-sunk: #141010;
 
-  /* ── Ink ──────────────────────────────────────────────────────────── */
+  /* ── Ink ──────────────────────────────────────────────────────────────
+     --ob-ink-rgb is the bare triplet so text can compose custom alpha and
+     still invert per theme: rgb(var(--ob-ink-rgb) / 0.8). */
+  --ob-ink-rgb: 239 236 235;
   --ob-ink-strong: #f4f1f0;
   --ob-ink: #efeceb;
-  --ob-ink-2: rgb(239 236 235 / 0.6);
-  --ob-ink-3: rgb(239 236 235 / 0.45);
-  --ob-ink-4: rgb(239 236 235 / 0.3);
+  --ob-ink-2: rgb(var(--ob-ink-rgb) / 0.6);
+  --ob-ink-3: rgb(var(--ob-ink-rgb) / 0.45);
+  --ob-ink-4: rgb(var(--ob-ink-rgb) / 0.3);
 
   /* ── Accent: oxblood. Bare RGB so it composes with alpha. ─────────── */
   --ob-accent: 179 31 51;        /* #b31f33 — fills   */
@@ -70,6 +73,20 @@
   --ob-glow-lg: 0 12px 30px rgb(var(--ob-accent) / 0.45);
   --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.2);
 
+  /* ── Material switches ─────────────────────────────────────────────────
+     The knobs a theme flips to change what the material *is*, without
+     touching a line of component CSS. Oblivion leaves them at glass values;
+     `minimal` flattens them (opaque fill, no lift), `futuristic` adds a glow.
+
+       --ob-surface-fill  — the pane fill. Point it at an opaque colour to
+                            kill translucency.
+       --ob-lift          — how far an interactive pane rises on hover. 0 = flat.
+       --ob-surface-glow  — an extra shadow layer on every surface. A
+                            transparent no-op by default. */
+  --ob-surface-fill: var(--ob-glass-fill);
+  --ob-lift: 4px;
+  --ob-surface-glow: 0 0 #0000;
+
   /* ── Geometry ─────────────────────────────────────────────────────── */
   --ob-r-xs: 9px;
   --ob-r-sm: 12px;
@@ -109,6 +126,7 @@
   --ob-bg: #e9e7e3;
   --ob-bg-sunk: #ffffff;
 
+  --ob-ink-rgb: 20 16 16;
   --ob-ink-strong: #14100f;
   --ob-ink: #2a2626;
   --ob-ink-2: rgb(20 16 16 / 0.65);

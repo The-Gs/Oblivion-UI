@@ -1,0 +1,55 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Futuristic" — the glass overclocked.
+
+   Deeper blur, a cool space-black substrate, electric cyan in place of
+   oxblood, and a neon halo riding every surface via --ob-surface-glow. Still
+   no gradients: the glow is a single flat-colour shadow softened by blur
+   radius, not colour interpolation.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='futuristic'] {
+  --ob-bg: #04060d;
+  --ob-bg-sunk: #070a14;
+
+  --ob-ink-rgb: 219 232 255;
+  --ob-ink-strong: #eaf4ff;
+  --ob-ink: #dbe8ff;
+  --ob-ink-2: rgb(219 232 255 / 0.62);
+  --ob-ink-3: rgb(219 232 255 / 0.45);
+  --ob-ink-4: rgb(219 232 255 / 0.3);
+
+  /* Electric cyan. */
+  --ob-accent: 70 210 255;
+  --ob-accent-lit: 120 225 255;
+  --ob-accent-bright: 150 235 255;
+  --ob-accent-hot: 180 240 255;
+  --ob-accent-soft: 200 245 255;
+  --ob-accent-pale: 4 6 13;
+  --ob-accent-edge: 90 220 255;
+  --ob-accent-edge-lit: 160 240 255;
+
+  /* Present, saturated glass with a neon halo on every pane. */
+  --ob-glass-fill: rgb(120 180 255 / 0.06);
+  --ob-glass-fill-lit: rgb(120 180 255 / 0.1);
+  --ob-glass-blur: 28px;
+  --ob-glass-sat: 175%;
+  --ob-lift: 5px;
+  --ob-surface-glow: 0 0 34px -10px rgb(var(--ob-accent) / 0.5);
+
+  --ob-line: rgb(var(--ob-accent-edge) / 0.16);
+  --ob-line-top: rgb(var(--ob-accent-edge) / 0.4);
+  --ob-line-lit: rgb(var(--ob-accent-edge) / 0.3);
+  --ob-line-lit-top: rgb(var(--ob-accent-edge) / 0.55);
+
+  --ob-well: rgb(0 8 20 / 0.5);
+  --ob-well-deep: rgb(0 8 20 / 0.6);
+  --ob-well-top: rgb(var(--ob-accent-edge) / 0.12);
+
+  --ob-shadow: 0 12px 40px rgb(0 4 12 / 0.55);
+  --ob-shadow-lg: 0 20px 60px rgb(0 4 12 / 0.6);
+  --ob-shadow-xl: 0 30px 80px rgb(0 4 12 / 0.7);
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-accent-edge) / 0.25);
+  --ob-glow: 0 6px 24px rgb(var(--ob-accent) / 0.4);
+  --ob-glow-lg: 0 12px 36px rgb(var(--ob-accent) / 0.55);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.3);
+}

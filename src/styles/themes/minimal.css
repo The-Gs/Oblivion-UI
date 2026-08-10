@@ -1,0 +1,113 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Minimal" — the material disappears.
+
+   No blur, no specular top edge, no glow, no hover lift. Opaque surfaces
+   separated by hairlines, one monochrome accent, restrained shadow. This is
+   the theme that proves the token system: not one component changes, yet the
+   glass is gone entirely.
+
+   Ships light and dark. Dark is the default; add data-ob-mode='light'.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='minimal'] {
+  --ob-bg: #0a0a0b;
+  --ob-bg-sunk: #101011;
+
+  --ob-ink-rgb: 237 237 238;
+  --ob-ink-strong: #f5f5f6;
+  --ob-ink: #ededee;
+  --ob-ink-2: rgb(237 237 238 / 0.62);
+  --ob-ink-3: rgb(237 237 238 / 0.42);
+  --ob-ink-4: rgb(237 237 238 / 0.28);
+
+  /* Monochrome accent — near-white. Filled surfaces stay legible because
+     the fill is translucent over the dark ground. */
+  --ob-accent: 235 235 238;
+  --ob-accent-lit: 255 255 255;
+  --ob-accent-bright: 245 245 248;
+  --ob-accent-hot: 255 255 255;
+  --ob-accent-soft: 220 220 224;
+  --ob-accent-pale: 20 20 22;
+  --ob-accent-edge: 255 255 255;
+  --ob-accent-edge-lit: 255 255 255;
+
+  /* Flat: opaque fill, zero blur, zero lift. */
+  --ob-surface-fill: #161617;
+  --ob-glass-fill: #161617;
+  --ob-glass-fill-lit: #1e1e20;
+  --ob-glass-blur: 0px;
+  --ob-glass-sat: 100%;
+  --ob-lift: 0px;
+
+  /* Top edge equal to the rest — kills the specular catch. */
+  --ob-line: rgb(var(--ob-white) / 0.1);
+  --ob-line-top: rgb(var(--ob-white) / 0.1);
+  --ob-line-lit: rgb(var(--ob-white) / 0.2);
+  --ob-line-lit-top: rgb(var(--ob-white) / 0.2);
+
+  --ob-well: rgb(var(--ob-white) / 0.04);
+  --ob-well-deep: rgb(0 0 0 / 0.25);
+  --ob-well-top: rgb(var(--ob-white) / 0.04);
+
+  --ob-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --ob-shadow: 0 3px 10px rgb(0 0 0 / 0.35);
+  --ob-shadow-lg: 0 8px 22px rgb(0 0 0 / 0.4);
+  --ob-shadow-xl: 0 16px 40px rgb(0 0 0 / 0.45);
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-white) / 0.04);
+  --ob-glow: 0 0 #0000;
+  --ob-glow-lg: 0 0 #0000;
+  --ob-ring: 0 0 0 2px rgb(var(--ob-white) / 0.35);
+
+  --ob-r-xs: 5px;
+  --ob-r-sm: 7px;
+  --ob-r-md: 9px;
+  --ob-r-lg: 12px;
+  --ob-r-xl: 14px;
+  --ob-r-2xl: 16px;
+
+  --ob-spring: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Light ──────────────────────────────────────────────────────────────
+   The whole system inverts from tokens alone. Accent goes near-black so
+   #fff-on-accent fills keep their contrast. */
+[data-ob-theme='minimal'][data-ob-mode='light'] {
+  --ob-bg: #ffffff;
+  --ob-bg-sunk: #f4f4f5;
+
+  --ob-ink-rgb: 24 24 27;
+  --ob-ink-strong: #18181b;
+  --ob-ink: #27272a;
+  --ob-ink-2: rgb(24 24 27 / 0.66);
+  --ob-ink-3: rgb(24 24 27 / 0.46);
+  --ob-ink-4: rgb(24 24 27 / 0.3);
+
+  --ob-accent: 24 24 27;
+  --ob-accent-lit: 0 0 0;
+  --ob-accent-bright: 39 39 42;
+  --ob-accent-hot: 0 0 0;
+  --ob-accent-soft: 39 39 42;
+  --ob-accent-pale: 255 255 255;
+  --ob-accent-edge: 24 24 27;
+  --ob-accent-edge-lit: 24 24 27;
+
+  --ob-surface-fill: #ffffff;
+  --ob-glass-fill: #ffffff;
+  --ob-glass-fill-lit: #f4f4f5;
+
+  --ob-line: rgb(0 0 0 / 0.1);
+  --ob-line-top: rgb(0 0 0 / 0.1);
+  --ob-line-lit: rgb(0 0 0 / 0.2);
+  --ob-line-lit-top: rgb(0 0 0 / 0.2);
+
+  --ob-well: rgb(0 0 0 / 0.04);
+  --ob-well-deep: rgb(0 0 0 / 0.06);
+  --ob-well-top: rgb(0 0 0 / 0.04);
+
+  --ob-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
+  --ob-shadow: 0 3px 10px rgb(0 0 0 / 0.08);
+  --ob-shadow-lg: 0 8px 22px rgb(0 0 0 / 0.1);
+  --ob-shadow-xl: 0 16px 40px rgb(0 0 0 / 0.12);
+  --ob-inset-top: inset 0 1px 0 rgb(0 0 0 / 0.03);
+  --ob-ring: 0 0 0 2px rgb(0 0 0 / 0.25);
+}

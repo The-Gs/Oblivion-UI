@@ -1,0 +1,11 @@
+/* Extra ship-in themes, layered on top of the ObsidianUI base. Each file
+   only overrides variables, scoped to a [data-ob-theme] attribute — no
+   component CSS is touched anywhere. The base ships `oblivion` (default) and
+   `light`; these add distinct material languages and richer palettes. */
+@import './business.css';
+@import './minimal.css';
+@import './futuristic.css';
+@import './beige.css';
+@import './emerald.css';
+@import './grape.css';
+@import './sunset.css';

@@ -59,7 +59,7 @@
   margin: 8px 0 0;
   font-size: 13.5px;
   line-height: 1.6;
-  color: rgb(239 236 235 / 0.55);
+  color: rgb(var(--ob-ink-rgb) / 0.55);
   text-wrap: pretty;
 }
 
@@ -70,7 +70,7 @@
   padding: var(--ob-card-pad);
   font-size: 13.5px;
   line-height: 1.6;
-  color: rgb(239 236 235 / 0.55);
+  color: rgb(var(--ob-ink-rgb) / 0.55);
 }
 
 /* The head already supplied the top gap. */

@@ -19,12 +19,14 @@
   color: var(--ob-ink);
   font-family: var(--ob-font);
 
-  background: var(--ob-glass-fill);
+  background: var(--ob-surface-fill);
   -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
   backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
   border: 1px solid var(--ob-line);
   border-top-color: var(--ob-line-top);
-  box-shadow: var(--ob-shadow);
+  /* --ob-surface-glow trails the list: transparent on glass/flat themes, a
+     neon halo on `futuristic`. */
+  box-shadow: var(--ob-shadow), var(--ob-surface-glow);
 
   transition:
     background var(--ob-dur) var(--ob-spring),
@@ -40,7 +42,7 @@
 }
 
 .ob-surface--raised {
-  box-shadow: var(--ob-shadow-lg);
+  box-shadow: var(--ob-shadow-lg), var(--ob-surface-glow);
 }
 
 /* Overlays sit on a darker, more opaque plate so text stays legible no
@@ -75,9 +77,10 @@
 }
 
 .ob-surface--interactive:hover {
-  transform: translateY(-4px);
+  transform: translateY(calc(-1 * var(--ob-lift)));
   box-shadow:
     var(--ob-shadow-lg),
+    var(--ob-surface-glow),
     0 0 0 1px rgb(var(--ob-accent-edge) / 0.25);
 }
 

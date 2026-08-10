@@ -1,0 +1,87 @@
+/* The anchor is a passive wrapper — it exists only to be measured and to
+   catch the trigger's click. `inline-flex` hugs the trigger while still
+   generating a real box (a `contents` box can't be measured). */
+.ob-menu__anchor,
+.ob-anchor {
+  display: inline-flex;
+}
+
+/* ── The floating panel ─────────────────────────────────────────────────
+   Rides on .ob-surface so it inherits the active theme's material. */
+.ob-menu {
+  z-index: 1000;
+  min-width: 190px;
+  padding: var(--ob-space-1);
+  animation: ob-pop-in var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ob-menu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ob-space-2);
+  width: 100%;
+  padding: var(--ob-space-2) var(--ob-space-3);
+  border-radius: var(--ob-r-sm);
+  font-family: var(--ob-font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ob-ink);
+  text-align: left;
+  line-height: 1.2;
+  transition:
+    background var(--ob-dur-fast) var(--ob-ease),
+    color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-menu__item:hover:not(:disabled),
+.ob-menu__item:focus-visible {
+  background: rgb(var(--ob-white) / 0.08);
+  outline: none;
+}
+
+.ob-menu__item:focus-visible {
+  box-shadow: var(--ob-ring);
+}
+
+.ob-menu__item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* The system runs on a single accent, so "danger" borrows it. */
+.ob-menu__item--danger {
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-menu__item--danger:hover:not(:disabled),
+.ob-menu__item--danger:focus-visible {
+  background: rgb(var(--ob-accent) / 0.14);
+}
+
+.ob-menu__affix {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.ob-menu__affix--end {
+  margin-left: auto;
+  color: var(--ob-ink-3);
+}
+
+.ob-menu__label {
+  flex: 1;
+}
+
+.ob-menu__sep {
+  height: 1px;
+  margin: var(--ob-space-1) 0;
+  background: var(--ob-line);
+}

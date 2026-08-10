@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  Flex,
   GlassAvatar,
   GlassAvatarGroup,
   GlassBadge,
@@ -7,6 +8,7 @@ import {
   GlassCard,
   GlassCheckbox,
   GlassInput,
+  GlassMenu,
   GlassModal,
   GlassProgress,
   GlassRadioGroup,
@@ -19,7 +21,10 @@ import {
   GlassTable,
   GlassTabs,
   GlassTooltip,
+  Grid,
   Orbs,
+  Separator,
+  Stack,
   useToast,
 } from '../src';
 import { Wordmark } from './Wordmark';
@@ -384,7 +389,81 @@ export function Components({ onNavigate }: { onNavigate: (page: 'landing') => vo
             </p>
           </GlassSurface>
 
-          {/* ── 10 Light theme ──────────────────────────────────────── */}
+          {/* ── 10 Dropdown & Menu ──────────────────────────────────── */}
+          <GlassSurface as="section" className="pg-sec">
+            <h2 className="ob-eyebrow">10 · DROPDOWN &amp; MENU</h2>
+            <div className="pg-row">
+              <GlassMenu
+                label="Track actions"
+                trigger={
+                  <GlassButton variant="secondary" size="sm">
+                    Actions ▾
+                  </GlassButton>
+                }
+                items={[
+                  { key: 'play', label: 'Play', leading: '▶', onSelect: () => toast('Playing') },
+                  { key: 'queue', label: 'Add to queue', trailing: '⌘Q', onSelect: fireToast },
+                  { key: 'rename', label: 'Rename', onSelect: fireToast },
+                  { key: 'sep', separator: true },
+                  { key: 'share', label: 'Share', onSelect: fireToast },
+                  {
+                    key: 'del',
+                    label: 'Delete',
+                    danger: true,
+                    onSelect: () => toast('Deleted', { tone: 'danger' }),
+                  },
+                ]}
+              />
+              <GlassMenu
+                label="Sort by"
+                placement="bottom-start"
+                trigger={
+                  <GlassButton variant="ghost" size="sm">
+                    Sort by ▾
+                  </GlassButton>
+                }
+                items={SUBGENRES.map((s) => ({
+                  key: s,
+                  label: s,
+                  trailing: s === subgenre ? '✓' : undefined,
+                  onSelect: () => setSubgenre(s),
+                }))}
+              />
+            </div>
+            <p className="pg-api">
+              &lt;GlassMenu trigger={'{…}'} items={'{…}'} /&gt; — portalled, arrow-key roving,
+              Esc &amp; outside-click dismiss, focus returns to the trigger.
+            </p>
+          </GlassSurface>
+
+          {/* ── 11 Layout primitives ────────────────────────────────── */}
+          <GlassSurface as="section" className="pg-sec">
+            <h2 className="ob-eyebrow">11 · LAYOUT PRIMITIVES</h2>
+            <Stack gap={4}>
+              <Flex gap={2} wrap>
+                <GlassBadge>Flex</GlassBadge>
+                <GlassBadge variant="neutral">token gaps</GlassBadge>
+                <GlassBadge variant="outline">wrap</GlassBadge>
+              </Flex>
+              <Separator />
+              <Grid minColumnWidth="110px" gap={3}>
+                {['Stack', 'Flex', 'Grid', 'Container'].map((n) => (
+                  <GlassSurface
+                    key={n}
+                    style={{ padding: 16, textAlign: 'center', fontSize: 13 }}
+                  >
+                    {n}
+                  </GlassSurface>
+                ))}
+              </Grid>
+            </Stack>
+            <p className="pg-api">
+              &lt;Stack gap={'{4}'}&gt; · &lt;Flex wrap&gt; · &lt;Grid minColumnWidth="110px"&gt; ·
+              &lt;Separator /&gt; — polymorphic, spacing off the token scale.
+            </p>
+          </GlassSurface>
+
+          {/* ── 12 Light theme ──────────────────────────────────────── */}
           <section
             data-ob-theme="light"
             className="pg-sec pg-sec--wide pg-light"
@@ -392,7 +471,7 @@ export function Components({ onNavigate }: { onNavigate: (page: 'landing') => vo
           >
             <div className="pg-light__wash pg-light__wash--a" />
             <div className="pg-light__wash pg-light__wash--b" />
-            <h2 className="ob-eyebrow">10 · LIGHT THEME — same tokens, airy surface</h2>
+            <h2 className="ob-eyebrow">12 · LIGHT THEME — same tokens, airy surface</h2>
             <div className="pg-row" style={{ gap: 16 }}>
               <GlassButton variant="primary">Primary</GlassButton>
               <GlassButton variant="secondary">Secondary</GlassButton>

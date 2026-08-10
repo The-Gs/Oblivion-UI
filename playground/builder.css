@@ -1,0 +1,400 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Page builder: three columns — palette · canvas · inspector — under the
+   docs top bar. Drag blocks from the palette onto the canvas, reorder by
+   dragging, select to edit in the inspector, export the whole page as code.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.bld {
+  display: grid;
+  grid-template-columns: 220px 1fr 280px;
+  height: calc(100vh - 60px);
+  min-height: 0;
+}
+
+.bld__panel-title {
+  font-family: var(--ob-font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ob-ink-strong);
+  margin-bottom: 12px;
+}
+
+/* ── Palette ─────────────────────────────────────────────────────────── */
+.bld__palette,
+.bld__inspector {
+  overflow-y: auto;
+  padding: 20px 16px;
+}
+
+.bld__palette {
+  border-right: 1px solid var(--ob-line);
+}
+
+.bld__inspector {
+  border-left: 1px solid var(--ob-line);
+}
+
+.bld__pal-group {
+  margin-bottom: 18px;
+}
+
+.bld__pal-group-title {
+  font-family: var(--ob-font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ob-ink-3);
+  margin-bottom: 8px;
+}
+
+.bld__pal-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-bottom: 5px;
+  border-radius: var(--ob-r-sm);
+  border: 1px solid var(--ob-line);
+  background: rgb(var(--ob-white) / 0.03);
+  font-size: 13px;
+  color: var(--ob-ink);
+  cursor: grab;
+  transition: all 0.15s var(--ob-ease);
+}
+
+.bld__pal-item:hover {
+  border-color: rgb(var(--ob-accent-edge) / 0.5);
+  background: rgb(var(--ob-accent) / 0.1);
+}
+
+.bld__pal-item:active {
+  cursor: grabbing;
+}
+
+.bld__pal-grip {
+  color: var(--ob-ink-4);
+  font-size: 11px;
+}
+
+.bld__pal-add {
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--ob-line-lit);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ob-ink-2);
+}
+
+.bld__pal-item:hover .bld__pal-add {
+  color: #fff;
+  background: rgb(var(--ob-accent));
+  border-color: rgb(var(--ob-accent));
+}
+
+/* ── Canvas ──────────────────────────────────────────────────────────── */
+.bld__stage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.bld__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--ob-line);
+}
+
+.bld__count {
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  color: var(--ob-ink-3);
+}
+
+.bld__toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.bld__canvas-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 24px 120px;
+}
+
+.bld__canvas {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  min-height: 200px;
+  width: 100%;
+}
+
+/* ── Rows, cells, resizers ───────────────────────────────────────────── */
+.bld__row {
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--ob-r-md);
+  transition: box-shadow 0.15s var(--ob-ease);
+}
+
+.bld__row--over {
+  box-shadow: inset 0 0 0 2px rgb(var(--ob-accent-edge) / 0.7);
+}
+
+.bld__cell {
+  position: relative;
+  display: flex;
+  min-width: 0; /* let cells shrink so flex weights actually divide the row */
+}
+
+/* Drag handle between two adjacent cells — the "squeeze". */
+.bld__resizer {
+  flex: 0 0 10px;
+  align-self: stretch;
+  margin: 0 -5px;
+  cursor: col-resize;
+  touch-action: none;
+  z-index: 4;
+  position: relative;
+}
+.bld__resizer::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  bottom: 24%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: var(--ob-line-lit);
+  border-radius: 2px;
+  transition: background 0.15s var(--ob-ease);
+}
+.bld__resizer:hover::after {
+  background: rgb(var(--ob-accent));
+  box-shadow: var(--ob-glow);
+}
+
+/* Thin drop zone between rows → drop here makes a new row. */
+.bld__strip {
+  height: 14px;
+  border-radius: var(--ob-r-full);
+  transition: background 0.12s var(--ob-ease);
+}
+.bld__strip--over {
+  background: rgb(var(--ob-accent) / 0.35);
+}
+
+.bld__empty {
+  border: 1.5px dashed var(--ob-line-lit);
+  border-radius: var(--ob-r-lg);
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--ob-ink-3);
+  font-size: 14px;
+}
+
+.bld__node {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ob-r-md);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ob-ease);
+}
+
+.bld__node:hover {
+  border-color: rgb(var(--ob-accent-edge) / 0.3);
+}
+
+.bld__node--selected {
+  border-color: rgb(var(--ob-accent-edge) / 0.7);
+  box-shadow: var(--ob-ring);
+}
+
+.bld__node--dropbefore {
+  box-shadow: -3px 0 0 rgb(var(--ob-accent)), 0 -3px 0 rgb(var(--ob-accent));
+}
+
+.bld__node-bar {
+  position: absolute;
+  top: -13px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.15s var(--ob-ease);
+  pointer-events: none;
+}
+
+.bld__node:hover .bld__node-bar,
+.bld__node--selected .bld__node-bar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bld__node-grip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--ob-font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ob-ink-strong);
+  background: var(--ob-bg-sunk);
+  border: 1px solid var(--ob-line-lit);
+  padding: 3px 9px;
+  border-radius: var(--ob-r-full);
+  cursor: grab;
+  box-shadow: var(--ob-shadow-sm);
+}
+.bld__node-grip:active {
+  cursor: grabbing;
+}
+
+.bld__node-ctrls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bld__node-btn {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--ob-line-lit);
+  border-radius: var(--ob-r-sm);
+  font-size: 12px;
+  color: var(--ob-ink);
+  background: var(--ob-bg-sunk);
+  box-shadow: var(--ob-shadow-sm);
+  cursor: pointer;
+  transition: all 0.15s var(--ob-ease);
+}
+
+.bld__node-btn:hover:not(:disabled) {
+  color: var(--ob-ink-strong);
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+}
+
+.bld__node-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.bld__node-btn--del:hover:not(:disabled) {
+  color: #fff;
+  background: rgb(var(--ob-accent));
+  border-color: rgb(var(--ob-accent));
+}
+
+.bld__node-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 18px 14px 14px;
+}
+
+/* ── Inspector controls ──────────────────────────────────────────────── */
+.bld__field {
+  margin-bottom: 14px;
+}
+
+.bld__field-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--ob-font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ob-ink-3);
+  margin-bottom: 6px;
+}
+
+.bld__field-val {
+  color: rgb(var(--ob-accent-hot));
+  text-transform: none;
+}
+
+.bld__input,
+.bld__select {
+  width: 100%;
+  font-family: var(--ob-font);
+  font-size: 13px;
+  color: var(--ob-ink);
+  background: var(--ob-well);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 8px 10px;
+  outline: none;
+}
+
+.bld__input:focus,
+.bld__select:focus {
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+  box-shadow: var(--ob-ring);
+}
+
+.bld__range {
+  width: 100%;
+  accent-color: rgb(var(--ob-accent));
+}
+
+.bld__toggle {
+  appearance: none;
+  font-family: var(--ob-font);
+  font-size: 12px;
+  color: var(--ob-ink-2);
+  background: rgb(var(--ob-white) / 0.04);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.bld__toggle[data-on='true'] {
+  color: rgb(var(--ob-accent-hot));
+  background: rgb(var(--ob-accent) / 0.14);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.bld__divider {
+  height: 1px;
+  background: var(--ob-line);
+  margin: 18px 0;
+}
+
+.bld__hint {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ob-ink-3);
+}
+
+/* ── Responsive: collapse side panels under the canvas ───────────────── */
+@media (max-width: 960px) {
+  .bld {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .bld__palette,
+  .bld__inspector {
+    border: 0;
+    border-bottom: 1px solid var(--ob-line);
+  }
+}

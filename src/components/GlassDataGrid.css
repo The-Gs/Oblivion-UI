@@ -1,0 +1,164 @@
+.ob-grid-x {
+  padding: 0;
+  overflow: hidden;
+}
+
+.ob-grid-x__scroll {
+  overflow-x: auto;
+}
+
+.ob-grid-x__row {
+  display: grid;
+  align-items: stretch;
+  min-width: max-content;
+}
+
+.ob-grid-x__row:not(.ob-grid-x__row--head):hover {
+  background: rgb(var(--ob-accent) / 0.06);
+}
+
+.ob-grid-x__row + .ob-grid-x__row {
+  border-top: 1px solid var(--ob-line);
+}
+
+.ob-grid-x__row--head {
+  border-bottom: 1px solid var(--ob-line-lit);
+  background: var(--ob-well);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* ── Cells ───────────────────────────────────────────────────────────── */
+.ob-grid-x__cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 14px;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--ob-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ob-grid-x__cell--end {
+  justify-content: flex-end;
+  text-align: right;
+}
+.ob-grid-x__cell--center {
+  justify-content: center;
+  text-align: center;
+}
+
+.ob-grid-x__cell--head {
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ob-ink-3);
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ob-grid-x__cell--dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+/* Drop indicator: a flat accent line on the leading edge. */
+.ob-grid-x__cell--drop::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgb(var(--ob-accent));
+  box-shadow: var(--ob-glow);
+}
+
+.ob-grid-x__grip {
+  font-size: 11px;
+  color: var(--ob-ink-4);
+  cursor: grab;
+}
+
+.ob-grid-x__htext {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: default;
+}
+.ob-grid-x__cell--end .ob-grid-x__htext {
+  justify-content: flex-end;
+}
+.ob-grid-x__cell--center .ob-grid-x__htext {
+  justify-content: center;
+}
+
+.ob-grid-x__htext--sortable {
+  cursor: pointer;
+}
+.ob-grid-x__htext--sortable:hover {
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-grid-x__sort {
+  font-size: 8px;
+  opacity: 0.75;
+}
+
+/* ── Resize handle ───────────────────────────────────────────────────── */
+.ob-grid-x__resize {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+}
+.ob-grid-x__resize::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  top: 20%;
+  bottom: 20%;
+  width: 2px;
+  background: var(--ob-line);
+  transition: background var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-grid-x__resize:hover::after {
+  background: rgb(var(--ob-accent));
+}
+
+/* ── Editable cells ──────────────────────────────────────────────────── */
+.ob-grid-x__cell--editable {
+  cursor: text;
+}
+.ob-grid-x__cell--editable:hover {
+  box-shadow: inset 0 0 0 1px rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.ob-grid-x__edit {
+  width: 100%;
+  margin: -6px -8px;
+  padding: 6px 8px;
+  font: inherit;
+  color: var(--ob-ink-strong);
+  background: var(--ob-bg);
+  border: 1px solid rgb(var(--ob-accent-edge) / 0.6);
+  border-radius: var(--ob-r-sm);
+  outline: none;
+  box-shadow: var(--ob-ring);
+}

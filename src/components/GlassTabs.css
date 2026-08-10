@@ -29,13 +29,13 @@
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
-  color: rgb(239 236 235 / 0.55);
+  color: rgb(var(--ob-ink-rgb) / 0.55);
   transition: color var(--ob-dur) var(--ob-spring);
 }
 
 .ob-tabs--block .ob-tabs__tab { flex: 1; }
 
-.ob-tabs__tab:hover:not([aria-selected='true']) { color: rgb(239 236 235 / 0.8); }
+.ob-tabs__tab:hover:not([aria-selected='true']) { color: rgb(var(--ob-ink-rgb) / 0.8); }
 
 .ob-tabs__tab[aria-selected='true'] { color: rgb(var(--ob-accent-pale)); }
 

@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Beige" — warm paper.
+
+   A light theme, but soft rather than clinical: sand and cream grounds, warm
+   ink, and a terracotta accent. Glass becomes frosted white over paper —
+   shadow does the lifting, not glow.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='beige'] {
+  --ob-bg: #ece5d8;
+  --ob-bg-sunk: #f6f1e7;
+
+  --ob-ink-rgb: 46 38 30;
+  --ob-ink-strong: #2e261e;
+  --ob-ink: #3d342a;
+  --ob-ink-2: rgb(46 38 30 / 0.66);
+  --ob-ink-3: rgb(46 38 30 / 0.46);
+  --ob-ink-4: rgb(46 38 30 / 0.3);
+
+  /* Terracotta. */
+  --ob-accent: 178 88 56;
+  --ob-accent-lit: 198 104 68;
+  --ob-accent-bright: 160 74 44;
+  --ob-accent-hot: 150 66 38;
+  --ob-accent-soft: 140 60 34;
+  --ob-accent-pale: 255 255 255;
+  --ob-accent-edge: 178 88 56;
+  --ob-accent-edge-lit: 255 245 236;
+
+  --ob-glass-fill: rgb(255 252 246 / 0.6);
+  --ob-glass-fill-lit: rgb(255 252 246 / 0.82);
+  --ob-glass-blur: 14px;
+  --ob-glass-sat: 130%;
+  --ob-surface-fill: var(--ob-glass-fill);
+
+  --ob-line: rgb(46 38 30 / 0.12);
+  --ob-line-top: rgb(255 255 255 / 0.9);
+  --ob-line-lit: rgb(46 38 30 / 0.2);
+  --ob-line-lit-top: rgb(255 255 255 / 1);
+
+  --ob-well: rgb(46 38 30 / 0.05);
+  --ob-well-deep: rgb(46 38 30 / 0.08);
+  --ob-well-top: rgb(255 255 255 / 0.8);
+
+  --ob-shadow-sm: 0 2px 8px rgb(76 54 30 / 0.08);
+  --ob-shadow: 0 5px 16px rgb(76 54 30 / 0.1);
+  --ob-shadow-lg: 0 14px 36px rgb(76 54 30 / 0.14);
+  --ob-shadow-xl: 0 26px 60px rgb(76 54 30 / 0.18);
+  --ob-inset-top: inset 0 1px 0 rgb(255 255 255 / 0.7);
+  --ob-glow: 0 6px 20px rgb(var(--ob-accent) / 0.24);
+  --ob-glow-lg: 0 12px 30px rgb(var(--ob-accent) / 0.32);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.18);
+}

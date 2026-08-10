@@ -1,9 +1,55 @@
-// Base layers must come first so component CSS can override them.
+// Base layers must come first so component CSS can override them; the extra
+// themes (scoped to [data-ob-theme]) come last so their overrides win.
 import './styles/tokens.css';
 import './styles/surface.css';
+import './styles/themes/index.css';
+
+export {
+  ThemeProvider,
+  useTheme,
+  useThemeOptional,
+  THEMES,
+  systemPrefersLight,
+} from './theme/ThemeProvider';
+export type {
+  ThemeId,
+  ThemeMode,
+  ThemeContextValue,
+  ThemeProviderProps,
+} from './theme/ThemeProvider';
 
 export { GlassSurface } from './components/GlassSurface';
 export type { GlassSurfaceOwnProps, SurfaceElevation } from './components/GlassSurface';
+
+export { GlassMenu, GlassDropdown } from './components/GlassMenu';
+export type {
+  GlassMenuProps,
+  MenuEntry,
+  MenuItemConfig,
+  MenuSeparator,
+} from './components/GlassMenu';
+
+export { GlassAlert } from './components/GlassAlert';
+export type { GlassAlertProps, AlertTone } from './components/GlassAlert';
+
+export { GlassAccordion, GlassCollapsible } from './components/GlassAccordion';
+export type {
+  GlassAccordionProps,
+  AccordionItemConfig,
+  GlassCollapsibleProps,
+} from './components/GlassAccordion';
+
+export { GlassDataGrid } from './components/GlassDataGrid';
+export type { GlassDataGridProps, DataGridColumn } from './components/GlassDataGrid';
+
+export { Box, Stack, Flex, Grid, Container, Separator } from './components/primitives';
+export type {
+  Space,
+  StackOwnProps,
+  GridOwnProps,
+  ContainerOwnProps,
+  SeparatorProps,
+} from './components/primitives';
 
 export { Orbs } from './components/Orbs';
 export type { OrbsProps, OrbPalette } from './components/Orbs';

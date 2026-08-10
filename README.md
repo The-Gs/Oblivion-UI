@@ -65,7 +65,10 @@ yourself, or override the variables.
 | `GlassTable<T>` | Generic columns, opt-in sorting, sticky header. |
 | `GlassTabs<T>` | Segmented control with a sliding pill. |
 | `GlassModal` | Portalled dialog: focus trap, scroll lock, Escape, scrim. |
+| `GlassMenu` / `GlassDropdown` | Portalled action menu — roving arrow keys, Esc & outside-click dismiss, focus restore. |
+| `Box` / `Stack` / `Flex` / `Grid` / `Container` / `Separator` | Polymorphic layout primitives with token-scale spacing. |
 | `ToastProvider` / `useToast` | Queued toasts that stack and self-dismiss. |
+| `ThemeProvider` / `useTheme` | Optional React wrapper over the `data-ob-theme` mechanism. |
 
 ## Data-driven by design
 
@@ -140,17 +143,43 @@ Every visual decision resolves to a CSS variable:
 Colour tokens are bare RGB triplets so they compose with alpha via
 `rgb(var(--ob-accent) / 0.4)`.
 
-A light theme ships built in — apply it anywhere, including to a single
-subtree:
+Five themes ship built in. Apply any of them anywhere — globally or to a
+single subtree — with `data-ob-theme`:
 
 ```tsx
-<div data-ob-theme="light">…</div>
+<div data-ob-theme="business">…</div>   {/* also: light, minimal, futuristic */}
 ```
 
-It flips the recipe: white translucency, bright top edge, shadow doing the
-lifting instead of glow, and the accent deepened to `#8b1123` for contrast.
+| Theme | What it is |
+| --- | --- |
+| `oblivion` | The default. Smoked glass, oxblood accent. |
+| `light` | Flips the recipe: white translucency, bright top edge, shadow instead of glow. |
+| `business` | Near-flat corporate surface, cool slate, steel-blue accent, tighter corners. |
+| `minimal` | The material disappears — opaque, no blur/glow/lift, one monochrome accent. Ships light **and** dark (add `data-ob-mode="light"`). |
+| `futuristic` | Deep glass overclocked — cyan accent and a neon glow riding every surface. |
 
-See [`src/styles/tokens.css`](./src/styles/tokens.css) for the full list.
+These are **distinct material languages**, not recolours: a small set of
+material-switch tokens (`--ob-surface-fill`, `--ob-lift`, `--ob-surface-glow`)
+lets a theme flatten or electrify the glass without touching any component CSS.
+
+For state-driven switching in React, wrap your app in `ThemeProvider` and read
+`useTheme()` — it mirrors the choice onto `data-ob-theme` / `data-ob-mode` and
+respects `prefers-color-scheme` when the mode is `system`:
+
+```tsx
+import { ThemeProvider, useTheme, THEMES } from 'oblivion-ui';
+
+<ThemeProvider defaultTheme="oblivion">
+  <App />
+</ThemeProvider>;
+
+const { theme, setTheme } = useTheme();
+```
+
+The provider is optional — the CSS `data-ob-theme` mechanism works on its own.
+
+See [`src/styles/tokens.css`](./src/styles/tokens.css) for the full token list
+and [`src/styles/themes/`](./src/styles/themes/) for each theme.
 
 ## How the material works
 

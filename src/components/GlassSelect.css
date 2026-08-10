@@ -68,7 +68,7 @@
   text-align: left;
   font-family: var(--ob-font);
   font-size: 14px;
-  color: rgb(239 236 235 / 0.85);
+  color: rgb(var(--ob-ink-rgb) / 0.85);
   cursor: pointer;
   transition: background var(--ob-dur-fast) var(--ob-ease);
 }

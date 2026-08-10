@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Sunset" — warm dusk glass. Plum-black ground, amber-coral accent, glow.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='sunset'] {
+  --ob-bg: #16090c;
+  --ob-bg-sunk: #230f12;
+
+  --ob-ink-rgb: 255 235 224;
+  --ob-ink-strong: #fff2ea;
+  --ob-ink: #ffebe0;
+  --ob-ink-2: rgb(255 235 224 / 0.64);
+  --ob-ink-3: rgb(255 235 224 / 0.46);
+  --ob-ink-4: rgb(255 235 224 / 0.3);
+
+  --ob-accent: 255 138 76;
+  --ob-accent-lit: 255 162 106;
+  --ob-accent-bright: 255 182 132;
+  --ob-accent-hot: 255 198 156;
+  --ob-accent-soft: 255 212 180;
+  --ob-accent-pale: 22 9 12;
+  --ob-accent-edge: 255 150 92;
+  --ob-accent-edge-lit: 255 198 156;
+
+  --ob-glass-fill: rgb(255 180 130 / 0.06);
+  --ob-glass-fill-lit: rgb(255 180 130 / 0.1);
+  --ob-glass-blur: 24px;
+  --ob-glass-sat: 160%;
+  --ob-lift: 4px;
+  --ob-surface-glow: 0 0 30px -12px rgb(var(--ob-accent) / 0.42);
+
+  --ob-line: rgb(var(--ob-accent-edge) / 0.16);
+  --ob-line-top: rgb(var(--ob-accent-edge) / 0.32);
+  --ob-line-lit: rgb(var(--ob-accent-edge) / 0.26);
+  --ob-line-lit-top: rgb(var(--ob-accent-edge) / 0.5);
+
+  --ob-well: rgb(14 5 7 / 0.5);
+  --ob-well-deep: rgb(14 5 7 / 0.62);
+  --ob-well-top: rgb(var(--ob-accent-edge) / 0.1);
+
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-accent-edge) / 0.2);
+  --ob-glow: 0 6px 22px rgb(var(--ob-accent) / 0.36);
+  --ob-glow-lg: 0 12px 34px rgb(var(--ob-accent) / 0.5);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.28);
+}

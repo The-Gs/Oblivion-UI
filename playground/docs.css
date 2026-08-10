@@ -1,0 +1,555 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Docs-site chrome. Neutral, shadcn-flavoured: fixed left sidebar, sticky
+   top bar, a centred content column, and framed component previews. Every
+   surface reads from the theme tokens, so the theme switcher reskins the
+   docs themselves — not just the demos.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--ob-bg);
+  color: var(--ob-ink);
+  font-family: var(--ob-font);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.35s var(--ob-ease), color 0.35s var(--ob-ease);
+}
+
+.docs {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Top bar ─────────────────────────────────────────────────────────── */
+.docs__topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 60px;
+  padding: 0 24px;
+  background: var(--ob-bg);
+  border-bottom: 1px solid var(--ob-line);
+}
+
+.docs__brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--ob-font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ob-ink-strong);
+}
+
+.docs__brand em {
+  font-style: normal;
+  color: rgb(var(--ob-accent-hot));
+}
+
+.docs__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgb(var(--ob-accent));
+  box-shadow: var(--ob-glow);
+}
+
+.docs__ver {
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  color: var(--ob-ink-3);
+  padding: 3px 8px;
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-full);
+}
+
+/* ── Body: sidebar + content ─────────────────────────────────────────── */
+.docs__body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 256px 1fr;
+}
+
+.docs__sidebar {
+  position: sticky;
+  top: 60px;
+  align-self: start;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  border-right: 1px solid var(--ob-line);
+  padding: 24px 14px 60px;
+}
+
+.docs__group {
+  margin-bottom: 22px;
+}
+
+.docs__group-title {
+  font-family: var(--ob-font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ob-ink-3);
+  padding: 0 10px;
+  margin-bottom: 8px;
+}
+
+.docs__link {
+  display: block;
+  padding: 6px 10px;
+  border-radius: var(--ob-r-sm);
+  font-size: 13.5px;
+  color: var(--ob-ink-2);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s var(--ob-ease), color 0.15s var(--ob-ease);
+}
+
+.docs__link:hover {
+  background: rgb(var(--ob-white) / 0.05);
+  color: var(--ob-ink);
+}
+
+.docs__link--active {
+  color: var(--ob-ink-strong);
+  background: rgb(var(--ob-accent) / 0.14);
+  border-color: rgb(var(--ob-accent-edge) / 0.25);
+}
+
+/* ── Content column ──────────────────────────────────────────────────── */
+.docs__main {
+  min-width: 0;
+  padding: 44px 48px 140px;
+}
+
+.docs__content {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.docs__eyebrow {
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(var(--ob-accent-hot));
+  margin: 0 0 12px;
+}
+
+.docs__title {
+  font-family: var(--ob-font-display);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+  color: var(--ob-ink-strong);
+}
+
+.docs__lede {
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--ob-ink-2);
+  margin: 0 0 28px;
+  max-width: 62ch;
+}
+
+.docs__h2 {
+  font-family: var(--ob-font-display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 44px 0 14px;
+  color: var(--ob-ink-strong);
+}
+
+.docs__p {
+  line-height: 1.7;
+  color: var(--ob-ink-2);
+  max-width: 64ch;
+}
+
+.docs__ic {
+  font-family: var(--ob-font-mono);
+  font-size: 0.88em;
+  background: rgb(var(--ob-white) / 0.07);
+  padding: 2px 6px;
+  border-radius: 6px;
+  color: var(--ob-ink);
+}
+
+/* ── Demo frame ──────────────────────────────────────────────────────── */
+.demo {
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-lg);
+  overflow: hidden;
+  margin: 18px 0 10px;
+  background: var(--ob-bg-sunk);
+}
+
+.demo__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--ob-line);
+}
+
+.demo__tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.demo__tool {
+  appearance: none;
+  font-family: var(--ob-font-mono);
+  font-size: 11.5px;
+  color: var(--ob-ink-2);
+  background: rgb(var(--ob-white) / 0.05);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 4px 9px;
+  cursor: pointer;
+  transition: all 0.15s var(--ob-ease);
+}
+
+.demo__tool:hover {
+  color: var(--ob-ink-strong);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.demo__tool--on {
+  color: rgb(var(--ob-accent-hot));
+  background: rgb(var(--ob-accent) / 0.14);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+/* ── Live customizer ─────────────────────────────────────────────────── */
+.pg2 {
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-lg);
+  overflow: hidden;
+  margin: 18px 0 10px;
+  background: var(--ob-bg-sunk);
+}
+
+.pg2__body {
+  display: grid;
+  grid-template-columns: 1fr 240px;
+}
+
+.pg2__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 44px 28px;
+  min-height: 200px;
+  border-right: 1px solid var(--ob-line);
+}
+
+.pg2__stage::before,
+.pg2__stage::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(48px);
+  opacity: 0.5;
+  pointer-events: none;
+  display: none;
+}
+.pg2__stage::before {
+  width: 200px;
+  height: 200px;
+  left: -20px;
+  top: -40px;
+  background: rgb(var(--ob-accent) / 0.28);
+}
+.pg2__stage::after {
+  width: 160px;
+  height: 160px;
+  right: -20px;
+  bottom: -40px;
+  background: rgb(var(--ob-accent-hot) / 0.16);
+}
+.pg2__stage > * {
+  position: relative;
+  z-index: 1;
+}
+
+.pg2__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 16px;
+}
+
+.pg2__ctrl {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pg2__ctrl-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--ob-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ob-ink-3);
+}
+
+.pg2__ctrl-val {
+  color: rgb(var(--ob-accent-hot));
+  text-transform: none;
+}
+
+.pg2__seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.pg2__seg button {
+  appearance: none;
+  font-family: var(--ob-font);
+  font-size: 12px;
+  color: var(--ob-ink-2);
+  background: rgb(var(--ob-white) / 0.04);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 5px 9px;
+  cursor: pointer;
+  transition: all 0.15s var(--ob-ease);
+}
+.pg2__seg button[data-on='true'] {
+  color: var(--ob-ink-strong);
+  background: rgb(var(--ob-accent) / 0.16);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.pg2__range {
+  width: 100%;
+  accent-color: rgb(var(--ob-accent));
+}
+
+.pg2__toggle {
+  appearance: none;
+  align-self: flex-start;
+  font-family: var(--ob-font);
+  font-size: 12px;
+  color: var(--ob-ink-2);
+  background: rgb(var(--ob-white) / 0.04);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.pg2__toggle[data-on='true'] {
+  color: rgb(var(--ob-accent-hot));
+  background: rgb(var(--ob-accent) / 0.14);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.pg2__code {
+  border-top: 1px solid var(--ob-line);
+  background: var(--ob-bg);
+  padding: 12px 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  overflow-x: auto;
+}
+.pg2__code pre {
+  margin: 0;
+  font-family: var(--ob-font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ob-ink-2);
+  white-space: pre-wrap;
+}
+
+@media (max-width: 720px) {
+  .pg2__body {
+    grid-template-columns: 1fr;
+  }
+  .pg2__stage {
+    border-right: 0;
+    border-bottom: 1px solid var(--ob-line);
+  }
+}
+
+.demo__t {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ob-ink);
+}
+
+.demo__d {
+  font-size: 12.5px;
+  color: var(--ob-ink-3);
+  margin-top: 2px;
+}
+
+.demo__canvas {
+  position: relative;
+  padding: 40px 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  min-height: 104px;
+}
+
+.demo__canvas--center {
+  justify-content: center;
+}
+
+.demo__canvas--stack {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.demo__canvas > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Two soft discs so glass panes have something worth blurring. Docs chrome,
+   so gradients are fair game here — the library rule is about components.
+   Only shown on the warm themes (oblivion, sunset); on the cool/flat themes
+   the accent-tinted glow reads muddy, so they're hidden (see below). */
+.demo__canvas::before,
+.demo__canvas::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+  display: none;
+}
+
+.demo__canvas::before {
+  width: 190px;
+  height: 190px;
+  left: -30px;
+  top: -46px;
+  background: rgb(var(--ob-accent) / 0.28);
+}
+
+.demo__canvas::after {
+  width: 150px;
+  height: 150px;
+  right: -24px;
+  bottom: -44px;
+  background: rgb(var(--ob-accent-hot) / 0.16);
+}
+
+.demo__code {
+  border-top: 1px solid var(--ob-line);
+  background: var(--ob-bg);
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+.demo__code pre {
+  margin: 0;
+  font-family: var(--ob-font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ob-ink-2);
+}
+
+/* Small helpers reused across pages. */
+.docs-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.docs-label {
+  font-size: 13px;
+  color: var(--ob-ink-2);
+}
+
+/* ── Theme switcher (inline in the top bar) ──────────────────────────── */
+.pg-theme-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .docs__body {
+    grid-template-columns: 1fr;
+  }
+  .docs__sidebar {
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--ob-line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    padding: 14px 16px;
+  }
+  .docs__group {
+    margin-bottom: 4px;
+  }
+  .docs__main {
+    padding: 28px 20px 90px;
+  }
+}
+
+/* ── Copyable theme CSS block ─────────────────────────────────────────── */
+.pg-css {
+  margin: 0;
+  max-height: 46vh;
+  overflow: auto;
+  font-family: var(--ob-font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ob-ink-2);
+  background: var(--ob-well);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 14px 16px;
+  white-space: pre;
+}
+
+/* ── Backdrop discs: warm themes only ─────────────────────────────────────
+   The docs set data-ob-theme on the root element. The accent-tinted glow
+   discs only look good on the warm palettes, so re-enable them just there. */
+:root[data-ob-theme='oblivion'] .demo__canvas::before,
+:root[data-ob-theme='oblivion'] .demo__canvas::after,
+:root[data-ob-theme='oblivion'] .pg2__stage::before,
+:root[data-ob-theme='oblivion'] .pg2__stage::after,
+:root[data-ob-theme='sunset'] .demo__canvas::before,
+:root[data-ob-theme='sunset'] .demo__canvas::after,
+:root[data-ob-theme='sunset'] .pg2__stage::before,
+:root[data-ob-theme='sunset'] .pg2__stage::after {
+  display: block;
+}

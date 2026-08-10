@@ -21,7 +21,7 @@
 
 /* Neutral — clear glass. */
 .ob-badge--neutral {
-  color: rgb(239 236 235 / 0.8);
+  color: rgb(var(--ob-ink-rgb) / 0.8);
   background: rgb(var(--ob-white) / 0.08);
   border-color: rgb(var(--ob-white) / 0.16);
 }
@@ -35,7 +35,7 @@
 
 /* Status — recessed, for live indicators. Pairs with `dot`. */
 .ob-badge--status {
-  color: rgb(239 236 235 / 0.75);
+  color: rgb(var(--ob-ink-rgb) / 0.75);
   background: rgb(0 0 0 / 0.3);
   border-color: rgb(var(--ob-white) / 0.12);
 }

@@ -1,0 +1,82 @@
+.ob-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ob-space-3);
+  padding: var(--ob-space-4);
+  overflow: hidden;
+}
+
+/* A flat accent bar down the leading edge — colour per tone. */
+.ob-alert::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ob-alert-accent, var(--ob-line-strong));
+}
+
+.ob-alert__icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--ob-r-sm);
+  font-size: 13px;
+  color: var(--ob-alert-accent, var(--ob-ink));
+  background: color-mix(in srgb, var(--ob-alert-accent, transparent) 16%, transparent);
+}
+
+.ob-alert__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.ob-alert__title {
+  font-family: var(--ob-font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ob-ink-strong);
+}
+
+.ob-alert__text {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ob-ink-2);
+}
+
+.ob-alert__close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--ob-r-sm);
+  font-size: 11px;
+  color: var(--ob-ink-3);
+  transition: color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-alert__close:hover {
+  color: var(--ob-ink-strong);
+}
+
+/* ── Tones ───────────────────────────────────────────────────────────── */
+.ob-alert--info {
+  --ob-alert-accent: rgb(var(--ob-ink-rgb) / 0.7);
+}
+.ob-alert--accent {
+  --ob-alert-accent: rgb(var(--ob-accent-bright));
+}
+.ob-alert--success {
+  --ob-alert-accent: #4caf78;
+}
+.ob-alert--warning {
+  --ob-alert-accent: #d8a84a;
+}
+.ob-alert--danger {
+  --ob-alert-accent: rgb(var(--ob-accent-hot));
+}

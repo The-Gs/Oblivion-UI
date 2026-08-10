@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Emerald" — deep forest glass. Rich green ground, jade accent, soft glow.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='emerald'] {
+  --ob-bg: #061410;
+  --ob-bg-sunk: #0a1c16;
+
+  --ob-ink-rgb: 220 245 233;
+  --ob-ink-strong: #eafff5;
+  --ob-ink: #dcf5e9;
+  --ob-ink-2: rgb(220 245 233 / 0.62);
+  --ob-ink-3: rgb(220 245 233 / 0.45);
+  --ob-ink-4: rgb(220 245 233 / 0.3);
+
+  --ob-accent: 46 204 128;
+  --ob-accent-lit: 74 224 150;
+  --ob-accent-bright: 120 235 178;
+  --ob-accent-hot: 150 240 195;
+  --ob-accent-soft: 190 245 218;
+  --ob-accent-pale: 6 20 16;
+  --ob-accent-edge: 74 224 150;
+  --ob-accent-edge-lit: 150 240 195;
+
+  --ob-glass-fill: rgb(120 255 200 / 0.05);
+  --ob-glass-fill-lit: rgb(120 255 200 / 0.09);
+  --ob-glass-blur: 24px;
+  --ob-glass-sat: 160%;
+  --ob-lift: 4px;
+  --ob-surface-glow: 0 0 30px -12px rgb(var(--ob-accent) / 0.42);
+
+  --ob-line: rgb(var(--ob-accent-edge) / 0.14);
+  --ob-line-top: rgb(var(--ob-accent-edge) / 0.32);
+  --ob-line-lit: rgb(var(--ob-accent-edge) / 0.26);
+  --ob-line-lit-top: rgb(var(--ob-accent-edge) / 0.5);
+
+  --ob-well: rgb(0 12 8 / 0.45);
+  --ob-well-deep: rgb(0 12 8 / 0.6);
+  --ob-well-top: rgb(var(--ob-accent-edge) / 0.1);
+
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-accent-edge) / 0.2);
+  --ob-glow: 0 6px 22px rgb(var(--ob-accent) / 0.35);
+  --ob-glow-lg: 0 12px 34px rgb(var(--ob-accent) / 0.5);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.28);
+}

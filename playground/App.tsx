@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ToastProvider } from '../src';
+import { ThemeProvider, ToastProvider } from '../src';
 import { Landing } from './Landing';
 import { Components } from './Components';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 type Page = 'landing' | 'components';
 
@@ -26,12 +27,15 @@ export function App() {
   };
 
   return (
-    <ToastProvider>
-      {page === 'components' ? (
-        <Components onNavigate={navigate} />
-      ) : (
-        <Landing onNavigate={navigate} />
-      )}
-    </ToastProvider>
+    <ThemeProvider defaultTheme="oblivion" defaultMode="dark">
+      <ToastProvider>
+        <ThemeSwitcher />
+        {page === 'components' ? (
+          <Components onNavigate={navigate} />
+        ) : (
+          <Landing onNavigate={navigate} />
+        )}
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

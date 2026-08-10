@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Grape" — violet neon. Deep indigo ground, electric purple accent, glow.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='grape'] {
+  --ob-bg: #0c0718;
+  --ob-bg-sunk: #140b26;
+
+  --ob-ink-rgb: 235 226 255;
+  --ob-ink-strong: #f4efff;
+  --ob-ink: #ebe2ff;
+  --ob-ink-2: rgb(235 226 255 / 0.62);
+  --ob-ink-3: rgb(235 226 255 / 0.45);
+  --ob-ink-4: rgb(235 226 255 / 0.3);
+
+  --ob-accent: 158 100 255;
+  --ob-accent-lit: 178 128 255;
+  --ob-accent-bright: 198 158 255;
+  --ob-accent-hot: 214 180 255;
+  --ob-accent-soft: 226 200 255;
+  --ob-accent-pale: 12 7 24;
+  --ob-accent-edge: 178 128 255;
+  --ob-accent-edge-lit: 214 180 255;
+
+  --ob-glass-fill: rgb(190 150 255 / 0.06);
+  --ob-glass-fill-lit: rgb(190 150 255 / 0.1);
+  --ob-glass-blur: 26px;
+  --ob-glass-sat: 165%;
+  --ob-lift: 4px;
+  --ob-surface-glow: 0 0 32px -12px rgb(var(--ob-accent) / 0.45);
+
+  --ob-line: rgb(var(--ob-accent-edge) / 0.16);
+  --ob-line-top: rgb(var(--ob-accent-edge) / 0.34);
+  --ob-line-lit: rgb(var(--ob-accent-edge) / 0.28);
+  --ob-line-lit-top: rgb(var(--ob-accent-edge) / 0.52);
+
+  --ob-well: rgb(8 4 16 / 0.5);
+  --ob-well-deep: rgb(8 4 16 / 0.62);
+  --ob-well-top: rgb(var(--ob-accent-edge) / 0.12);
+
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-accent-edge) / 0.22);
+  --ob-glow: 0 6px 22px rgb(var(--ob-accent) / 0.38);
+  --ob-glow-lg: 0 12px 34px rgb(var(--ob-accent) / 0.52);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.3);
+}

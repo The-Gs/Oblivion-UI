@@ -1,0 +1,70 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   "Business" — the boardroom.
+
+   The oxblood accent cools to a restrained steel blue, the substrate goes
+   cool slate, blur drops and the glow calms. Corners tighten and motion
+   loses its overshoot. What's left is a near-flat, professional surface that
+   would look at home in an analytics dashboard. Still no gradients.
+
+   Only variables are overridden — no component CSS is touched.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+[data-ob-theme='business'] {
+  --ob-bg: #0d1117;
+  --ob-bg-sunk: #11161d;
+
+  --ob-ink-rgb: 230 235 242;
+  --ob-ink-strong: #eef2f7;
+  --ob-ink: #e6ebf2;
+  --ob-ink-2: rgb(230 235 242 / 0.62);
+  --ob-ink-3: rgb(230 235 242 / 0.45);
+  --ob-ink-4: rgb(230 235 242 / 0.3);
+
+  /* Steel blue in place of oxblood. */
+  --ob-accent: 66 133 214;
+  --ob-accent-lit: 96 160 235;
+  --ob-accent-bright: 130 180 240;
+  --ob-accent-hot: 150 195 245;
+  --ob-accent-soft: 180 210 245;
+  --ob-accent-pale: 224 238 252;
+  --ob-accent-edge: 96 160 235;
+  --ob-accent-edge-lit: 150 195 245;
+
+  /* Near-flat material: opaque fill, low blur, barely any lift. */
+  --ob-surface-fill: #161c25;
+  --ob-glass-fill: #161c25;
+  --ob-glass-fill-lit: #1d2530;
+  --ob-glass-blur: 8px;
+  --ob-glass-sat: 120%;
+  --ob-lift: 1px;
+
+  --ob-line: rgb(var(--ob-white) / 0.09);
+  --ob-line-top: rgb(var(--ob-white) / 0.13);
+  --ob-line-lit: rgb(var(--ob-white) / 0.16);
+  --ob-line-lit-top: rgb(var(--ob-white) / 0.22);
+
+  --ob-well: rgb(0 0 0 / 0.28);
+  --ob-well-deep: rgb(0 0 0 / 0.38);
+  --ob-well-top: rgb(var(--ob-white) / 0.05);
+
+  /* Tighter corners. */
+  --ob-r-xs: 4px;
+  --ob-r-sm: 6px;
+  --ob-r-md: 8px;
+  --ob-r-lg: 10px;
+  --ob-r-xl: 12px;
+  --ob-r-2xl: 14px;
+
+  /* Calmer depth, a soft accent glow but no drama. */
+  --ob-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+  --ob-shadow: 0 6px 16px rgb(0 0 0 / 0.35);
+  --ob-shadow-lg: 0 14px 30px rgb(0 0 0 / 0.45);
+  --ob-shadow-xl: 0 22px 48px rgb(0 0 0 / 0.5);
+  --ob-inset-top: inset 0 1px 0 rgb(var(--ob-white) / 0.1);
+  --ob-glow: 0 4px 14px rgb(var(--ob-accent) / 0.22);
+  --ob-glow-lg: 0 8px 22px rgb(var(--ob-accent) / 0.3);
+  --ob-ring: 0 0 0 3px rgb(var(--ob-accent) / 0.25);
+
+  /* Professional motion: no overshoot. */
+  --ob-spring: cubic-bezier(0.4, 0, 0.2, 1);
+}
