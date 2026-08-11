@@ -1,0 +1,25 @@
+.ob-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  font-family: var(--ob-font-mono);
+  font-size: 11.5px;
+  line-height: 1;
+  color: var(--ob-ink);
+  background: var(--ob-well);
+  border: 1px solid var(--ob-line);
+  border-bottom-width: 2px;
+  border-bottom-color: var(--ob-line-lit);
+  border-radius: var(--ob-r-xs);
+  box-shadow: var(--ob-inset-top);
+}
+
+.ob-kbd--sm {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 10.5px;
+}

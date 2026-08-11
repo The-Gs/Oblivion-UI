@@ -81,6 +81,24 @@ export type { GlassSliderProps } from './components/GlassSlider';
 export { GlassBadge } from './components/GlassBadge';
 export type { GlassBadgeProps, BadgeVariant } from './components/GlassBadge';
 
+export { GlassKbd } from './components/GlassKbd';
+export type { GlassKbdProps } from './components/GlassKbd';
+
+export { GlassBreadcrumb } from './components/GlassBreadcrumb';
+export type { GlassBreadcrumbProps, BreadcrumbItem } from './components/GlassBreadcrumb';
+
+export { GlassPagination } from './components/GlassPagination';
+export type { GlassPaginationProps } from './components/GlassPagination';
+
+export { GlassSegmented } from './components/GlassSegmented';
+export type { GlassSegmentedProps, SegmentedItem } from './components/GlassSegmented';
+
+export { GlassRating } from './components/GlassRating';
+export type { GlassRatingProps } from './components/GlassRating';
+
+export { GlassStat } from './components/GlassStat';
+export type { GlassStatProps, StatTrend } from './components/GlassStat';
+
 export { GlassAvatar, GlassAvatarGroup } from './components/GlassAvatar';
 export type { GlassAvatarProps, GlassAvatarGroupProps, AvatarSize } from './components/GlassAvatar';
 

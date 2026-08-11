@@ -3,6 +3,7 @@ import { useMemo, useState, type ReactNode } from 'react';
 /* Control definitions. Each yields one knob in the right-hand panel. */
 export type Control =
   | { type: 'select'; key: string; label: string; options: string[]; default: string }
+  | { type: 'text'; key: string; label: string; default: string; placeholder?: string }
   | { type: 'toggle'; key: string; label: string; default: boolean }
   | {
       type: 'range';
@@ -77,6 +78,16 @@ export function Playground({ controls, render, code }: PlaygroundProps) {
                     </button>
                   ))}
                 </div>
+              ) : null}
+
+              {c.type === 'text' ? (
+                <input
+                  className="pg2__text"
+                  type="text"
+                  value={v[c.key] as string}
+                  placeholder={c.placeholder}
+                  onChange={(e) => set(c.key, e.target.value)}
+                />
               ) : null}
 
               {c.type === 'toggle' ? (

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { GlassButton } from '../src';
 import { GROUPS, PAGES, type DocPage } from './pages';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeStudio } from './ThemeStudio';
 import { Builder } from './builder/Builder';
 
 function hashId(): string {
@@ -49,6 +50,7 @@ export function DocsApp() {
             {inBuilder ? '← Docs' : '⊕ Builder'}
           </GlassButton>
           <span className="docs__ver">v0.3.0</span>
+          <ThemeStudio />
           <ThemeSwitcher />
         </div>
       </header>

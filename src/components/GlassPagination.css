@@ -1,0 +1,65 @@
+.ob-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--ob-font);
+}
+
+.ob-pager__btn {
+  appearance: none;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ob-ink-2);
+  background: var(--ob-glass-fill);
+  border: 1px solid var(--ob-line);
+  border-top-color: var(--ob-line-top);
+  border-radius: var(--ob-r-sm);
+  cursor: pointer;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-pager--md .ob-pager__btn {
+  min-width: 38px;
+  height: 38px;
+  font-size: 14px;
+}
+
+.ob-pager__btn:hover:not(:disabled) {
+  color: var(--ob-ink-strong);
+  border-color: rgb(var(--ob-accent-edge) / 0.5);
+  background: var(--ob-glass-fill-lit);
+}
+
+.ob-pager__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ob-pager__btn--active {
+  color: #fff;
+  background: rgb(var(--ob-accent));
+  border-color: rgb(var(--ob-accent-edge));
+  box-shadow: var(--ob-glow);
+}
+
+.ob-pager__btn--active:hover:not(:disabled) {
+  color: #fff;
+  background: rgb(var(--ob-accent-lit));
+}
+
+.ob-pager__nav {
+  font-size: 17px;
+}
+
+.ob-pager__gap {
+  min-width: 24px;
+  text-align: center;
+  color: var(--ob-ink-4);
+  user-select: none;
+}

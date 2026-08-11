@@ -48,6 +48,12 @@
 /* Overlays sit on a darker, more opaque plate so text stays legible no
    matter what they're floating over. */
 .ob-surface--overlay {
+  /* Always a dark plate → force light ink locally so overlay content stays
+     legible on light and custom themes (see GlassModal panel for the pattern). */
+  --ob-ink-rgb: 239 236 235;
+  --ob-ink-strong: #f4f1f0;
+  --ob-ink: #efeceb;
+  color: var(--ob-ink);
   background: rgb(20 16 16 / 0.75);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   backdrop-filter: blur(24px) saturate(160%);

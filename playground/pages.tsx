@@ -7,21 +7,27 @@ import {
   GlassAvatar,
   GlassAvatarGroup,
   GlassBadge,
+  GlassBreadcrumb,
   GlassButton,
   GlassCard,
   GlassCheckbox,
   GlassDataGrid,
   GlassInput,
+  GlassKbd,
   GlassList,
   GlassMenu,
   GlassModal,
+  GlassPagination,
   GlassProgress,
   GlassRadioGroup,
+  GlassRating,
+  GlassSegmented,
   GlassSelect,
   GlassSkeleton,
   GlassSkeletonText,
   GlassSlider,
   GlassSpinner,
+  GlassStat,
   GlassSurface,
   GlassSwitch,
   GlassTable,
@@ -1108,6 +1114,175 @@ function DataGridPage() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   New components
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function BreadcrumbPage() {
+  const trail = [
+    { label: 'Home', href: '#introduction' },
+    { label: 'Components', href: '#introduction' },
+    { label: 'Breadcrumb' },
+  ];
+  return (
+    <Page eyebrow="Navigation" title="Breadcrumb" lede="A trail back up the hierarchy. The last crumb is the current page and never a link.">
+      <Demo code={`<GlassBreadcrumb\n  items={[\n    { label: 'Home', href: '/' },\n    { label: 'Components', href: '/components' },\n    { label: 'Breadcrumb' },\n  ]}\n/>`}>
+        <GlassBreadcrumb items={trail} />
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'select', key: 'separator', label: 'separator', options: ['/', '›', '·', '—'], default: '/' },
+        ]}
+        render={(v) => <GlassBreadcrumb items={trail} separator={String(v.separator)} />}
+        code={(v) => `<GlassBreadcrumb items={trail} separator="${v.separator}" />`}
+      />
+    </Page>
+  );
+}
+
+function PaginationPage() {
+  const [page, setPage] = useState(4);
+  return (
+    <Page eyebrow="Navigation" title="Pagination" lede="Page through long data. Collapses to first · current ± siblings · last with ellipses.">
+      <Demo code={`const [page, setPage] = useState(4);\n\n<GlassPagination page={page} count={12} onChange={setPage} />`}>
+        <GlassPagination page={page} count={12} onChange={setPage} />
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'range', key: 'count', label: 'count', min: 3, max: 30, default: 12 },
+          { type: 'range', key: 'siblings', label: 'siblings', min: 0, max: 3, default: 1 },
+          { type: 'select', key: 'size', label: 'size', options: ['sm', 'md'], default: 'sm' },
+        ]}
+        render={(v) => (
+          <GlassPagination
+            page={Math.min(page, Number(v.count))}
+            count={Number(v.count)}
+            siblings={Number(v.siblings)}
+            size={v.size as 'sm'}
+            onChange={setPage}
+          />
+        )}
+        code={(v) => `<GlassPagination page={page} count={${v.count}} siblings={${v.siblings}} size="${v.size}" onChange={setPage} />`}
+      />
+    </Page>
+  );
+}
+
+function SegmentedPage() {
+  const items = [
+    { value: 'day', label: 'Day' },
+    { value: 'week', label: 'Week' },
+    { value: 'month', label: 'Month' },
+  ];
+  return (
+    <Page eyebrow="Forms" title="Segmented" lede="One choice from a small set, as connected pills. Controlled or uncontrolled.">
+      <Demo code={`<GlassSegmented\n  defaultValue="week"\n  items={[\n    { value: 'day', label: 'Day' },\n    { value: 'week', label: 'Week' },\n    { value: 'month', label: 'Month' },\n  ]}\n/>`}>
+        <GlassSegmented defaultValue="week" items={items} aria-label="Range" />
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'select', key: 'size', label: 'size', options: ['sm', 'md'], default: 'md' },
+          { type: 'toggle', key: 'fluid', label: 'fluid', default: false },
+        ]}
+        render={(v) => (
+          <div style={{ width: v.fluid ? 320 : undefined }}>
+            <GlassSegmented defaultValue="week" items={items} size={v.size as 'md'} fluid={Boolean(v.fluid)} aria-label="Range" />
+          </div>
+        )}
+        code={(v) => `<GlassSegmented defaultValue="week" items={items} size="${v.size}"${v.fluid ? ' fluid' : ''} />`}
+      />
+    </Page>
+  );
+}
+
+function RatingPage() {
+  const [value, setValue] = useState(3);
+  return (
+    <Page eyebrow="Forms" title="Rating" lede="A star (or any glyph) rating with hover preview. Click the current star again to clear.">
+      <Demo code={`const [value, setValue] = useState(3);\n\n<GlassRating value={value} onChange={setValue} />`}>
+        <GlassRating value={value} onChange={setValue} />
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'range', key: 'max', label: 'max', min: 3, max: 10, default: 5 },
+          { type: 'select', key: 'size', label: 'size', options: ['sm', 'md', 'lg'], default: 'md' },
+          { type: 'select', key: 'icon', label: 'icon', options: ['★', '●', '♥', '◆'], default: '★' },
+          { type: 'toggle', key: 'readOnly', label: 'readOnly', default: false },
+        ]}
+        render={(v) => (
+          <GlassRating
+            value={value}
+            onChange={setValue}
+            max={Number(v.max)}
+            size={v.size as 'md'}
+            icon={String(v.icon)}
+            readOnly={Boolean(v.readOnly)}
+          />
+        )}
+        code={(v) => `<GlassRating value={value} onChange={setValue} max={${v.max}} size="${v.size}" icon="${v.icon}"${v.readOnly ? ' readOnly' : ''} />`}
+      />
+    </Page>
+  );
+}
+
+function StatPage() {
+  return (
+    <Page eyebrow="Data" title="Stat" lede="A metric tile — label, big value, trend-coloured delta, optional icon and footnote.">
+      <Demo code={`<GlassStat label="Revenue" value="$48.2k" delta="12.4%" trend="up" icon="$" footnote="vs last month" />`}>
+        <Flex gap={4} wrap>
+          <GlassStat label="Revenue" value="$48.2k" delta="12.4%" trend="up" icon="$" footnote="vs last month" />
+          <GlassStat label="Churn" value="1.8%" delta="0.3%" trend="down" footnote="30-day" />
+          <GlassStat label="Sessions" value="12,904" delta="0.0%" trend="flat" />
+        </Flex>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'text', key: 'label', label: 'label', default: 'Revenue' },
+          { type: 'text', key: 'value', label: 'value', default: '$48.2k' },
+          { type: 'text', key: 'delta', label: 'delta', default: '12.4%' },
+          { type: 'select', key: 'trend', label: 'trend', options: ['up', 'down', 'flat'], default: 'up' },
+        ]}
+        render={(v) => (
+          <GlassStat label={String(v.label)} value={String(v.value)} delta={String(v.delta)} trend={v.trend as 'up'} />
+        )}
+        code={(v) => `<GlassStat label="${v.label}" value="${v.value}" delta="${v.delta}" trend="${v.trend}" />`}
+      />
+    </Page>
+  );
+}
+
+function KbdPage() {
+  return (
+    <Page eyebrow="Feedback" title="Keyboard key" lede="A recessed key cap for shortcuts and hints. Compose several for a chord.">
+      <Demo code={`Press <GlassKbd>⌘</GlassKbd> <GlassKbd>K</GlassKbd> to search.`}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--ob-ink-2)' }}>
+          Press <GlassKbd>⌘</GlassKbd> <GlassKbd>K</GlassKbd> to search
+        </span>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'text', key: 'text', label: 'key', default: 'Esc' },
+          { type: 'select', key: 'size', label: 'size', options: ['sm', 'md'], default: 'md' },
+        ]}
+        render={(v) => <GlassKbd size={v.size as 'md'}>{String(v.text)}</GlassKbd>}
+        code={(v) => `<GlassKbd size="${v.size}">${v.text}</GlassKbd>`}
+      />
+    </Page>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    Registry
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -1145,6 +1320,8 @@ export const PAGES: DocPage[] = [
   { id: 'radio', label: 'Radio group', group: 'Forms', render: () => <RadioPage /> },
   { id: 'switch', label: 'Switch', group: 'Forms', render: () => <SwitchPage /> },
   { id: 'slider', label: 'Slider', group: 'Forms', render: () => <SliderPage /> },
+  { id: 'segmented', label: 'Segmented', group: 'Forms', render: () => <SegmentedPage /> },
+  { id: 'rating', label: 'Rating', group: 'Forms', render: () => <RatingPage /> },
 
   { id: 'menu', label: 'Dropdown menu', group: 'Overlays', render: () => <MenuPage /> },
   { id: 'modal', label: 'Modal', group: 'Overlays', render: () => <ModalPage /> },
@@ -1152,16 +1329,20 @@ export const PAGES: DocPage[] = [
   { id: 'toast', label: 'Toast', group: 'Overlays', render: () => <ToastPage /> },
 
   { id: 'tabs', label: 'Tabs', group: 'Navigation', render: () => <TabsPage /> },
+  { id: 'breadcrumb', label: 'Breadcrumb', group: 'Navigation', render: () => <BreadcrumbPage /> },
+  { id: 'pagination', label: 'Pagination', group: 'Navigation', render: () => <PaginationPage /> },
 
   { id: 'datagrid', label: 'Data grid', group: 'Data', render: () => <DataGridPage /> },
   { id: 'table', label: 'Table', group: 'Data', render: () => <TablePage /> },
   { id: 'list', label: 'List', group: 'Data', render: () => <ListPage /> },
+  { id: 'stat', label: 'Stat', group: 'Data', render: () => <StatPage /> },
 
   { id: 'alert', label: 'Alert', group: 'Feedback', render: () => <AlertPage /> },
   { id: 'badge', label: 'Badge', group: 'Feedback', render: () => <BadgePage /> },
   { id: 'progress', label: 'Progress', group: 'Feedback', render: () => <ProgressPage /> },
   { id: 'loading', label: 'Spinner & skeleton', group: 'Feedback', render: () => <LoadingPage /> },
   { id: 'avatar', label: 'Avatar', group: 'Feedback', render: () => <AvatarPage /> },
+  { id: 'kbd', label: 'Keyboard key', group: 'Feedback', render: () => <KbdPage /> },
 
   { id: 'accordion', label: 'Accordion', group: 'Disclosure', render: () => <AccordionPage /> },
 
