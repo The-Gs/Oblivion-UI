@@ -638,7 +638,7 @@ function IntroPage() {
       <h2 className="docs__h2">Use</h2>
       <p className="docs__p">
         Import the stylesheet once, wrap your app in a <C>ThemeProvider</C>, and drop components
-        in. Every visual decision is a CSS variable, so five themes ship in the box — and every
+        in. Every visual decision is a CSS variable, so nine themes ship in the box — and every
         component page here has a live playground and copyable code.
       </p>
       <Demo
@@ -664,7 +664,7 @@ function ThemingPage() {
       title="Theming"
       lede="Five themes ship built in — distinct material languages, not recolours, driven entirely by CSS variables. The theme switch in the top bar reskins this whole site."
     >
-      <Demo title="The five themes" desc="Each is a scoped set of token overrides." code={`<div data-ob-theme="futuristic">…</div>`}>
+      <Demo title="The nine themes" desc="Each is a scoped set of token overrides." code={`<div data-ob-theme="futuristic">…</div>`}>
         {THEMES.map((t) => (
           <GlassBadge key={t.id} variant="neutral" mono>
             {t.label.toLowerCase()}

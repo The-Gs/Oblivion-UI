@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { GlassButton } from '../src';
 import { GROUPS, PAGES, type DocPage } from './pages';
 import { ThemeSwitcher } from './ThemeSwitcher';
 import { ThemeStudio } from './ThemeStudio';
-import { Builder } from './builder/Builder';
+
+// The page builder is heavy and only used on #builder — split it out of the
+// initial bundle so first paint doesn't pay for it.
+const Builder = lazy(() => import('./builder/Builder').then((m) => ({ default: m.Builder })));
 
 function hashId(): string {
   return window.location.hash.replace(/^#\/?/, '');
@@ -68,7 +71,9 @@ export function DocsApp() {
       </header>
 
       {inBuilder ? (
-        <Builder />
+        <Suspense fallback={<div className="docs__loading">Loading builder…</div>}>
+          <Builder />
+        </Suspense>
       ) : (
         <div className="docs__body">
           <nav className="docs__sidebar" aria-label="Components">

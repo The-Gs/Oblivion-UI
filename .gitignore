@@ -3,3 +3,6 @@ dist/
 *.log
 .DS_Store
 .vite/
+
+# Docs site production build
+site-dist

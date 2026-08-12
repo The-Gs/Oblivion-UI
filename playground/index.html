@@ -3,16 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ObsidianUI</title>
+    <title>Oblivion UI</title>
+    <meta name="description" content="Oblivion UI — a smoked-glass React component library. Themeable, dependency-free, with a live Theme Studio." />
+    <meta name="theme-color" content="#0a0908" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Load webfonts without blocking first paint; swap in when ready. -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hind:wght@400;500;600&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hind:wght@400;500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hind:wght@400;500;600&display=swap"
+      />
+    </noscript>
+
+    <!-- Instant first paint: a lightweight splash the app replaces on mount. -->
+    <style>
+      html { background: #0a0908; color-scheme: dark; }
+      #ob-splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background: #0a0908;
+        color: #efeceb;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      #ob-splash b { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+      #ob-splash em { color: #ff8b98; font-style: normal; }
+      #ob-splash i {
+        width: 26px; height: 26px; border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-top-color: #b31f33;
+        animation: ob-splash-spin 0.8s linear infinite;
+      }
+      @keyframes ob-splash-spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { #ob-splash i { animation: none; } }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="ob-splash">
+        <i></i>
+        <b>Oblivion<em>UI</em></b>
+      </div>
+    </div>
     <script type="module" src="./main.tsx"></script>
   </body>
 </html>

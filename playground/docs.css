@@ -241,6 +241,13 @@ body {
   background: var(--ob-bg-sunk);
 }
 
+.docs__loading {
+  padding: 80px 24px;
+  text-align: center;
+  color: var(--ob-ink-3);
+  font-family: var(--ob-font);
+}
+
 .demo__head {
   display: flex;
   align-items: flex-start;

@@ -1,6 +1,7 @@
 import { useMemo, useState, type DragEvent, type PointerEvent } from 'react';
 import { GlassButton, GlassModal } from '../../src';
 import { BLOCK_GROUPS, BLOCK_MAP, BLOCKS, FONTS, type Props } from './blocks';
+import '../builder.css';
 
 interface Node {
   id: string;

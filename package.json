@@ -1,7 +1,7 @@
 {
   "name": "oblivion-ui",
   "version": "0.3.0",
-  "description": "Liquid glass React components \u2014 frosted surfaces, oxblood accents, no gradients.",
+  "description": "Liquid glass React components — frosted surfaces, oxblood accents, no gradients.",
   "license": "Apache-2.0",
   "author": "The G's",
   "type": "module",
@@ -30,7 +30,9 @@
     "build": "tsup",
     "dev": "vite --config playground/vite.config.ts",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "build:site": "vite build --config playground/vite.config.ts",
+    "preview": "vite preview --config playground/vite.config.ts"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
