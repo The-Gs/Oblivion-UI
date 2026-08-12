@@ -1,0 +1,87 @@
+/* Combobox — the input well plus the select's option list. Only the
+   trailing controls and the portalled panel are new here. */
+
+.ob-combo {
+  position: relative;
+}
+
+.ob-combo__well {
+  padding-right: 8px;
+}
+
+.ob-combo__well:hover:not(:focus-within):not(.ob-input--invalid) {
+  border-color: rgb(var(--ob-white) / 0.2);
+}
+
+.ob-combo__clear,
+.ob-combo__caret {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ob-ink-3);
+  transition: color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-combo__clear {
+  width: 20px;
+  height: 20px;
+  border-radius: var(--ob-r-full);
+  font-size: 10px;
+}
+
+.ob-combo__clear:hover {
+  color: rgb(var(--ob-accent-pale));
+  background: rgb(var(--ob-accent) / 0.35);
+}
+
+.ob-combo__caret {
+  width: 18px;
+  font-size: 10px;
+  transition:
+    transform var(--ob-dur) var(--ob-spring),
+    color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-combo[data-open='true'] .ob-combo__caret {
+  transform: rotate(180deg);
+  color: rgb(var(--ob-accent-hot));
+}
+
+/* The panel is portalled to the body, so it is positioned by Floating and
+   only needs its own rounding. Scrolling lives on the inner box so a footer
+   stays pinned while the options move. */
+.ob-combo__menu {
+  z-index: 60;
+  padding: 4px;
+  border-radius: var(--ob-r-md);
+  animation: ob-modal-in var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-combo__scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ob-combo__foot {
+  margin-top: 4px;
+  padding: 8px 12px 4px;
+  border-top: 1px solid rgb(var(--ob-white) / 0.08);
+  font-family: var(--ob-font);
+  font-size: 12px;
+  color: var(--ob-ink-3);
+}
+
+.ob-combo__menu .ob-select__option {
+  border-radius: var(--ob-r-xs);
+  padding: 10px 12px;
+}
+
+.ob-combo__note {
+  margin: 0;
+  padding: 14px 12px;
+  text-align: center;
+  font-family: var(--ob-font);
+  font-size: 13px;
+  color: var(--ob-ink-3);
+}

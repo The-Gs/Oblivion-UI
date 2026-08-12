@@ -50,8 +50,16 @@ yourself, or override the variables.
 | `Orbs` | Ambient backdrop — three drifting discs. `midnight` · `oxblood` · `charcoal`. |
 | `GlassButton` | `primary` · `secondary` · `ghost` · `quiet` · `icon`, three sizes, loading. |
 | `GlassCard` | Panel with optional eyebrow, title, description, media, aside, footer. |
+| `GlassField` | The label / hint / error shell every field wears. Wrap your own controls in it. |
 | `GlassInput` / `GlassTextarea` | Text fields with label, hint, error, affixes. |
+| `GlassNumberInput` | `role="spinbutton"` with clamping, precision, hold-to-repeat steppers. |
+| `GlassPinInput` | One-time-code cells — paste-aware, maskable, numeric or alphanumeric. |
 | `GlassSelect<T>` | Listbox-backed select with full keyboard support. |
+| `GlassCombobox<T>` | Type-to-filter select. Bring your own `filter`, or let it match on text. |
+| `GlassTagInput` | Free-form chips, or multi-select when you pass `suggestions`. |
+| `GlassDatePicker` | Date field with the calendar on a portalled popover. |
+| `GlassCalendar` | The grid on its own — roving tabindex, `min`/`max`, per-day disabling. |
+| `GlassFileDrop` | Drop zone that re-checks `accept` / `maxSize` / `maxFiles` on drop, not just in the picker. |
 | `GlassSwitch` | Binary toggle, `role="switch"`. |
 | `GlassCheckbox` | Checkbox with an inline label inside the hit target. |
 | `GlassRadioGroup<T>` | Radio group with arrow-key navigation. |
@@ -97,6 +105,52 @@ it; the component handles layout, truncation, selection, empty and loading:
   ]}
 />
 ```
+
+## Customizing
+
+The form components take the same four kinds of escape hatch, so once you have
+learned one you know the rest.
+
+**`render*` — replace the interior, keep the behaviour.** These fill the inside
+of a repeated element and leave the roles, keyboard handling and focus
+management to the component. Each is handed the state it needs to follow along:
+
+```tsx
+<GlassCombobox
+  items={people}
+  renderOption={({ item, selected, active, disabled }) => …}
+/>
+
+<GlassCalendar
+  renderDay={({ date, selected, today, outside, disabled }) => …}
+/>
+```
+
+`renderOption`, `renderDay`, `renderTag`, `renderFile`, `renderTrigger`, and
+`header` on the calendar, which swaps the caption and arrows outright.
+
+**`format` / `parse` — decide how values become text.** `format` on
+`GlassNumberInput` handles currency and separators, and the field shows the raw
+number again while focused so the formatting never fights the caret.
+`GlassCalendar` has `formatMonth`, `formatWeekday`, `formatDay` and
+`formatDayLabel`; `GlassFileDrop` has `formatSize`.
+
+**`classNames` — reach any part without a wrapper selector.** Every component
+takes a `classNames` object keyed by part, alongside the `className` that lands
+on the root:
+
+```tsx
+<GlassNumberInput classNames={{ well: 'my-well', step: 'my-stepper' }} />
+```
+
+**`icons` — swap the glyphs.** Every hardcoded mark is a prop: `icons.up` and
+`icons.down` on the number input, `icons.clear` and `icons.caret` on the
+combobox, `icons.upload` on the file drop, and so on.
+
+Beyond those: every field forwards a `ref` to its primary control, accepts
+`style`, works controlled (`value`) or uncontrolled (`defaultValue`), and takes
+`orientation="horizontal"` to put the label beside the control instead of above
+it.
 
 ## Polymorphic
 

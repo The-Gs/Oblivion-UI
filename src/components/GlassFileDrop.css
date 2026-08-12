@@ -1,0 +1,138 @@
+/* Dropzone — a deep well with a dashed hairline. On drag-over the whole
+   plate fills with accent and the glyph rises. No gradient; the "active"
+   read is fill + edge + glow. */
+
+.ob-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 26px 20px;
+  border-radius: var(--ob-r-md);
+  background: rgb(0 0 0 / 0.28);
+  border: 1px dashed rgb(var(--ob-white) / 0.18);
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--ob-font);
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-drop:hover {
+  background: rgb(0 0 0 / 0.36);
+  border-color: rgb(var(--ob-white) / 0.3);
+}
+
+.ob-drop:focus-visible {
+  outline: none;
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+  box-shadow: var(--ob-ring);
+}
+
+.ob-drop--over {
+  background: rgb(var(--ob-accent) / 0.16);
+  border-style: solid;
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+  box-shadow:
+    var(--ob-ring),
+    0 0 24px rgb(var(--ob-accent) / 0.25);
+}
+
+.ob-drop__glyph {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--ob-ink-3);
+  transition: all var(--ob-dur) var(--ob-spring);
+}
+
+.ob-drop--over .ob-drop__glyph {
+  color: rgb(var(--ob-accent-hot));
+  transform: translateY(-3px);
+}
+
+.ob-drop__prompt {
+  font-size: 13.5px;
+  color: var(--ob-ink-2);
+}
+
+.ob-drop__prompt strong {
+  font-weight: 600;
+  color: var(--ob-ink);
+}
+
+.ob-drop__terms {
+  font-family: var(--ob-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.4px;
+  color: var(--ob-ink-4);
+}
+
+.ob-drop--invalid {
+  background: rgb(var(--ob-accent) / 0.1);
+  border-color: rgb(var(--ob-accent-edge) / 0.45);
+}
+
+.ob-drop--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ── Chosen files ────────────────────────────────────────────────────── */
+
+.ob-drop__files {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ob-drop__file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px 9px 13px;
+  border-radius: var(--ob-r-sm);
+  background: rgb(var(--ob-white) / 0.05);
+  border: 1px solid rgb(var(--ob-white) / 0.09);
+  border-top-color: rgb(var(--ob-white) / 0.14);
+  font-family: var(--ob-font);
+  font-size: 13px;
+  color: var(--ob-ink-2);
+  animation: ob-pop-in var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-drop__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ob-ink);
+}
+
+.ob-drop__size {
+  flex: none;
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  color: var(--ob-ink-3);
+}
+
+.ob-drop__x {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 9px;
+  color: var(--ob-ink-3);
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-drop__x:hover {
+  color: #fff;
+  background: rgb(var(--ob-accent) / 0.6);
+}

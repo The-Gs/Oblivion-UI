@@ -1,0 +1,70 @@
+/* Number input — the well from GlassInput, with a stacked stepper pair
+   sitting flush against its right edge. */
+
+.ob-num {
+  padding-right: 6px;
+}
+
+.ob-num__control {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fires only when the input is not focused and not invalid, so the accent
+   ring is never competing with a plain hover border. */
+.ob-num:hover:not(:focus-within):not(.ob-input--invalid) {
+  border-color: rgb(var(--ob-white) / 0.2);
+}
+
+.ob-num__suffix {
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.ob-num__steppers {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-left: 2px;
+}
+
+.ob-num__step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 15px;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--ob-ink-3);
+  background: rgb(var(--ob-white) / 0.05);
+  border: 1px solid rgb(var(--ob-white) / 0.08);
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-num__step:hover:not(:disabled) {
+  color: rgb(var(--ob-accent-pale));
+  background: rgb(var(--ob-accent) / 0.35);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.ob-num__step:active:not(:disabled) {
+  background: rgb(var(--ob-accent) / 0.55);
+}
+
+/* Bound reached — the button stays in place so the control never reflows. */
+.ob-num__step:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.ob-input--sm.ob-num .ob-num__step {
+  height: 13px;
+}
+
+.ob-input--lg.ob-num .ob-num__step {
+  height: 18px;
+}

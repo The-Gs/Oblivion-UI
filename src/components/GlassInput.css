@@ -24,6 +24,25 @@
   color: rgb(var(--ob-accent-bright));
 }
 
+/* Label beside the control rather than above it. Everything defaults to the
+   right column so the note lines up under the control, and the label alone
+   is pulled back into the left one. */
+.ob-field--row {
+  display: grid;
+  grid-template-columns: var(--ob-field-label-w, 140px) 1fr;
+  align-items: center;
+  column-gap: 14px;
+  row-gap: 6px;
+}
+
+.ob-field--row > * {
+  grid-column: 2;
+}
+
+.ob-field--row > .ob-field__label {
+  grid-column: 1;
+}
+
 .ob-input {
   display: flex;
   align-items: center;

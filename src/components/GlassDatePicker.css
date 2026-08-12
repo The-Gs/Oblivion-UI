@@ -1,0 +1,96 @@
+/* Date picker — the select's trigger with a calendar glyph, and the
+   calendar on an overlay plate. */
+
+.ob-date {
+  position: relative;
+}
+
+.ob-date__trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ob-date__trigger:hover:not(:disabled) {
+  border-color: rgb(var(--ob-white) / 0.25);
+}
+
+.ob-date__trigger:focus-visible {
+  outline: none;
+  border-color: rgb(var(--ob-accent-edge) / 0.55);
+  box-shadow: var(--ob-ring);
+}
+
+.ob-date__glyph {
+  flex: none;
+  font-size: 13px;
+  color: var(--ob-ink-3);
+  transition: color var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-date[data-open='true'] .ob-date__glyph {
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-date__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--ob-ink);
+}
+
+.ob-date__value--placeholder {
+  color: var(--ob-ink-3);
+}
+
+/* Sits over the trigger's right edge rather than inside it, so the trigger
+   stays one button and one tab stop. */
+.ob-date__clear {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 10px;
+  color: var(--ob-ink-3);
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-date__clear:hover {
+  color: rgb(var(--ob-accent-pale));
+  background: rgb(var(--ob-accent) / 0.4);
+}
+
+.ob-date__clear:focus-visible {
+  outline: none;
+  box-shadow: var(--ob-ring);
+}
+
+.ob-date__panel {
+  z-index: 60;
+  padding: 14px;
+  border-radius: var(--ob-r-lg);
+  animation: ob-modal-in var(--ob-dur-fast) var(--ob-spring);
+}
+
+/* The Clear shortcut is destructive, so it reads in the accent's dimmer
+   register than Today rather than matching it. */
+.ob-date__clear-day {
+  color: var(--ob-ink-3);
+}
+
+.ob-date__clear-day:hover {
+  color: rgb(var(--ob-accent-hot));
+}

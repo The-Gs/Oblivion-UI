@@ -1,0 +1,85 @@
+/* Tag input — the well grows to fit its chips. Chips are the badge
+   material: flat accent fill, hairline edge, no gradient. */
+
+.ob-tags {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  min-height: 45px;
+  height: auto;
+  cursor: text;
+}
+
+.ob-tags__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ob-tags__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 5px 3px 10px;
+  border-radius: var(--ob-r-full);
+  background: rgb(var(--ob-accent) / 0.3);
+  border: 1px solid rgb(var(--ob-accent-edge) / 0.35);
+  border-top-color: rgb(var(--ob-accent-edge-lit) / 0.4);
+  font-family: var(--ob-font);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: rgb(var(--ob-accent-pale));
+  animation: ob-pop-in var(--ob-dur-fast) var(--ob-spring);
+}
+
+.ob-tags__text {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ob-tags__x {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  font-size: 8px;
+  color: rgb(var(--ob-accent-pale) / 0.7);
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-tags__x:hover {
+  color: #fff;
+  background: rgb(var(--ob-accent) / 0.7);
+}
+
+/* The draft grows with what is typed but never forces the row to wrap
+   before the chips do. */
+.ob-tags__draft {
+  flex: 1 1 100px;
+  min-width: 100px;
+  display: flex;
+}
+
+.ob-tags__count {
+  flex: none;
+  align-self: center;
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  color: var(--ob-ink-3);
+}
+
+.ob-tags__count--full {
+  color: rgb(var(--ob-accent-hot));
+}

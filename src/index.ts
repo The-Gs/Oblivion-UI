@@ -63,8 +63,74 @@ export type { GlassCardOwnProps } from './components/GlassCard';
 export { GlassInput, GlassTextarea } from './components/GlassInput';
 export type { GlassInputProps, GlassTextareaProps } from './components/GlassInput';
 
+export { GlassField } from './components/GlassField';
+export type {
+  GlassFieldProps,
+  FieldIds,
+  FieldRenderArgs,
+  FieldSlotClasses,
+} from './components/GlassField';
+
 export { GlassSelect } from './components/GlassSelect';
 export type { GlassSelectProps } from './components/GlassSelect';
+
+export { GlassCombobox } from './components/GlassCombobox';
+export type {
+  GlassComboboxProps,
+  ComboboxClasses,
+  ComboboxOptionArgs,
+} from './components/GlassCombobox';
+
+export { GlassTagInput } from './components/GlassTagInput';
+export type {
+  GlassTagInputProps,
+  TagInputClasses,
+  TagRenderArgs,
+} from './components/GlassTagInput';
+
+export { GlassNumberInput } from './components/GlassNumberInput';
+export type { GlassNumberInputProps, NumberInputClasses } from './components/GlassNumberInput';
+
+export { GlassPinInput } from './components/GlassPinInput';
+export type { GlassPinInputProps, PinInputClasses } from './components/GlassPinInput';
+
+export { GlassFileDrop, formatBytes } from './components/GlassFileDrop';
+export type {
+  GlassFileDropProps,
+  FileDropClasses,
+  FileRenderArgs,
+} from './components/GlassFileDrop';
+
+export { GlassCalendar } from './components/GlassCalendar';
+export type {
+  GlassCalendarProps,
+  CalendarClasses,
+  CalendarHeaderArgs,
+  DayState,
+} from './components/GlassCalendar';
+
+export { GlassDatePicker } from './components/GlassDatePicker';
+export type {
+  GlassDatePickerProps,
+  DatePickerClasses,
+  DateTriggerArgs,
+} from './components/GlassDatePicker';
+
+/* Local-date helpers the calendar runs on — exported so callers can build
+   `min`/`max`/`isDisabled` without reaching for a date library. */
+export {
+  addDays,
+  addMonths,
+  clampDate,
+  fromISODate,
+  isAfter,
+  isBefore,
+  isSameDay,
+  isSameMonth,
+  startOfDay,
+  startOfMonth,
+  toISODate,
+} from './lib/date';
 
 export { GlassSwitch } from './components/GlassSwitch';
 export type { GlassSwitchProps } from './components/GlassSwitch';

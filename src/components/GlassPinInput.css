@@ -1,0 +1,86 @@
+/* PIN cells are the input well, squared off and repeated. A filled cell
+   brightens; the focused one takes the accent ring. */
+
+.ob-pin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* A cell and the divider that follows it travel together, so the row still
+   wraps in whole groups. */
+.ob-pin__slot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ob-pin__sep {
+  color: var(--ob-ink-4);
+  font-family: var(--ob-font-mono);
+  font-size: 14px;
+  user-select: none;
+}
+
+.ob-pin__cell::placeholder {
+  color: var(--ob-ink-4);
+}
+
+.ob-pin__cell {
+  width: 46px;
+  height: 54px;
+  padding: 0;
+  text-align: center;
+  border-radius: var(--ob-r-sm);
+  background: rgb(0 0 0 / 0.3);
+  border: 1px solid rgb(var(--ob-white) / 0.13);
+  border-top-color: rgb(var(--ob-white) / 0.06);
+  color: var(--ob-ink);
+  font-family: var(--ob-font-mono);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-pin--sm .ob-pin__cell {
+  width: 38px;
+  height: 44px;
+  font-size: 16px;
+}
+
+.ob-pin--lg .ob-pin__cell {
+  width: 54px;
+  height: 62px;
+  font-size: 24px;
+}
+
+.ob-pin__cell:hover:not(:focus) {
+  border-color: rgb(var(--ob-white) / 0.22);
+}
+
+/* A filled cell lifts out of the well so progress through the code is
+   readable at a glance, without any per-cell animation. */
+.ob-pin__cell--filled {
+  background: rgb(0 0 0 / 0.42);
+  border-color: rgb(var(--ob-white) / 0.24);
+  color: var(--ob-ink-strong);
+}
+
+.ob-pin__cell:focus {
+  background: rgb(0 0 0 / 0.45);
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+  box-shadow: var(--ob-ring);
+}
+
+.ob-pin__cell--invalid {
+  background: rgb(var(--ob-accent) / 0.1);
+  border-color: rgb(var(--ob-accent-edge) / 0.45);
+  color: rgb(var(--ob-accent-soft));
+}
+
+.ob-pin--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}

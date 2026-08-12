@@ -1,11 +1,11 @@
 import {
   forwardRef,
-  useId,
   type InputHTMLAttributes,
   type ReactNode,
   type TextareaHTMLAttributes,
 } from 'react';
 import { cn } from '../lib/cn';
+import { FieldLabel, FieldNote, useFieldIds } from './GlassField';
 import './GlassInput.css';
 
 interface FieldShellProps {
@@ -28,70 +28,6 @@ export type GlassInputProps = FieldShellProps &
 
 export type GlassTextareaProps = FieldShellProps &
   Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'className'>;
-
-/** Wires label/hint/error to the control with generated, stable ids. */
-function useFieldIds(explicitId: string | undefined, hint: ReactNode, error: ReactNode) {
-  const auto = useId();
-  const id = explicitId ?? auto;
-  const hintId = hint ? `${id}-hint` : undefined;
-  const errorId = error ? `${id}-error` : undefined;
-  return {
-    id,
-    hintId,
-    errorId,
-    // Error wins: when both exist, screen readers should hear the failure.
-    describedBy: errorId ?? hintId,
-  };
-}
-
-function FieldLabel({
-  id,
-  label,
-  required,
-}: {
-  id: string;
-  label: ReactNode;
-  required?: boolean;
-}) {
-  return (
-    <label className="ob-field__label" htmlFor={id}>
-      {label}
-      {required ? (
-        <span className="ob-field__req" aria-hidden="true">
-          *
-        </span>
-      ) : null}
-    </label>
-  );
-}
-
-function FieldNote({
-  error,
-  hint,
-  errorId,
-  hintId,
-}: {
-  error: ReactNode;
-  hint: ReactNode;
-  errorId?: string;
-  hintId?: string;
-}) {
-  if (error) {
-    return (
-      <p id={errorId} className="ob-field__note ob-field__note--error" role="alert">
-        {error}
-      </p>
-    );
-  }
-  if (hint) {
-    return (
-      <p id={hintId} className="ob-field__note">
-        {hint}
-      </p>
-    );
-  }
-  return null;
-}
 
 /** A single-line text field with label, hint and error wired for a11y. */
 export const GlassInput = forwardRef<HTMLInputElement, GlassInputProps>(function GlassInput(

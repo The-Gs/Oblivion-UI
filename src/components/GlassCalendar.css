@@ -1,0 +1,195 @@
+/* Calendar — a quiet grid. The only saturated thing on it is the selected
+   day; today is marked with a dot so the two never compete. */
+
+.ob-cal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: max-content;
+  font-family: var(--ob-font);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+
+.ob-cal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ob-cal__month {
+  flex: 1;
+  text-align: center;
+  font-family: var(--ob-font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--ob-ink);
+}
+
+.ob-cal__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ob-r-xs);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ob-ink-2);
+  background: rgb(var(--ob-white) / 0.05);
+  border: 1px solid rgb(var(--ob-white) / 0.09);
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-cal__nav:hover:not(:disabled) {
+  color: var(--ob-ink);
+  background: rgb(var(--ob-white) / 0.11);
+  border-color: rgb(var(--ob-white) / 0.18);
+}
+
+.ob-cal__nav:focus-visible {
+  outline: none;
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+  box-shadow: var(--ob-ring);
+}
+
+.ob-cal__nav:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Grid ────────────────────────────────────────────────────────────── */
+
+.ob-cal__row {
+  display: grid;
+  grid-template-columns: repeat(7, 36px);
+  gap: 2px;
+}
+
+.ob-cal__row--head {
+  margin-bottom: 2px;
+}
+
+.ob-cal__wd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  font-family: var(--ob-font-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ob-ink-4);
+}
+
+.ob-cal__day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  border-radius: var(--ob-r-xs);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--ob-ink-rgb) / 0.85);
+  border: 1px solid transparent;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-cal__day:hover:not(:disabled) {
+  background: rgb(var(--ob-white) / 0.09);
+  color: var(--ob-ink-strong);
+}
+
+.ob-cal__day:focus-visible {
+  outline: none;
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+  box-shadow: var(--ob-ring);
+}
+
+/* Days from the neighbouring months stay legible but recede, so the month
+   in focus reads as one block. */
+.ob-cal__day[data-outside] {
+  color: var(--ob-ink-4);
+}
+
+/* Holds the column open when `showOutsideDays` is off. */
+.ob-cal__day--blank {
+  pointer-events: none;
+}
+
+.ob-cal__day:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+/* Today: a dot beneath the number, never a fill — the fill means selected. */
+.ob-cal__day--today::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgb(var(--ob-accent-hot));
+}
+
+.ob-cal__day--on,
+.ob-cal__day--on[data-outside] {
+  background: rgb(var(--ob-accent) / 0.55);
+  border-color: rgb(var(--ob-accent-edge) / 0.5);
+  border-top-color: rgb(var(--ob-accent-edge-lit) / 0.55);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgb(var(--ob-accent) / 0.35);
+}
+
+.ob-cal__day--on:hover:not(:disabled) {
+  background: rgb(var(--ob-accent-lit) / 0.65);
+  color: #fff;
+}
+
+.ob-cal__day--on.ob-cal__day--today::after {
+  background: #fff;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+
+.ob-cal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgb(var(--ob-white) / 0.08);
+}
+
+.ob-cal__today {
+  padding: 5px 11px;
+  border-radius: var(--ob-r-xs);
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: rgb(var(--ob-accent-hot));
+  border: 1px solid transparent;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-cal__today:hover:not(:disabled) {
+  background: rgb(var(--ob-accent) / 0.2);
+  border-color: rgb(var(--ob-accent-edge) / 0.3);
+}
+
+.ob-cal__today:focus-visible {
+  outline: none;
+  box-shadow: var(--ob-ring);
+}
+
+.ob-cal__today:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

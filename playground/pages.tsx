@@ -9,15 +9,22 @@ import {
   GlassBadge,
   GlassBreadcrumb,
   GlassButton,
+  GlassCalendar,
   GlassCard,
   GlassCheckbox,
+  GlassCombobox,
   GlassDataGrid,
+  GlassDatePicker,
+  GlassField,
+  GlassFileDrop,
   GlassInput,
   GlassKbd,
   GlassList,
   GlassMenu,
   GlassModal,
+  GlassNumberInput,
   GlassPagination,
+  GlassPinInput,
   GlassProgress,
   GlassRadioGroup,
   GlassRating,
@@ -32,6 +39,7 @@ import {
   GlassSwitch,
   GlassTable,
   GlassTabs,
+  GlassTagInput,
   GlassTextarea,
   GlassTooltip,
   Grid,
@@ -90,6 +98,17 @@ const ROWS: Row[] = [
 ];
 const STATUS_VARIANT = { Mastered: 'accent', Mixing: 'neutral', Draft: 'outline' } as const;
 const GENRES = ['Liquid', 'Neurofunk', 'Halftime', 'Jungle'];
+const LABELS = [
+  'Critical Music',
+  'Hospital Records',
+  'Metalheadz',
+  'Shogun Audio',
+  'Blu Mar Ten',
+  'Exit Records',
+  'Vision Recordings',
+  'Dispatch Recordings',
+];
+const TAG_POOL = ['halftime', 'rollers', 'amen', 'liquid', 'neuro', 'jungle', 'dub', 'minimal'];
 const PEOPLE = [
   { id: 'p1', name: 'Dana Kade', role: 'Sound design', status: 'Online' },
   { id: 'p2', name: 'Rui Vale', role: 'Mixing', status: 'Away' },
@@ -117,6 +136,350 @@ function LiveSelect({ disabled, error }: { disabled: boolean; error: boolean }) 
         disabled={disabled}
         error={error ? 'Pick a valid option.' : undefined}
       />
+    </div>
+  );
+}
+
+function LiveCombobox({ disabled, error, clearable }: { disabled: boolean; error: boolean; clearable: boolean }) {
+  const [val, setVal] = useState<string | null>(null);
+  return (
+    <div style={{ width: '100%', maxWidth: 320 }}>
+      <GlassCombobox
+        items={LABELS}
+        getKey={(s) => s}
+        value={val}
+        onChange={(s) => setVal(s)}
+        fieldLabel="Label"
+        placeholder="Search labels…"
+        clearable={clearable}
+        disabled={disabled}
+        error={error ? 'Pick a label from the list.' : undefined}
+      />
+    </div>
+  );
+}
+
+function LiveTagInput({ suggest, max }: { suggest: boolean; max: boolean }) {
+  const [tags, setTags] = useState<string[]>(['halftime', 'rollers']);
+  return (
+    <div style={{ width: '100%', maxWidth: 380 }}>
+      <GlassTagInput
+        value={tags}
+        onChange={setTags}
+        label="Tags"
+        placeholder="Add a tag…"
+        suggestions={suggest ? TAG_POOL : undefined}
+        max={max ? 5 : undefined}
+        hint="Enter or comma to commit. Backspace clears the last one."
+      />
+    </div>
+  );
+}
+
+function LiveNumber({ suffix, hideSteppers }: { suffix: boolean; hideSteppers: boolean }) {
+  const [bpm, setBpm] = useState<number | null>(174);
+  return (
+    <div style={{ width: '100%', maxWidth: 220 }}>
+      <GlassNumberInput
+        value={bpm}
+        onChange={setBpm}
+        label="Tempo"
+        min={40}
+        max={220}
+        step={1}
+        suffix={suffix ? 'bpm' : undefined}
+        hideSteppers={hideSteppers}
+      />
+    </div>
+  );
+}
+
+function LivePin({ length, mask, type }: { length: number; mask: boolean; type: string }) {
+  const [code, setCode] = useState('');
+  const { toast } = useToast();
+  return (
+    <GlassPinInput
+      value={code}
+      onChange={setCode}
+      onComplete={(v) => toast(`Code ${v} submitted`)}
+      length={length}
+      mask={mask}
+      type={type as 'numeric'}
+      label="Verification code"
+      hint="Paste the whole code — it spreads across the cells."
+    />
+  );
+}
+
+function LiveFileDrop({ multiple }: { multiple: boolean }) {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+    <div style={{ width: '100%', maxWidth: 420 }}>
+      <GlassFileDrop
+        value={files}
+        onChange={setFiles}
+        label="Stems"
+        accept="audio/*,.wav,.aiff"
+        multiple={multiple}
+        maxSize={25 * 1024 * 1024}
+        maxFiles={multiple ? 4 : 1}
+      />
+    </div>
+  );
+}
+
+function LiveDatePicker({ clearable, bounded }: { clearable: boolean; bounded: boolean }) {
+  const [date, setDate] = useState<Date | null>(null);
+  const today = new Date();
+  return (
+    <div style={{ width: '100%', maxWidth: 280 }}>
+      <GlassDatePicker
+        value={date}
+        onChange={setDate}
+        fieldLabel="Release date"
+        clearable={clearable}
+        min={bounded ? today : undefined}
+        max={bounded ? new Date(today.getFullYear(), today.getMonth() + 3, 0) : undefined}
+        hint={bounded ? 'Limited to the next three months.' : undefined}
+      />
+    </div>
+  );
+}
+
+function LiveCalendar({ weekStartsOn, showToday }: { weekStartsOn: number; showToday: boolean }) {
+  const [date, setDate] = useState<Date | null>(new Date());
+  return (
+    <GlassCalendar
+      value={date}
+      onChange={setDate}
+      weekStartsOn={weekStartsOn as 0 | 1}
+      showToday={showToday}
+      aria-label="Session date"
+    />
+  );
+}
+
+/* ── Customization demos (the render props and format hooks) ──────────── */
+
+function CustomCombobox() {
+  const [id, setId] = useState<string | null>('p2');
+  return (
+    <div style={{ width: '100%', maxWidth: 340 }}>
+      <GlassCombobox
+        items={PEOPLE}
+        getKey={(p) => p.id}
+        toText={(p) => p.name}
+        value={id}
+        onChange={(p) => setId(p?.id ?? null)}
+        fieldLabel="Engineer"
+        placeholder="Search the roster…"
+        renderOption={({ item, selected }) => (
+          <span style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
+            <GlassAvatar name={item.name} size="sm" />
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ display: 'block' }}>{item.name}</span>
+              <span style={{ display: 'block', fontSize: 11, color: 'var(--ob-ink-3)' }}>
+                {item.role}
+              </span>
+            </span>
+            {selected ? <span aria-hidden="true">●</span> : null}
+          </span>
+        )}
+        footer={`${PEOPLE.length} people on the roster`}
+      />
+    </div>
+  );
+}
+
+function CustomTagInput() {
+  const [tags, setTags] = useState<string[]>(['halftime', 'neuro']);
+  return (
+    <div style={{ width: '100%', maxWidth: 380 }}>
+      <GlassTagInput
+        value={tags}
+        onChange={setTags}
+        label="Tags"
+        suggestions={TAG_POOL}
+        renderTag={({ tag, remove }) => (
+          <>
+            <span style={{ fontFamily: 'var(--ob-font-mono)', fontSize: 11 }}>#{tag}</span>
+            <button
+              type="button"
+              tabIndex={-1}
+              className="ob-tags__x ob-reset-button"
+              aria-label={`Remove ${tag}`}
+              onClick={remove}
+            >
+              −
+            </button>
+          </>
+        )}
+      />
+    </div>
+  );
+}
+
+const MONEY = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+function CustomNumber() {
+  const [price, setPrice] = useState<number | null>(1250);
+  return (
+    <div style={{ width: '100%', maxWidth: 240 }}>
+      <GlassNumberInput
+        value={price}
+        onChange={setPrice}
+        label="Licence fee"
+        min={0}
+        step={50}
+        format={(n) => MONEY.format(n)}
+        icons={{ up: '▲', down: '▼' }}
+        hint="Formatted when idle, raw while you type."
+      />
+    </div>
+  );
+}
+
+function CustomPin() {
+  const [hex, setHex] = useState('');
+  return (
+    <GlassPinInput
+      value={hex}
+      onChange={setHex}
+      length={6}
+      allow={/[0-9a-f]/i}
+      placeholder="·"
+      separator={(i) => (i === 2 ? '—' : null)}
+      label="Colour code"
+      hint="Hex only, via allow={/[0-9a-f]/i}."
+    />
+  );
+}
+
+function CustomFileDrop() {
+  const [files, setFiles] = useState<File[]>([]);
+  return (
+    <div style={{ width: '100%', maxWidth: 420 }}>
+      <GlassFileDrop
+        value={files}
+        onChange={setFiles}
+        label="Stems"
+        multiple
+        icons={{ upload: '♫' }}
+        prompt={
+          <>
+            <strong>Drop stems</strong> or click to browse
+          </>
+        }
+        renderFile={({ file, remove, formatSize }) => (
+          <>
+            <span
+              style={{
+                fontFamily: 'var(--ob-font-mono)',
+                fontSize: 10,
+                padding: '2px 6px',
+                borderRadius: 4,
+                background: 'rgb(var(--ob-white) / 0.08)',
+              }}
+            >
+              {(file.name.split('.').pop() ?? '?').toUpperCase()}
+            </span>
+            <span
+              style={{
+                flex: 1,
+                minWidth: 0,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {file.name}
+            </span>
+            <span style={{ color: 'var(--ob-ink-3)', fontSize: 12 }}>{formatSize(file.size)}</span>
+            <button type="button" className="ob-drop__x ob-reset-button" onClick={remove}>
+              ✕
+            </button>
+          </>
+        )}
+      />
+    </div>
+  );
+}
+
+/** A stand-in booking rate, so the calendar has something to render per day. */
+const rateFor = (date: Date) => 60 + ((date.getDate() * 7) % 5) * 15;
+
+function CustomCalendar() {
+  const [date, setDate] = useState<Date | null>(null);
+  return (
+    <GlassCalendar
+      value={date}
+      onChange={setDate}
+      showToday={false}
+      isDisabled={(d) => d.getDay() === 0}
+      renderDay={({ date: d, disabled }) => (
+        <span style={{ display: 'grid', justifyItems: 'center', gap: 1, lineHeight: 1.1 }}>
+          <span>{d.getDate()}</span>
+          <span style={{ fontFamily: 'var(--ob-font-mono)', fontSize: 8, opacity: 0.7 }}>
+            {disabled ? '—' : `£${rateFor(d)}`}
+          </span>
+        </span>
+      )}
+      aria-label="Studio availability"
+    />
+  );
+}
+
+function CustomDatePicker() {
+  const [date, setDate] = useState<Date | null>(new Date());
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ width: '100%', maxWidth: 300, display: 'grid', gap: 10 }}>
+      <GlassDatePicker
+        value={date}
+        onChange={setDate}
+        open={open}
+        onOpenChange={setOpen}
+        fieldLabel="Session"
+        weekdayFormat="narrow"
+        showOutsideDays={false}
+        format={(d) => d.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' })}
+        renderTrigger={({ text, placeholder, open: isOpen }) => (
+          <>
+            <span className="ob-date__glyph" aria-hidden="true">
+              {isOpen ? '▨' : '▦'}
+            </span>
+            <span className={text ? 'ob-date__value' : 'ob-date__value ob-date__value--placeholder'}>
+              {text ?? placeholder}
+            </span>
+            <GlassKbd>{isOpen ? 'Esc' : '↓'}</GlassKbd>
+          </>
+        )}
+      />
+      <GlassButton size="sm" variant="secondary" onClick={() => setOpen((o) => !o)}>
+        {open ? 'Close' : 'Open'} from outside
+      </GlassButton>
+    </div>
+  );
+}
+
+function CustomField() {
+  const [on, setOn] = useState(true);
+  return (
+    <div style={{ width: '100%', maxWidth: 420 }}>
+      <GlassField
+        label="Render on save"
+        orientation="horizontal"
+        hint="Bounces a preview every time the project is saved."
+      >
+        {({ id, describedBy }) => (
+          <GlassSwitch
+            id={id}
+            aria-describedby={describedBy}
+            checked={on}
+            onChange={setOn}
+          />
+        )}
+      </GlassField>
     </div>
   );
 }
@@ -610,6 +973,513 @@ function SliderPage() {
         render={(v) => <LiveSlider showLabel={Boolean(v.label)} />}
         code={(v) => `<GlassSlider value={v} onChange={setV}${v.label ? ' label="Wet / dry"' : ''} />`}
       />
+    </Page>
+  );
+}
+
+function ComboboxPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="Combobox"
+      lede="A select you can type into. Filters as you go, follows the ARIA combobox pattern, and never leaves the field showing something that was not actually chosen."
+    >
+      <Demo title="Searchable select" stack code={`<GlassCombobox items={labels} value={v} onChange={setV} />`}>
+        <LiveCombobox disabled={false} error={false} clearable />
+      </Demo>
+
+      <p className="docs__p">
+        The query is transient: Escape or clicking away restores the selected item&rsquo;s text.
+        Pass <C>filter={'{false}'}</C> when the caller already filters — remote search — and{' '}
+        <C>items</C> is rendered verbatim, with <C>loading</C> covering the round trip.
+      </p>
+
+      <Demo
+        title="Custom options"
+        stack
+        code={`<GlassCombobox
+  items={people}
+  getKey={(p) => p.id}
+  toText={(p) => p.name}
+  renderOption={({ item, selected }) => (
+    <>
+      <GlassAvatar name={item.name} size="sm" />
+      <span>{item.name}<small>{item.role}</small></span>
+      {selected ? <span>●</span> : null}
+    </>
+  )}
+  footer={\`\${people.length} people on the roster\`}
+/>`}
+      >
+        <CustomCombobox />
+      </Demo>
+
+      <p className="docs__p">
+        <C>renderOption</C> replaces a row&rsquo;s interior and leaves the listbox semantics alone —
+        the <C>role</C>, the highlight and <C>aria-activedescendant</C> are still the
+        component&rsquo;s job. It is handed <C>selected</C>, <C>active</C> and <C>disabled</C> so
+        your markup can follow the keyboard. <C>footer</C> pins content below the scroll area,
+        which is where an &ldquo;Add new&rdquo; action belongs.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'toggle', key: 'clearable', label: 'clearable', default: true },
+          { type: 'toggle', key: 'error', label: 'error', default: false },
+          { type: 'toggle', key: 'disabled', label: 'disabled', default: false },
+        ]}
+        render={(v) => (
+          <LiveCombobox
+            clearable={Boolean(v.clearable)}
+            disabled={Boolean(v.disabled)}
+            error={Boolean(v.error)}
+          />
+        )}
+        code={(v) =>
+          `<GlassCombobox\n  items={labels}\n  getKey={(s) => s}\n  value={value}\n  onChange={setValue}${
+            v.clearable ? '' : '\n  clearable={false}'
+          }${v.disabled ? '\n  disabled' : ''}${
+            v.error ? '\n  error="Pick a label from the list."' : ''
+          }\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function TagInputPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="Tag input"
+      lede="A chip field. Free-form on its own; pass suggestions and it becomes a multi-select."
+    >
+      <Demo title="Chips" stack code={`<GlassTagInput value={tags} onChange={setTags} />`}>
+        <LiveTagInput suggest max={false} />
+      </Demo>
+
+      <p className="docs__p">
+        Enter or a delimiter commits the draft, Backspace on an empty draft removes the last chip.
+        Rejections from <C>validate</C>, <C>max</C> and the duplicate check surface inline, so the
+        field explains itself without the caller wiring up error state.
+      </p>
+
+      <Demo
+        title="Custom chips"
+        stack
+        code={`<GlassTagInput
+  value={tags}
+  onChange={setTags}
+  renderTag={({ tag, remove }) => (
+    <>
+      <span className="mono">#{tag}</span>
+      <button onClick={remove}>−</button>
+    </>
+  )}
+/>`}
+      >
+        <CustomTagInput />
+      </Demo>
+
+      <p className="docs__p">
+        <C>renderTag</C> owns the inside of a chip and is handed <C>remove</C> already wired to
+        refocus the draft input. Pasting <C>a, b, c</C> splits on your <C>delimiters</C> and adds
+        each piece — turn that off with <C>splitPaste={'{false}'}</C>.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'toggle', key: 'suggest', label: 'suggestions', default: true },
+          { type: 'toggle', key: 'max', label: 'max={5}', default: false },
+        ]}
+        render={(v) => <LiveTagInput suggest={Boolean(v.suggest)} max={Boolean(v.max)} />}
+        code={(v) =>
+          `<GlassTagInput\n  value={tags}\n  onChange={setTags}\n  label="Tags"${
+            v.suggest ? '\n  suggestions={TAG_POOL}' : ''
+          }${v.max ? '\n  max={5}' : ''}\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function NumberInputPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="Number input"
+      lede="A numeric field with steppers, range clamping and the full keyboard contract — arrows step, Page keys step ten, Home and End jump to the bounds."
+    >
+      <Demo title="Tempo" stack code={`<GlassNumberInput value={bpm} onChange={setBpm} min={40} max={220} />`}>
+        <LiveNumber suffix hideSteppers={false} />
+      </Demo>
+
+      <p className="docs__p">
+        Press and hold a stepper to repeat. Typing is left unclamped until blur so half-written
+        values like <C>-</C> and <C>1.</C> stay editable; the steppers and arrow keys always clamp.
+      </p>
+
+      <Demo
+        title="Currency"
+        stack
+        code={`const money = new Intl.NumberFormat('en-US', {
+  style: 'currency', currency: 'USD',
+});
+
+<GlassNumberInput
+  value={price}
+  onChange={setPrice}
+  min={0}
+  step={50}
+  format={(n) => money.format(n)}
+  icons={{ up: '▲', down: '▼' }}
+/>`}
+      >
+        <CustomNumber />
+      </Demo>
+
+      <p className="docs__p">
+        <C>format</C> only applies while the field is idle — focus it and the raw number comes
+        back, because formatting fights the caret the moment a separator moves. On blur the text is
+        read back by <C>parse</C>, which defaults to stripping everything that is not a digit,
+        sign, dot or exponent, so <C>$1,250.00</C> round-trips without your writing a parser.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'toggle', key: 'suffix', label: 'suffix', default: true },
+          { type: 'toggle', key: 'hideSteppers', label: 'hideSteppers', default: false },
+        ]}
+        render={(v) => (
+          <LiveNumber suffix={Boolean(v.suffix)} hideSteppers={Boolean(v.hideSteppers)} />
+        )}
+        code={(v) =>
+          `<GlassNumberInput\n  value={bpm}\n  onChange={setBpm}\n  min={40}\n  max={220}${
+            v.suffix ? '\n  suffix="bpm"' : ''
+          }${v.hideSteppers ? '\n  hideSteppers' : ''}\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function PinInputPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="PIN input"
+      lede="A segmented code field for one-time codes and PINs. Typing advances, Backspace steps back, and a paste of any length spreads across the cells."
+    >
+      <Demo title="Six digits" stack code={`<GlassPinInput value={code} onChange={setCode} onComplete={submit} />`}>
+        <LivePin length={6} mask={false} type="numeric" />
+      </Demo>
+
+      <p className="docs__p">
+        Characters that do not match <C>type</C> are dropped on the way in, so pasting{' '}
+        <C>123-456</C> still lands as <C>123456</C>. The first cell carries{' '}
+        <C>autocomplete=&quot;one-time-code&quot;</C>, which is what lets iOS and Android offer the
+        SMS code straight from the keyboard.
+      </p>
+
+      <Demo
+        title="A hex field"
+        stack
+        code={`<GlassPinInput
+  value={hex}
+  onChange={setHex}
+  allow={/[0-9a-f]/i}
+  placeholder="·"
+  separator={(i) => (i === 2 ? '—' : null)}
+/>`}
+      >
+        <CustomPin />
+      </Demo>
+
+      <p className="docs__p">
+        <C>allow</C> takes over from <C>type</C> and is tested one character at a time, so any
+        alphabet you can write a character class for works — and it governs pasting as much as
+        typing. <C>separator</C> takes a node for every gap, or a function of the cell index to its
+        left so you can place just the one.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'range', key: 'length', label: 'length', min: 4, max: 8, default: 6 },
+          { type: 'select', key: 'type', label: 'type', options: ['numeric', 'alphanumeric'], default: 'numeric' },
+          { type: 'toggle', key: 'mask', label: 'mask', default: false },
+        ]}
+        render={(v) => (
+          <LivePin length={Number(v.length)} mask={Boolean(v.mask)} type={String(v.type)} />
+        )}
+        code={(v) =>
+          `<GlassPinInput\n  value={code}\n  onChange={setCode}\n  onComplete={submit}\n  length={${v.length}}${
+            v.type === 'alphanumeric' ? '\n  type="alphanumeric"' : ''
+          }${v.mask ? '\n  mask' : ''}\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function FileDropPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="File drop"
+      lede="A drop target and file list in one field. Click or press Enter to browse, or drag files onto it."
+    >
+      <Demo title="Stems" stack code={`<GlassFileDrop value={files} onChange={setFiles} accept="audio/*" multiple />`}>
+        <LiveFileDrop multiple />
+      </Demo>
+
+      <p className="docs__p">
+        <C>accept</C>, <C>maxSize</C> and <C>maxFiles</C> are enforced on dropped files too — the
+        browser only applies <C>accept</C> to the picker dialog, so dropping is otherwise a hole.
+        Refusals explain themselves under the field and also fire <C>onReject</C>.
+      </p>
+
+      <Demo
+        title="Custom rows"
+        stack
+        code={`<GlassFileDrop
+  value={files}
+  onChange={setFiles}
+  multiple
+  icons={{ upload: '♫' }}
+  renderFile={({ file, remove, formatSize }) => (
+    <>
+      <span className="ext">{ext(file.name)}</span>
+      <span className="name">{file.name}</span>
+      <span>{formatSize(file.size)}</span>
+      <button onClick={remove}>✕</button>
+    </>
+  )}
+/>`}
+      >
+        <CustomFileDrop />
+      </Demo>
+
+      <p className="docs__p">
+        <C>renderFile</C> is handed the <C>File</C>, a wired <C>remove</C>, and the active{' '}
+        <C>formatSize</C> so custom rows stay consistent with the terms line above them. It is the
+        hook for thumbnails and upload progress; swap <C>formatSize</C> alone if all you want is
+        different units.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[{ type: 'toggle', key: 'multiple', label: 'multiple', default: true }]}
+        render={(v) => <LiveFileDrop multiple={Boolean(v.multiple)} />}
+        code={(v) =>
+          `<GlassFileDrop\n  value={files}\n  onChange={setFiles}\n  accept="audio/*,.wav"\n  maxSize={25 * 1024 * 1024}${
+            v.multiple ? '\n  multiple' : ''
+          }\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function DatePickerPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="Date picker"
+      lede="A trigger that reads as an input well, with a portalled calendar anchored under it. Focus moves into the grid on open and returns to the trigger on close."
+    >
+      <Demo title="Release date" stack code={`<GlassDatePicker value={date} onChange={setDate} />`}>
+        <LiveDatePicker clearable bounded={false} />
+      </Demo>
+
+      <p className="docs__p">
+        Everything reasons in local calendar fields rather than UTC timestamps, so the day you
+        click is the day you get. Pass <C>name</C> to emit <C>YYYY-MM-DD</C> into a plain form post.
+      </p>
+
+      <Demo
+        title="Custom trigger, controlled open"
+        stack
+        code={`<GlassDatePicker
+  value={date}
+  onChange={setDate}
+  open={open}
+  onOpenChange={setOpen}
+  weekdayFormat="narrow"
+  showOutsideDays={false}
+  renderTrigger={({ text, placeholder, open }) => (
+    <>
+      <span>{open ? '▨' : '▦'}</span>
+      <span>{text ?? placeholder}</span>
+      <GlassKbd>{open ? 'Esc' : '↓'}</GlassKbd>
+    </>
+  )}
+/>`}
+      >
+        <CustomDatePicker />
+      </Demo>
+
+      <p className="docs__p">
+        <C>renderTrigger</C> replaces what is inside the button, not the button itself, so the
+        focus handling and <C>aria-expanded</C> survive whatever you put there. Pass <C>open</C>{' '}
+        with <C>onOpenChange</C> to drive the popover from outside; omit both and the picker owns
+        it. Every calendar prop — <C>renderDay</C>, <C>formatMonth</C>, <C>weekdayFormat</C>,{' '}
+        <C>header</C> — passes straight through to the grid inside.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'toggle', key: 'clearable', label: 'clearable', default: true },
+          { type: 'toggle', key: 'bounded', label: 'min / max', default: false },
+        ]}
+        render={(v) => (
+          <LiveDatePicker clearable={Boolean(v.clearable)} bounded={Boolean(v.bounded)} />
+        )}
+        code={(v) =>
+          `<GlassDatePicker\n  value={date}\n  onChange={setDate}\n  fieldLabel="Release date"${
+            v.clearable ? '' : '\n  clearable={false}'
+          }${v.bounded ? '\n  min={today}\n  max={inThreeMonths}' : ''}\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function CalendarPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="Calendar"
+      lede="The month grid on its own, for when you want it inline rather than in a popover."
+    >
+      <Demo center code={`<GlassCalendar value={date} onChange={setDate} />`}>
+        <LiveCalendar weekStartsOn={1} showToday />
+      </Demo>
+
+      <p className="docs__p">
+        A roving tabindex makes the grid one tab stop: arrows move a day, Home and End reach the
+        ends of the week, Page keys change month, Shift+Page changes year. Arrowing off the edge
+        pages the calendar, so the visible month always follows the focused day.
+      </p>
+
+      <Demo
+        center
+        title="Booking grid"
+        code={`<GlassCalendar
+  value={date}
+  onChange={setDate}
+  isDisabled={(d) => d.getDay() === 0}
+  renderDay={({ date, disabled }) => (
+    <span className="stack">
+      <span>{date.getDate()}</span>
+      <small>{disabled ? '—' : \`£\${rateFor(date)}\`}</small>
+    </span>
+  )}
+/>`}
+      >
+        <CustomCalendar />
+      </Demo>
+
+      <p className="docs__p">
+        <C>renderDay</C> fills the cell and is handed <C>selected</C>, <C>today</C>, <C>outside</C>{' '}
+        and <C>disabled</C>, so the state stays the grid&rsquo;s to track. For a tweak rather than a
+        takeover there is <C>dayClassName</C>, and <C>header</C> swaps the caption and arrows for
+        month and year dropdowns without touching the grid below.
+      </p>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'select', key: 'weekStartsOn', label: 'weekStartsOn', options: ['0', '1'], default: '1' },
+          { type: 'toggle', key: 'showToday', label: 'showToday', default: true },
+        ]}
+        render={(v) => (
+          <LiveCalendar weekStartsOn={Number(v.weekStartsOn)} showToday={Boolean(v.showToday)} />
+        )}
+        code={(v) =>
+          `<GlassCalendar\n  value={date}\n  onChange={setDate}\n  weekStartsOn={${v.weekStartsOn}}${
+            v.showToday ? '' : '\n  showToday={false}'
+          }\n/>`
+        }
+      />
+    </Page>
+  );
+}
+
+function FieldPage() {
+  return (
+    <Page
+      eyebrow="Forms"
+      title="Field"
+      lede="The label, hint, error and a11y wiring every field in the kit wears — exposed so your own controls can wear it too."
+    >
+      <Demo title="Wrapping a native control" stack code={`<GlassField label="Webhook" hint="…">
+  {({ id, describedBy }) => (
+    <input id={id} aria-describedby={describedBy} />
+  )}
+</GlassField>`}>
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <GlassField label="Render quality" hint="Higher settings take longer to bounce.">
+            {({ id, describedBy }) => (
+              <div className="ob-input">
+                <select id={id} aria-describedby={describedBy} className="ob-input__control">
+                  <option>Draft</option>
+                  <option>Standard</option>
+                  <option>Mastering</option>
+                </select>
+              </div>
+            )}
+          </GlassField>
+        </div>
+      </Demo>
+
+      <p className="docs__p">
+        Children can be a plain node or a function receiving <C>id</C>, <C>describedBy</C> and{' '}
+        <C>invalid</C>. The ids are generated once and stay stable across renders, and{' '}
+        <C>describedBy</C> points at the error when there is one and the hint otherwise — a screen
+        reader should hear the failure, not the advice.
+      </p>
+
+      <Demo
+        title="Horizontal"
+        stack
+        code={`<GlassField label="Render on save" orientation="horizontal" hint="…">
+  {({ id, describedBy }) => (
+    <GlassSwitch id={id} aria-describedby={describedBy} … />
+  )}
+</GlassField>`}
+      >
+        <CustomField />
+      </Demo>
+
+      <p className="docs__p">
+        <C>orientation=&quot;horizontal&quot;</C> puts the label in a column beside the control and
+        keeps the note lined up under the control rather than the label. Size that column with the{' '}
+        <C>--ob-field-label-w</C> custom property. Every field in the kit takes this prop, because
+        they all wear this shell.
+      </p>
+
+      <Demo title="Invalid" stack code={`<GlassField label="Webhook" error="Must be https." />`}>
+        <div style={{ width: '100%', maxWidth: 360 }}>
+          <GlassField label="Webhook" error="Must be an https:// URL." required>
+            {({ id, describedBy, invalid }) => (
+              <div className={invalid ? 'ob-input ob-input--invalid' : 'ob-input'}>
+                <input
+                  id={id}
+                  aria-describedby={describedBy}
+                  aria-invalid={invalid}
+                  className="ob-input__control"
+                  defaultValue="http://hooks.label.rec/bounce"
+                />
+              </div>
+            )}
+          </GlassField>
+        </div>
+      </Demo>
     </Page>
   );
 }
@@ -1314,8 +2184,16 @@ export const PAGES: DocPage[] = [
   { id: 'card', label: 'Card', group: 'Layout', render: () => <CardPage /> },
 
   { id: 'button', label: 'Button', group: 'Forms', render: () => <ButtonPage /> },
+  { id: 'field', label: 'Field', group: 'Forms', render: () => <FieldPage /> },
   { id: 'input', label: 'Input', group: 'Forms', render: () => <InputPage /> },
+  { id: 'number', label: 'Number input', group: 'Forms', render: () => <NumberInputPage /> },
+  { id: 'pin', label: 'PIN input', group: 'Forms', render: () => <PinInputPage /> },
   { id: 'select', label: 'Select', group: 'Forms', render: () => <SelectPage /> },
+  { id: 'combobox', label: 'Combobox', group: 'Forms', render: () => <ComboboxPage /> },
+  { id: 'taginput', label: 'Tag input', group: 'Forms', render: () => <TagInputPage /> },
+  { id: 'datepicker', label: 'Date picker', group: 'Forms', render: () => <DatePickerPage /> },
+  { id: 'calendar', label: 'Calendar', group: 'Forms', render: () => <CalendarPage /> },
+  { id: 'filedrop', label: 'File drop', group: 'Forms', render: () => <FileDropPage /> },
   { id: 'checkbox', label: 'Checkbox', group: 'Forms', render: () => <CheckboxPage /> },
   { id: 'radio', label: 'Radio group', group: 'Forms', render: () => <RadioPage /> },
   { id: 'switch', label: 'Switch', group: 'Forms', render: () => <SwitchPage /> },
