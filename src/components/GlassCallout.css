@@ -1,0 +1,42 @@
+.ob-callout {
+  --ob-callout-accent: rgb(var(--ob-ink-rgb) / 0.6);
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px 12px 15px;
+  border-radius: var(--ob-r-md);
+  border: 1px solid var(--ob-line);
+  border-left: 3px solid var(--ob-callout-accent);
+  background: rgb(var(--ob-white) / 0.04);
+  font-family: var(--ob-font);
+}
+
+.ob-callout--info { --ob-callout-accent: rgb(var(--ob-info)); }
+.ob-callout--accent { --ob-callout-accent: rgb(var(--ob-accent-bright)); }
+.ob-callout--success { --ob-callout-accent: rgb(var(--ob-success)); }
+.ob-callout--warning { --ob-callout-accent: rgb(var(--ob-warning)); }
+.ob-callout--danger { --ob-callout-accent: rgb(var(--ob-danger)); }
+
+.ob-callout__icon {
+  flex: none;
+  display: inline-flex;
+  color: var(--ob-callout-accent);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.ob-callout__content {
+  min-width: 0;
+}
+
+.ob-callout__title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ob-ink-strong);
+  margin-bottom: 2px;
+}
+
+.ob-callout__body {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ob-ink-2);
+}

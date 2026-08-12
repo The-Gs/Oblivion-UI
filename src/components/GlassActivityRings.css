@@ -1,0 +1,30 @@
+.ob-rings {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+}
+
+.ob-rings__svg {
+  display: block;
+}
+
+.ob-rings__track {
+  stroke: rgb(var(--ob-ink-rgb) / 0.1);
+}
+
+.ob-rings__arc {
+  transition: stroke-dashoffset var(--ob-dur-slow) var(--ob-spring);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ob-rings__arc { transition: none; }
+}
+
+.ob-rings__center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: var(--ob-font-display);
+  color: var(--ob-ink-strong);
+}

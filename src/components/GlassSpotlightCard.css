@@ -1,0 +1,60 @@
+.ob-spot {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-o: 0;
+  --spot-r: 240px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ob-r-lg);
+  padding: 22px;
+  color: var(--ob-ink);
+  background: var(--ob-surface-fill);
+  -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  border: 1px solid var(--ob-line);
+  border-top-color: var(--ob-line-top);
+  box-shadow: var(--ob-shadow);
+  font-family: var(--ob-font);
+}
+
+/* The glow is a radial highlight tracking the cursor — an opt-in effect, so it
+   steps outside the flat-glass house rule deliberately. */
+.ob-spot__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--spot-o);
+  transition: opacity var(--ob-dur) var(--ob-ease);
+  background: radial-gradient(
+    var(--spot-r) circle at var(--spot-x) var(--spot-y),
+    rgb(var(--ob-accent) / 0.28),
+    transparent 65%
+  );
+}
+
+.ob-spot::after {
+  /* A crisp accent ring that also tracks the cursor. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: var(--spot-o);
+  transition: opacity var(--ob-dur) var(--ob-ease);
+  background: radial-gradient(
+    200px circle at var(--spot-x) var(--spot-y),
+    rgb(var(--ob-accent-edge) / 0.4),
+    transparent 40%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 1px;
+}
+
+.ob-spot__content {
+  position: relative;
+  z-index: 1;
+}

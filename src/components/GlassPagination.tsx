@@ -12,6 +12,8 @@ export interface GlassPaginationProps {
   /** @default 'sm' */
   size?: 'sm' | 'md';
   className?: string;
+  /** Class applied to every page/nav button. Size hook: `--ob-pager-size`. */
+  itemClassName?: string;
   'aria-label'?: string;
 }
 
@@ -48,6 +50,7 @@ export function GlassPagination({
   siblings = 1,
   size = 'sm',
   className,
+  itemClassName,
   'aria-label': ariaLabel = 'Pagination',
 }: GlassPaginationProps) {
   const go = (p: number) => {
@@ -59,7 +62,7 @@ export function GlassPagination({
     <nav aria-label={ariaLabel} className={cn('ob-pager', size === 'md' && 'ob-pager--md', className)}>
       <button
         type="button"
-        className="ob-pager__btn ob-pager__nav"
+        className={cn('ob-pager__btn ob-pager__nav', itemClassName)}
         onClick={() => go(page - 1)}
         disabled={page <= 1}
         aria-label="Previous page"
@@ -72,7 +75,7 @@ export function GlassPagination({
           <button
             key={i}
             type="button"
-            className={cn('ob-pager__btn', p === page && 'ob-pager__btn--active')}
+            className={cn('ob-pager__btn', p === page && 'ob-pager__btn--active', itemClassName)}
             onClick={() => go(p)}
             aria-current={p === page ? 'page' : undefined}
           >
@@ -87,7 +90,7 @@ export function GlassPagination({
 
       <button
         type="button"
-        className="ob-pager__btn ob-pager__nav"
+        className={cn('ob-pager__btn ob-pager__nav', itemClassName)}
         onClick={() => go(page + 1)}
         disabled={page >= count}
         aria-label="Next page"

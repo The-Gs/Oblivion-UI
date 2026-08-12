@@ -1,0 +1,50 @@
+.ob-tilt {
+  perspective: 900px;
+}
+
+.ob-tilt__inner {
+  --rx: 0deg;
+  --ry: 0deg;
+  --tz: 0px;
+  --gx: 50%;
+  --gy: 50%;
+  --glare-o: 0;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--ob-r-lg);
+  padding: 22px;
+  color: var(--ob-ink);
+  background: var(--ob-surface-fill);
+  -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  border: 1px solid var(--ob-line);
+  border-top-color: var(--ob-line-top);
+  box-shadow: var(--ob-shadow-lg);
+  font-family: var(--ob-font);
+  transform: rotateX(var(--rx)) rotateY(var(--ry)) translateZ(var(--tz));
+  transition: transform var(--ob-dur) var(--ob-ease);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.ob-tilt__glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--glare-o);
+  transition: opacity var(--ob-dur) var(--ob-ease);
+  background: radial-gradient(
+    circle at var(--gx) var(--gy),
+    rgb(255 255 255 / 0.22),
+    transparent 45%
+  );
+}
+
+.ob-tilt__content {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-tilt__inner { transition: none; transform: none !important; }
+}

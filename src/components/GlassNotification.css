@@ -1,0 +1,103 @@
+.ob-note {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+  padding: 14px 16px;
+  border-radius: var(--ob-r-lg);
+  background: rgb(var(--ob-white) / 0.09);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid var(--ob-line-lit);
+  border-top-color: var(--ob-line-lit-top);
+  box-shadow: var(--ob-shadow-lg), var(--ob-inset-top);
+  font-family: var(--ob-font);
+  animation: ob-note-in var(--ob-dur-slow) var(--ob-spring);
+}
+
+@keyframes ob-note-in {
+  from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ob-note { animation: none; }
+}
+
+.ob-note__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ob-r-md);
+  font-size: 20px;
+  color: #fff;
+  background: rgb(var(--ob-accent) / 0.4);
+  border: 1px solid rgb(var(--ob-white) / 0.18);
+}
+
+.ob-note__main {
+  flex: 1;
+  min-width: 0;
+}
+
+.ob-note__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ob-note__app {
+  font-family: var(--ob-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ob-ink-3);
+}
+
+.ob-note__time {
+  font-size: 11px;
+  color: var(--ob-ink-4);
+  white-space: nowrap;
+}
+
+.ob-note__title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ob-ink-strong);
+  margin-top: 2px;
+}
+
+.ob-note__body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ob-ink-2);
+  margin-top: 2px;
+}
+
+.ob-note__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ob-note__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 0;
+  background: rgb(var(--ob-white) / 0.08);
+  color: var(--ob-ink-3);
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-note:hover .ob-note__close {
+  opacity: 1;
+}

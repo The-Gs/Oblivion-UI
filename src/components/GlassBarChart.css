@@ -1,0 +1,103 @@
+.ob-bar {
+  width: 100%;
+  font-family: var(--ob-font);
+}
+
+.ob-bar__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 12px;
+}
+.ob-bar__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ob-ink-2);
+}
+.ob-bar__legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.ob-bar__cols {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.ob-bar__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.ob-bar__track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+}
+/* Grouped: bars side by side, growing from the baseline. */
+.ob-bar__track--grouped {
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+}
+/* Stacked: segments piled bottom-up in one column. */
+.ob-bar__track--stacked {
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.ob-bar__fill {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 6px;
+  max-width: 46px;
+  border-radius: var(--ob-r-sm) var(--ob-r-sm) 0 0;
+  box-shadow: inset 0 1px 0 rgb(var(--ob-white) / 0.2);
+  transition: height var(--ob-dur-slow) var(--ob-spring);
+}
+.ob-bar__track--stacked .ob-bar__fill {
+  width: 72%;
+  border-radius: 0;
+}
+.ob-bar__track--stacked .ob-bar__fill:last-child {
+  border-radius: var(--ob-r-sm) var(--ob-r-sm) 0 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ob-bar__fill { transition: none; }
+}
+
+.ob-bar__val {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  color: var(--ob-ink-2);
+  white-space: nowrap;
+}
+.ob-bar__track--stacked .ob-bar__val {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 10px;
+}
+
+.ob-bar__label {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--ob-ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}

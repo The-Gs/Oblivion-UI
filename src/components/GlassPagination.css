@@ -7,8 +7,8 @@
 
 .ob-pager__btn {
   appearance: none;
-  min-width: 32px;
-  height: 32px;
+  min-width: var(--ob-pager-size, 32px);
+  height: var(--ob-pager-size, 32px);
   padding: 0 6px;
   display: inline-flex;
   align-items: center;

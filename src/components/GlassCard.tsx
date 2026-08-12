@@ -4,8 +4,22 @@ import type { PolymorphicComponent, PolymorphicProps } from '../lib/polymorphic'
 import { GlassSurface, type SurfaceElevation } from './GlassSurface';
 import './GlassCard.css';
 
+/** Class names for each region of the card. */
+export interface GlassCardSlots {
+  media?: string;
+  head?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  aside?: string;
+  body?: string;
+  footer?: string;
+}
+
 export interface GlassCardOwnProps {
   children?: ReactNode;
+  /** Reach any region without a wrapper selector. */
+  classNames?: GlassCardSlots;
   /** Small uppercase label above the title. */
   eyebrow?: ReactNode;
   title?: ReactNode;
@@ -37,6 +51,7 @@ export interface GlassCardOwnProps {
 export const GlassCard = (<T extends ElementType = 'div'>({
   as,
   children,
+  classNames: slots,
   eyebrow,
   title,
   description,
@@ -62,23 +77,23 @@ export const GlassCard = (<T extends ElementType = 'div'>({
       className={cn('ob-card', `ob-card--pad-${padding}`, className)}
       {...rest}
     >
-      {media ? <figure className="ob-card__media">{media}</figure> : null}
+      {media ? <figure className={cn('ob-card__media', slots?.media)}>{media}</figure> : null}
 
       {hasHead ? (
-        <div className="ob-card__head">
+        <div className={cn('ob-card__head', slots?.head)}>
           <div className="ob-card__headText">
-            {eyebrow ? <div className="ob-card__eyebrow">{eyebrow}</div> : null}
-            {title ? <h3 className="ob-card__title">{title}</h3> : null}
-            {description ? <p className="ob-card__desc">{description}</p> : null}
+            {eyebrow ? <div className={cn('ob-card__eyebrow', slots?.eyebrow)}>{eyebrow}</div> : null}
+            {title ? <h3 className={cn('ob-card__title', slots?.title)}>{title}</h3> : null}
+            {description ? <p className={cn('ob-card__desc', slots?.description)}>{description}</p> : null}
           </div>
-          {aside ? <div className="ob-card__aside">{aside}</div> : null}
+          {aside ? <div className={cn('ob-card__aside', slots?.aside)}>{aside}</div> : null}
         </div>
       ) : null}
 
-      {children ? <div className="ob-card__body">{children}</div> : null}
+      {children ? <div className={cn('ob-card__body', slots?.body)}>{children}</div> : null}
 
       {footer ? (
-        <div className={cn('ob-card__foot', dividedFooter && 'ob-card__foot--divided')}>
+        <div className={cn('ob-card__foot', dividedFooter && 'ob-card__foot--divided', slots?.footer)}>
           {footer}
         </div>
       ) : null}

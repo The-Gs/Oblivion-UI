@@ -29,6 +29,16 @@ export interface StudioState {
   radius: number; // px, drives --ob-r-md; others scale off it
   density: number; // spacing multiplier, 0.75 (tight) … 1.3 (airy)
   blur: number; // px, for glass/sleek feels
+  // Semantic colours (hex) → --ob-success / -warning / -danger.
+  success: string;
+  warning: string;
+  danger: string;
+  borderW: number; // px, --ob-border-w
+  glassSat: number; // %, --ob-glass-sat
+  motion: number; // duration multiplier, 0 (instant) … 2 (languid)
+  spring: boolean; // overshoot curve vs plain ease
+  lift: number; // px, --ob-lift (how far interactive surfaces rise on hover)
+  tracking: number; // px, --ob-track (mono label letter-spacing)
   gradient: boolean;
   gradFrom: string;
   gradTo: string;
@@ -47,6 +57,15 @@ export const DEFAULT_STUDIO: StudioState = {
   radius: 14,
   density: 1,
   blur: 22,
+  success: '#4cc882',
+  warning: '#d8a84a',
+  danger: '#e85a5a',
+  borderW: 1,
+  glassSat: 150,
+  motion: 1,
+  spring: true,
+  lift: 4,
+  tracking: 2,
   gradient: false,
   gradFrom: '#b31f33',
   gradTo: '#1a1216',
@@ -54,13 +73,43 @@ export const DEFAULT_STUDIO: StudioState = {
   gradTarget: 'page',
 };
 
+/** Built-in starting points. Each is a partial patch merged over the current
+ *  state, so switching preset keeps the user's colours where a preset is quiet
+ *  about them. `enabled` is forced on wherever these are applied. */
+export const PRESETS: { id: string; label: string; hint: string; patch: Partial<StudioState> }[] = [
+  {
+    id: 'corporate',
+    label: 'Corporate',
+    hint: 'Flat slate, steel-blue accent',
+    patch: { accent: '#2f6fd8', bg: '#f4f6f9', ink: 'auto', feel: 'minimal', radius: 8, density: 1, borderW: 1, glassSat: 120, spring: false, gradient: false },
+  },
+  {
+    id: 'neon',
+    label: 'Neon',
+    hint: 'Deep glass, cyan glow',
+    patch: { accent: '#22d3ee', bg: '#070b12', ink: 'light', feel: 'glass', radius: 16, blur: 26, glassSat: 190, spring: true, gradient: false },
+  },
+  {
+    id: 'paper',
+    label: 'Paper',
+    hint: 'Warm, opaque, serif',
+    patch: { accent: '#9a5b2e', bg: '#f2ece1', ink: 'auto', feel: 'minimal', font: 'serif', radius: 6, borderW: 1, spring: false, gradient: false },
+  },
+  {
+    id: 'brutalist',
+    label: 'Brutalist',
+    hint: 'Sharp, thick borders, mono',
+    patch: { accent: '#111111', bg: '#f5f5f0', ink: 'dark', feel: 'minimal', font: 'mono', radius: 0, borderW: 2, glassSat: 100, spring: false, tracking: 1, gradient: false },
+  },
+];
+
 /** Feel presets also nudge the sliders, so picking one gives an instant,
  *  coherent look the user can then fine-tune. */
 export const FEEL_PRESET: Record<Feel, Partial<StudioState>> = {
-  glass: { blur: 22, radius: 14, density: 1 },
-  sleek: { blur: 12, radius: 12, density: 1 },
-  minimal: { blur: 0, radius: 10, density: 1 },
-  compact: { blur: 0, radius: 8, density: 0.8 },
+  glass: { blur: 22, radius: 14, density: 1, lift: 4 },
+  sleek: { blur: 12, radius: 12, density: 1, lift: 2 },
+  minimal: { blur: 0, radius: 10, density: 1, lift: 0 },
+  compact: { blur: 0, radius: 8, density: 0.8, lift: 0 },
 };
 
 export const FEELS: { id: Feel; label: string; hint: string }[] = [
@@ -160,8 +209,12 @@ export const STUDIO_KEYS = [
   '--ob-accent', '--ob-accent-lit', '--ob-accent-bright', '--ob-accent-hot',
   '--ob-accent-soft', '--ob-accent-pale', '--ob-accent-edge', '--ob-accent-edge-lit',
   '--ob-bg', '--ob-bg-sunk',
-  '--ob-ink-rgb', '--ob-ink-strong', '--ob-ink',
+  '--ob-ink-rgb', '--ob-ink-strong', '--ob-ink', '--ob-ink-2', '--ob-ink-3', '--ob-ink-4',
+  '--ob-well', '--ob-well-deep', '--ob-well-top',
   '--ob-font', '--ob-font-display',
+  '--ob-success', '--ob-warning', '--ob-danger',
+  '--ob-border-w', '--ob-glass-sat', '--ob-track',
+  '--ob-dur-fast', '--ob-dur', '--ob-dur-slow', '--ob-spring',
   '--ob-surface-fill', '--ob-glass-fill', '--ob-glass-fill-lit', '--ob-glass-blur',
   '--ob-lift', '--ob-surface-glow',
   '--ob-line', '--ob-line-top', '--ob-line-lit', '--ob-line-lit-top',
@@ -209,6 +262,23 @@ export function buildOverrides(s: StudioState): Overrides {
     props['--ob-ink-strong'] = ink.strong;
     props['--ob-ink'] = ink.ink;
   }
+  // Themes redefine these as literals (not off --ob-ink-rgb), so set them
+  // explicitly or they bleed through when the Studio is layered on a theme.
+  props['--ob-ink-2'] = 'rgb(var(--ob-ink-rgb) / 0.6)';
+  props['--ob-ink-3'] = 'rgb(var(--ob-ink-rgb) / 0.45)';
+  props['--ob-ink-4'] = 'rgb(var(--ob-ink-rgb) / 0.3)';
+
+  // Recessed wells — inputs, tracks, table headers. Themes set these, so the
+  // Studio must too, or they keep the previous theme's colour.
+  if (lightBg) {
+    props['--ob-well'] = 'rgb(var(--ob-white) / 0.6)';
+    props['--ob-well-deep'] = 'rgb(var(--ob-white) / 0.45)';
+    props['--ob-well-top'] = 'rgb(var(--ob-white) / 1)';
+  } else {
+    props['--ob-well'] = 'rgb(0 0 0 / 0.3)';
+    props['--ob-well-deep'] = 'rgb(0 0 0 / 0.4)';
+    props['--ob-well-top'] = 'rgb(var(--ob-white) / 0.06)';
+  }
 
   /* Typography — swap the display + body stack across the whole kit. */
   const stack = FONT_MAP[s.font];
@@ -221,7 +291,7 @@ export function buildOverrides(s: StudioState): Overrides {
   const flat = s.feel === 'minimal' || s.feel === 'compact';
   const blur = flat ? 0 : Math.max(0, s.blur);
   props['--ob-glass-blur'] = `${blur}px`;
-  props['--ob-lift'] = s.feel === 'glass' ? '4px' : s.feel === 'sleek' ? '2px' : '0px';
+  props['--ob-lift'] = `${Math.max(0, s.lift)}px`;
   props['--ob-surface-glow'] = '0 0 #0000';
 
   if (flat) {
@@ -279,6 +349,26 @@ export function buildOverrides(s: StudioState): Overrides {
   props['--ob-glow'] = '0 6px 20px rgb(var(--ob-accent) / 0.28)';
   props['--ob-glow-lg'] = '0 12px 30px rgb(var(--ob-accent) / 0.45)';
   props['--ob-ring'] = '0 0 0 3px rgb(var(--ob-accent) / 0.2)';
+
+  /* Semantic colours → alerts, stats, meters, tones all track these. */
+  props['--ob-success'] = triplet(hexToRgb(s.success));
+  props['--ob-warning'] = triplet(hexToRgb(s.warning));
+  props['--ob-danger'] = triplet(hexToRgb(s.danger));
+
+  /* Border weight + glass saturation. */
+  props['--ob-border-w'] = `${Math.max(0, s.borderW)}px`;
+  props['--ob-glass-sat'] = `${Math.max(0, s.glassSat)}%`;
+
+  /* Type — mono-label tracking. */
+  props['--ob-track'] = `${s.tracking}px`;
+
+  /* Motion — scale the three durations together, and swap the easing curve
+     between the overshoot spring and a plain ease. */
+  const m = Math.max(0, s.motion);
+  props['--ob-dur-fast'] = `${(0.25 * m).toFixed(3)}s`;
+  props['--ob-dur'] = `${(0.35 * m).toFixed(3)}s`;
+  props['--ob-dur-slow'] = `${(0.4 * m).toFixed(3)}s`;
+  props['--ob-spring'] = s.spring ? 'cubic-bezier(0.34, 1.56, 0.64, 1)' : 'cubic-bezier(0.4, 0, 0.2, 1)';
 
   /* Gradient — an explicit opt-out of the "no gradients" house rule, applied
      either as the surface fill or the page backdrop. */

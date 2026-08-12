@@ -1,0 +1,118 @@
+.ob-steps {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--ob-font);
+}
+
+.ob-steps--horizontal {
+  flex-direction: row;
+}
+.ob-steps--vertical {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ob-steps__step {
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+}
+.ob-steps--horizontal .ob-steps__step {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.ob-steps--horizontal .ob-steps__step:last-child {
+  flex: 0;
+}
+
+.ob-steps__rail {
+  display: flex;
+  align-items: center;
+}
+.ob-steps--vertical .ob-steps__rail {
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.ob-steps__marker {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-family: var(--ob-font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ob-ink-3);
+  background: var(--ob-well);
+  border: 1px solid var(--ob-line);
+  cursor: default;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-steps__marker:not(:disabled) {
+  cursor: pointer;
+}
+
+.ob-steps__step[data-state='active'] .ob-steps__marker {
+  color: #fff;
+  background: rgb(var(--ob-accent));
+  border-color: rgb(var(--ob-accent-edge));
+  box-shadow: var(--ob-glow);
+}
+.ob-steps__step[data-state='done'] .ob-steps__marker {
+  color: rgb(var(--ob-accent-hot));
+  background: rgb(var(--ob-accent) / 0.16);
+  border-color: rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.ob-steps__line {
+  background: var(--ob-line);
+}
+.ob-steps--horizontal .ob-steps__line {
+  flex: 1;
+  height: 2px;
+  min-width: 24px;
+  margin: 0 10px;
+}
+.ob-steps--vertical .ob-steps__line {
+  width: 2px;
+  flex: 1;
+  min-height: 18px;
+  margin: 4px 0;
+}
+.ob-steps__step[data-state='done'] .ob-steps__line {
+  background: rgb(var(--ob-accent) / 0.5);
+}
+
+.ob-steps__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 2px;
+}
+.ob-steps--horizontal .ob-steps__text {
+  padding-top: 8px;
+}
+.ob-steps--vertical .ob-steps__step:not(:last-child) .ob-steps__text {
+  padding-bottom: 12px;
+}
+
+.ob-steps__label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ob-ink);
+}
+.ob-steps__step[data-state='upcoming'] .ob-steps__label {
+  color: var(--ob-ink-3);
+}
+
+.ob-steps__desc {
+  font-size: 12px;
+  color: var(--ob-ink-3);
+  line-height: 1.4;
+}

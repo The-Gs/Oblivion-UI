@@ -1,0 +1,40 @@
+.ob-editable__preview {
+  appearance: none;
+  display: inline-block;
+  max-width: 100%;
+  text-align: left;
+  font-family: var(--ob-font);
+  font-size: 14px;
+  color: var(--ob-ink);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--ob-r-sm);
+  padding: 6px 10px;
+  cursor: text;
+  transition: background var(--ob-dur-fast) var(--ob-ease), border-color var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-editable__preview:hover {
+  background: rgb(var(--ob-white) / 0.05);
+  border-color: var(--ob-line);
+}
+.ob-editable__preview--empty {
+  color: var(--ob-ink-4);
+}
+.ob-editable__preview--disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.ob-editable__input {
+  width: 100%;
+  font-family: var(--ob-font);
+  font-size: 14px;
+  color: var(--ob-ink);
+  background: var(--ob-well);
+  border: 1px solid rgb(var(--ob-accent-edge) / 0.55);
+  border-radius: var(--ob-r-sm);
+  padding: 6px 10px;
+  outline: none;
+  box-shadow: var(--ob-ring);
+  resize: vertical;
+}

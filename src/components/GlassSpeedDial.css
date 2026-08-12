@@ -1,0 +1,105 @@
+.ob-dial {
+  position: relative;
+  display: inline-flex;
+  width: 52px;
+  height: 52px;
+}
+
+.ob-dial__fab {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--ob-accent-edge) / 0.5);
+  background: rgb(var(--ob-accent));
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--ob-glow-lg);
+  display: grid;
+  place-items: center;
+}
+.ob-dial__fab-icon {
+  font-size: 24px;
+  line-height: 1;
+  transition: transform var(--ob-dur) var(--ob-spring);
+}
+.ob-dial--open .ob-dial__fab-icon {
+  transform: rotate(135deg);
+}
+
+.ob-dial__actions {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+}
+.ob-dial--up .ob-dial__actions { flex-direction: column-reverse; bottom: 62px; left: 4px; }
+.ob-dial--down .ob-dial__actions { flex-direction: column; top: 62px; left: 4px; }
+.ob-dial--left .ob-dial__actions { flex-direction: row-reverse; right: 62px; top: 6px; }
+.ob-dial--right .ob-dial__actions { flex-direction: row; left: 62px; top: 6px; }
+
+.ob-dial__action {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--ob-line-lit);
+  background: rgb(var(--ob-white) / 0.1);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  color: var(--ob-ink);
+  font-size: 17px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--ob-shadow-sm);
+  opacity: 0;
+  transform: scale(0.4);
+  pointer-events: none;
+  transition:
+    opacity var(--ob-dur) var(--ob-spring),
+    transform var(--ob-dur) var(--ob-spring);
+  transition-delay: calc(var(--i) * 40ms);
+}
+.ob-dial--open .ob-dial__action {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.ob-dial__action:hover {
+  color: rgb(var(--ob-accent-hot));
+  border-color: rgb(var(--ob-accent-edge) / 0.6);
+}
+
+.ob-dial__tip {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 9px;
+  border-radius: var(--ob-r-sm);
+  font-size: 11.5px;
+  white-space: nowrap;
+  color: var(--ob-ink);
+  background: var(--ob-bg-sunk);
+  border: 1px solid var(--ob-line);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-dial--left .ob-dial__tip,
+.ob-dial--right .ob-dial__tip {
+  right: auto;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+}
+.ob-dial__action:hover .ob-dial__tip {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-dial__action,
+  .ob-dial__fab-icon { transition: none; }
+}

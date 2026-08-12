@@ -9,7 +9,7 @@
   font-family: var(--ob-font-display);
   font-weight: 600;
   line-height: 1;
-  border-radius: var(--ob-r-md);
+  border-radius: var(--ob-btn-radius, var(--ob-r-md));
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
@@ -202,4 +202,44 @@
   border: 2px solid rgb(var(--ob-white) / 0.25);
   border-top-color: currentColor;
   animation: ob-spin 0.9s linear infinite;
+}
+
+/* ── Tones ────────────────────────────────────────────────────────────────
+   Remap the accent family to a semantic colour. --ob-glow / --ob-ring already
+   reference var(--ob-accent), so depth follows automatically. */
+.ob-btn--tone-success {
+  --ob-accent: var(--ob-success);
+  --ob-accent-lit: var(--ob-success);
+  --ob-accent-bright: var(--ob-success);
+  --ob-accent-hot: var(--ob-success);
+  --ob-accent-soft: var(--ob-success);
+  --ob-accent-edge: var(--ob-success);
+  --ob-accent-edge-lit: var(--ob-success);
+}
+.ob-btn--tone-warning {
+  --ob-accent: var(--ob-warning);
+  --ob-accent-lit: var(--ob-warning);
+  --ob-accent-bright: var(--ob-warning);
+  --ob-accent-hot: var(--ob-warning);
+  --ob-accent-soft: var(--ob-warning);
+  --ob-accent-edge: var(--ob-warning);
+  --ob-accent-edge-lit: var(--ob-warning);
+}
+.ob-btn--tone-danger {
+  --ob-accent: var(--ob-danger);
+  --ob-accent-lit: var(--ob-danger);
+  --ob-accent-bright: var(--ob-danger);
+  --ob-accent-hot: var(--ob-danger);
+  --ob-accent-soft: var(--ob-danger);
+  --ob-accent-edge: var(--ob-danger);
+  --ob-accent-edge-lit: var(--ob-danger);
+}
+.ob-btn--tone-neutral {
+  --ob-accent: 120 120 132;
+  --ob-accent-lit: 140 140 152;
+  --ob-accent-bright: 150 150 162;
+  --ob-accent-hot: 160 160 172;
+  --ob-accent-soft: 170 170 182;
+  --ob-accent-edge: 140 140 152;
+  --ob-accent-edge-lit: 170 170 182;
 }

@@ -5,6 +5,7 @@ import './GlassButton.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'quiet' | 'icon';
 export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonTone = 'accent' | 'neutral' | 'success' | 'warning' | 'danger';
 
 export interface GlassButtonOwnProps {
   children?: ReactNode;
@@ -12,6 +13,12 @@ export interface GlassButtonOwnProps {
   variant?: ButtonVariant;
   /** @default 'md' */
   size?: ButtonSize;
+  /**
+   * Recolours the button by remapping its accent to a semantic token. Pairs
+   * with any `variant`. Override corner rounding with `--ob-btn-radius`.
+   * @default 'accent'
+   */
+  tone?: ButtonTone;
   /** Node before the label. */
   leading?: ReactNode;
   /** Node after the label. */
@@ -41,6 +48,7 @@ export const GlassButton = (<T extends ElementType = 'button'>({
   children,
   variant = 'secondary',
   size = 'md',
+  tone = 'accent',
   leading,
   trailing,
   loading = false,
@@ -60,6 +68,7 @@ export const GlassButton = (<T extends ElementType = 'button'>({
         'ob-btn',
         `ob-btn--${variant}`,
         `ob-btn--${size}`,
+        tone !== 'accent' && `ob-btn--tone-${tone}`,
         block && 'ob-btn--block',
         loading && 'ob-btn--loading',
         noSpin && 'ob-btn--still',

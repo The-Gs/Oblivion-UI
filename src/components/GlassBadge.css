@@ -85,3 +85,26 @@
     animation: none;
   }
 }
+
+/* ── Tones: remap accent to a semantic colour (works with any variant). ── */
+.ob-badge--tone-success {
+  --ob-accent: var(--ob-success);
+  --ob-accent-soft: var(--ob-success);
+  --ob-accent-hot: var(--ob-success);
+  --ob-accent-bright: var(--ob-success);
+  --ob-accent-edge: var(--ob-success);
+}
+.ob-badge--tone-warning {
+  --ob-accent: var(--ob-warning);
+  --ob-accent-soft: var(--ob-warning);
+  --ob-accent-hot: var(--ob-warning);
+  --ob-accent-bright: var(--ob-warning);
+  --ob-accent-edge: var(--ob-warning);
+}
+.ob-badge--tone-danger {
+  --ob-accent: var(--ob-danger);
+  --ob-accent-soft: var(--ob-danger);
+  --ob-accent-hot: var(--ob-danger);
+  --ob-accent-bright: var(--ob-danger);
+  --ob-accent-edge: var(--ob-danger);
+}

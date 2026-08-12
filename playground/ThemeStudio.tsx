@@ -6,6 +6,7 @@ import {
   FEELS,
   FEEL_PRESET,
   FONTS,
+  PRESETS,
   resetStudio,
   seedFromComputed,
   toStudioCss,
@@ -15,6 +16,12 @@ import {
 } from './studioModel';
 
 const STORE_KEY = 'ob-studio';
+const PRESETS_KEY = 'ob-studio-presets';
+
+interface SavedPreset {
+  name: string;
+  state: StudioState;
+}
 
 function load(): StudioState {
   if (typeof window === 'undefined') return DEFAULT_STUDIO;
@@ -27,6 +34,17 @@ function load(): StudioState {
   return DEFAULT_STUDIO;
 }
 
+function loadPresets(): SavedPreset[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(PRESETS_KEY);
+    if (raw) return JSON.parse(raw) as SavedPreset[];
+  } catch {
+    /* ignore */
+  }
+  return [];
+}
+
 /**
  * Theme Studio — a slide-in panel that retheme the whole kit live by writing
  * `--ob-*` overrides onto <html>. Colour, gradient, material feel, roundness,
@@ -36,6 +54,8 @@ export function ThemeStudio() {
   const [open, setOpen] = useState(false);
   const [s, setS] = useState<StudioState>(load);
   const [copied, setCopied] = useState(false);
+  const [presets, setPresets] = useState<SavedPreset[]>(loadPresets);
+  const [presetName, setPresetName] = useState('');
   const seeded = useRef(false);
 
   // Re-apply on every change; persist so the look survives a reload.
@@ -47,6 +67,17 @@ export function ThemeStudio() {
       /* ignore */
     }
   }, [s]);
+
+  // The dropdown theme and the Studio are mutually exclusive sources: when a
+  // preset is picked there, drop our overrides so the two never overlap.
+  useEffect(() => {
+    const clear = () => {
+      seeded.current = false;
+      setS((prev) => (prev.enabled ? { ...prev, enabled: false } : prev));
+    };
+    window.addEventListener('ob:theme-picked', clear);
+    return () => window.removeEventListener('ob:theme-picked', clear);
+  }, []);
 
   const set = <K extends keyof StudioState>(key: K, val: StudioState[K]) =>
     setS((prev) => ({ ...prev, [key]: val }));
@@ -61,6 +92,30 @@ export function ThemeStudio() {
   };
 
   const pickFeel = (feel: Feel) => setS((prev) => ({ ...prev, feel, ...FEEL_PRESET[feel] }));
+
+  const applyPreset = (patch: Partial<StudioState>) => {
+    seeded.current = true;
+    setS((prev) => ({ ...prev, ...patch, enabled: true }));
+  };
+
+  const persistPresets = (next: SavedPreset[]) => {
+    setPresets(next);
+    try {
+      window.localStorage.setItem(PRESETS_KEY, JSON.stringify(next));
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const saveCurrent = () => {
+    const name = presetName.trim();
+    if (!name) return;
+    const next = [...presets.filter((p) => p.name !== name), { name, state: { ...s, enabled: true } }];
+    persistPresets(next);
+    setPresetName('');
+  };
+
+  const deletePreset = (name: string) => persistPresets(presets.filter((p) => p.name !== name));
 
   const reset = () => {
     seeded.current = false;
@@ -118,6 +173,57 @@ export function ThemeStudio() {
             </label>
 
             <div className="studio__body" data-off={disabled}>
+              {/* ── Presets ────────────────────────────────────────────── */}
+              <Section label="Presets">
+                <div className="studio__presets">
+                  {PRESETS.map((p) => (
+                    <button
+                      key={p.id}
+                      className="studio__preset"
+                      onClick={() => applyPreset(p.patch)}
+                      title={p.hint}
+                    >
+                      <span
+                        className="studio__preset-chip"
+                        style={{ background: p.patch.accent, borderColor: p.patch.bg }}
+                      />
+                      <strong>{p.label}</strong>
+                      <small>{p.hint}</small>
+                    </button>
+                  ))}
+                </div>
+                {presets.length ? (
+                  <div className="studio__saved">
+                    {presets.map((p) => (
+                      <span key={p.name} className="studio__saved-chip">
+                        <button className="studio__saved-apply" onClick={() => applyPreset(p.state)}>
+                          {p.name}
+                        </button>
+                        <button
+                          className="studio__saved-del"
+                          aria-label={`Delete ${p.name}`}
+                          onClick={() => deletePreset(p.name)}
+                        >
+                          ✕
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+                <div className="studio__save-row">
+                  <input
+                    className="studio__hex"
+                    placeholder="Save current as…"
+                    value={presetName}
+                    onChange={(e) => setPresetName(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && saveCurrent()}
+                  />
+                  <GlassButton variant="secondary" size="sm" onClick={saveCurrent} disabled={!presetName.trim()}>
+                    Save
+                  </GlassButton>
+                </div>
+              </Section>
+
               {/* ── Colour ─────────────────────────────────────────────── */}
               <Section label="Color">
                 <Swatch label="Accent" value={s.accent} onChange={(v) => set('accent', v)} />
@@ -255,6 +361,86 @@ export function ThemeStudio() {
                     />
                   </div>
                 ) : null}
+              </Section>
+
+              {/* ── Semantic colours ───────────────────────────────────── */}
+              <Section label="Semantic colors">
+                <Swatch label="Success" value={s.success} onChange={(v) => set('success', v)} />
+                <Swatch label="Warning" value={s.warning} onChange={(v) => set('warning', v)} />
+                <Swatch label="Danger" value={s.danger} onChange={(v) => set('danger', v)} />
+              </Section>
+
+              {/* ── Borders & surface ──────────────────────────────────── */}
+              <Section label="Borders & surface">
+                <Range
+                  label="Border width"
+                  lo="Hairline"
+                  hi="Bold"
+                  min={0}
+                  max={4}
+                  step={0.5}
+                  value={s.borderW}
+                  suffix="px"
+                  onChange={(v) => set('borderW', v)}
+                />
+                <Range
+                  label="Saturation"
+                  lo="Muted"
+                  hi="Vivid"
+                  min={100}
+                  max={220}
+                  value={s.glassSat}
+                  suffix="%"
+                  onChange={(v) => set('glassSat', v)}
+                />
+                <Range
+                  label="Tracking"
+                  lo="Tight"
+                  hi="Wide"
+                  min={0}
+                  max={5}
+                  step={0.5}
+                  value={s.tracking}
+                  suffix="px"
+                  onChange={(v) => set('tracking', v)}
+                />
+              </Section>
+
+              {/* ── Motion ─────────────────────────────────────────────── */}
+              <Section label="Motion">
+                <Range
+                  label="Speed"
+                  lo="Instant"
+                  hi="Languid"
+                  min={0}
+                  max={2}
+                  step={0.05}
+                  value={s.motion}
+                  format={(v) => (v === 0 ? 'off' : `${v.toFixed(2)}×`)}
+                  onChange={(v) => set('motion', v)}
+                />
+                <Range
+                  label="Hover lift"
+                  lo="Flat"
+                  hi="Springy"
+                  min={0}
+                  max={10}
+                  value={s.lift}
+                  suffix="px"
+                  onChange={(v) => set('lift', v)}
+                />
+                <label className="studio__row studio__row--toggle">
+                  <span>Overshoot (springy curve)</span>
+                  <button
+                    className="studio__sw"
+                    role="switch"
+                    aria-checked={s.spring}
+                    data-on={s.spring}
+                    onClick={() => set('spring', !s.spring)}
+                  >
+                    <span />
+                  </button>
+                </label>
               </Section>
             </div>
 

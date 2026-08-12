@@ -1,0 +1,121 @@
+.ob-cmd {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 20px 20px;
+}
+
+.ob-cmd__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(5 4 4 / 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: ob-fade var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-cmd__panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 62vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--ob-r-lg);
+  /* Dark plate → light ink locally, like the modal. */
+  --ob-ink-rgb: 239 236 235;
+  --ob-ink-strong: #f4f1f0;
+  --ob-ink: #efeceb;
+  color: var(--ob-ink);
+  background: rgb(24 18 18 / 0.8);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgb(var(--ob-white) / 0.14);
+  border-top-color: rgb(var(--ob-white) / 0.28);
+  box-shadow: var(--ob-shadow-xl);
+  animation: ob-modal-in var(--ob-dur-slow) var(--ob-spring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-cmd__panel { animation: none; }
+}
+
+.ob-cmd__search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgb(var(--ob-white) / 0.1);
+}
+
+.ob-cmd__search-icon {
+  font-size: 17px;
+  color: var(--ob-ink-3);
+}
+
+.ob-cmd__input {
+  flex: 1;
+  appearance: none;
+  border: 0;
+  background: none;
+  outline: none;
+  font-family: var(--ob-font);
+  font-size: 15px;
+  color: var(--ob-ink-strong);
+}
+.ob-cmd__input::placeholder {
+  color: var(--ob-ink-4);
+}
+
+.ob-cmd__list {
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.ob-cmd__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--ob-r-sm);
+  font-size: 14px;
+  color: var(--ob-ink-2);
+  cursor: pointer;
+}
+
+.ob-cmd__item[data-active='true'] {
+  color: var(--ob-ink-strong);
+  background: rgb(var(--ob-accent) / 0.22);
+  box-shadow: inset 0 0 0 1px rgb(var(--ob-accent-edge) / 0.4);
+}
+
+.ob-cmd__item-icon {
+  display: inline-flex;
+  width: 18px;
+  justify-content: center;
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-cmd__item-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.ob-cmd__item-hint {
+  font-family: var(--ob-font-mono);
+  font-size: 11px;
+  color: var(--ob-ink-4);
+}
+
+.ob-cmd__empty {
+  padding: 28px 12px;
+  text-align: center;
+  color: var(--ob-ink-3);
+  font-size: 14px;
+}

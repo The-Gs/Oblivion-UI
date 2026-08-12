@@ -1,0 +1,13 @@
+.ob-spark {
+  display: inline-block;
+  vertical-align: middle;
+  overflow: visible;
+}
+
+.ob-spark__area {
+  opacity: 0.16;
+}
+
+.ob-spark__dot {
+  filter: drop-shadow(0 0 4px rgb(var(--spark) / 0.7));
+}

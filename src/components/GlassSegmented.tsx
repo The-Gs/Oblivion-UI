@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '../lib/cn';
 import { useControllableState } from '../lib/hooks';
 import './GlassSegmented.css';
@@ -21,6 +21,9 @@ export interface GlassSegmentedProps {
   /** Stretch segments to fill the container. @default false */
   fluid?: boolean;
   className?: string;
+  style?: CSSProperties;
+  /** Class applied to every segment button. Radius hook: `--ob-seg-radius`. */
+  itemClassName?: string;
   'aria-label'?: string;
 }
 
@@ -36,6 +39,8 @@ export function GlassSegmented({
   size = 'md',
   fluid = false,
   className,
+  style,
+  itemClassName,
   'aria-label': ariaLabel,
 }: GlassSegmentedProps) {
   const [current, setCurrent] = useControllableState(value, defaultValue ?? items[0]?.value ?? '', onChange);
@@ -44,13 +49,14 @@ export function GlassSegmented({
     <div
       role="group"
       aria-label={ariaLabel}
+      style={style}
       className={cn('ob-seg', size === 'sm' && 'ob-seg--sm', fluid && 'ob-seg--fluid', className)}
     >
       {items.map((item) => (
         <button
           key={item.value}
           type="button"
-          className="ob-seg__item"
+          className={cn('ob-seg__item', itemClassName)}
           data-active={item.value === current}
           disabled={item.disabled}
           aria-pressed={item.value === current}

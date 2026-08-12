@@ -152,3 +152,53 @@ export function useControllableState<T>(
 
   return [value, setValue];
 }
+
+/**
+ * Boolean open/close state for modals, drawers, menus — Chakra's `useDisclosure`.
+ * `onOpen`/`onClose`/`onToggle` are stable callbacks.
+ */
+export function useDisclosure(defaultOpen = false): {
+  open: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onToggle: () => void;
+  setOpen: (open: boolean) => void;
+} {
+  const [open, setOpen] = useState(defaultOpen);
+  const onOpen = useCallback(() => setOpen(true), []);
+  const onClose = useCallback(() => setOpen(false), []);
+  const onToggle = useCallback(() => setOpen((v) => !v), []);
+  return { open, onOpen, onClose, onToggle, setOpen };
+}
+
+/**
+ * Copy text to the clipboard and expose a `copied` flag that resets after
+ * `timeout` ms — Chakra's `useClipboard`.
+ */
+export function useClipboard(text: string, timeout = 1500): { copied: boolean; copy: () => void } {
+  const [copied, setCopied] = useState(false);
+  const copy = useCallback(() => {
+    if (typeof navigator === 'undefined') return;
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), timeout);
+    });
+  }, [text, timeout]);
+  return { copied, copy };
+}
+
+/**
+ * Track a media query. SSR-safe: returns `false` until mounted, then subscribes.
+ */
+export function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mql = window.matchMedia(query);
+    setMatches(mql.matches);
+    const onChange = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mql.addEventListener('change', onChange);
+    return () => mql.removeEventListener('change', onChange);
+  }, [query]);
+  return matches;
+}

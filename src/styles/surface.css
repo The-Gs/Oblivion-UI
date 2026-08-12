@@ -22,7 +22,7 @@
   background: var(--ob-surface-fill);
   -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
   backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
-  border: 1px solid var(--ob-line);
+  border: var(--ob-border-w) solid var(--ob-line);
   border-top-color: var(--ob-line-top);
   /* --ob-surface-glow trails the list: transparent on glass/flat themes, a
      neon halo on `futuristic`. */

@@ -1,0 +1,79 @@
+.ob-range {
+  font-family: var(--ob-font);
+  width: 100%;
+}
+
+.ob-range__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ob-range__label {
+  font-size: 13px;
+  color: var(--ob-ink-2);
+}
+
+.ob-range__value {
+  font-family: var(--ob-font-mono);
+  font-size: 12px;
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-range__rail {
+  position: relative;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.ob-range__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  border-radius: var(--ob-r-full);
+  background: var(--ob-well);
+}
+
+.ob-range__fill {
+  position: absolute;
+  height: 6px;
+  border-radius: var(--ob-r-full);
+  background: rgb(var(--ob-accent));
+  box-shadow: 0 0 12px rgb(var(--ob-accent) / 0.5);
+}
+
+.ob-range__knob {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--ob-ink-strong);
+  border: 2px solid rgb(var(--ob-accent));
+  box-shadow: var(--ob-shadow-sm), 0 0 0 4px rgb(var(--ob-accent) / 0.15);
+  cursor: grab;
+  outline: none;
+}
+.ob-range__knob:focus-visible {
+  box-shadow: var(--ob-ring);
+}
+.ob-range__knob:active {
+  cursor: grabbing;
+}
+
+.ob-range--animated .ob-range__fill,
+.ob-range--animated .ob-range__knob {
+  transition:
+    left var(--ob-dur-fast) var(--ob-ease),
+    width var(--ob-dur-fast) var(--ob-ease);
+}
+
+.ob-range--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

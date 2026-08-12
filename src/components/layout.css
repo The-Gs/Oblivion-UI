@@ -1,0 +1,40 @@
+.ob-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ob-center--inline {
+  display: inline-flex;
+}
+
+.ob-ratio {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--ob-r-md);
+}
+.ob-ratio > * {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ob-btngroup {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Attached: collapse the seam between adjacent buttons. */
+.ob-btngroup--attached > :not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
+.ob-btngroup--attached > :not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.ob-btngroup--attached > :hover,
+.ob-btngroup--attached > :focus-visible {
+  z-index: 1;
+}

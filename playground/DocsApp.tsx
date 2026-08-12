@@ -20,16 +20,28 @@ function pageFromHash(): DocPage {
 export function DocsApp() {
   const [route, setRoute] = useState<string>(hashId);
   const [page, setPage] = useState<DocPage>(pageFromHash);
+  // Which sidebar groups are expanded. Start with the active page's group open.
+  const [openGroups, setOpenGroups] = useState<Set<string>>(() => new Set([pageFromHash().group]));
 
   useEffect(() => {
     const sync = () => {
       setRoute(hashId());
-      setPage(pageFromHash());
+      const next = pageFromHash();
+      setPage(next);
+      // Keep the active page's group expanded when navigating.
+      setOpenGroups((prev) => (prev.has(next.group) ? prev : new Set(prev).add(next.group)));
       window.scrollTo({ top: 0 });
     };
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
   }, []);
+
+  const toggleGroup = (group: string) =>
+    setOpenGroups((prev) => {
+      const next = new Set(prev);
+      next.has(group) ? next.delete(group) : next.add(group);
+      return next;
+    });
 
   const inBuilder = route === 'builder';
 
@@ -60,21 +72,41 @@ export function DocsApp() {
       ) : (
         <div className="docs__body">
           <nav className="docs__sidebar" aria-label="Components">
-            {GROUPS.map((group) => (
-              <div className="docs__group" key={group}>
-                <div className="docs__group-title">{group}</div>
-                {PAGES.filter((p) => p.group === group).map((p) => (
-                  <a
-                    key={p.id}
-                    href={`#${p.id}`}
-                    className={'docs__link' + (p.id === page.id ? ' docs__link--active' : '')}
-                    aria-current={p.id === page.id ? 'page' : undefined}
+            {GROUPS.map((group) => {
+              const pages = PAGES.filter((p) => p.group === group);
+              const open = openGroups.has(group);
+              const count = pages.length;
+              return (
+                <div className="docs__group" key={group} data-open={open}>
+                  <button
+                    type="button"
+                    className="docs__group-toggle"
+                    aria-expanded={open}
+                    onClick={() => toggleGroup(group)}
                   >
-                    {p.label}
-                  </a>
-                ))}
-              </div>
-            ))}
+                    <span className="docs__chev" aria-hidden="true">
+                      ▸
+                    </span>
+                    <span className="docs__group-name">{group}</span>
+                    <span className="docs__group-count">{count}</span>
+                  </button>
+                  {open ? (
+                    <div className="docs__group-items">
+                      {pages.map((p) => (
+                        <a
+                          key={p.id}
+                          href={`#${p.id}`}
+                          className={'docs__link' + (p.id === page.id ? ' docs__link--active' : '')}
+                          aria-current={p.id === page.id ? 'page' : undefined}
+                        >
+                          {p.label}
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
           </nav>
 
           <main className="docs__main">{page.render()}</main>

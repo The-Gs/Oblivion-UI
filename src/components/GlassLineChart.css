@@ -1,0 +1,52 @@
+.ob-linechart {
+  width: 100%;
+  font-family: var(--ob-font);
+}
+
+.ob-line__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 10px;
+}
+.ob-line__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ob-ink-2);
+}
+.ob-line__legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.ob-line {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: var(--ob-font-mono);
+}
+
+.ob-line__grid {
+  stroke: rgb(var(--ob-ink-rgb) / 0.08);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.ob-line__area {
+  opacity: 0.14;
+}
+
+.ob-line__label {
+  fill: var(--ob-ink-4);
+  font-size: 8px;
+}
+
+.ob-line__value {
+  fill: var(--ob-ink-2);
+  font-size: 8px;
+  font-weight: 600;
+}

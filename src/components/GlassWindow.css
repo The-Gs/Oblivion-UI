@@ -1,0 +1,249 @@
+.ob-win {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--ob-r-lg);
+  overflow: hidden;
+  background: var(--ob-surface-fill);
+  -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  border: var(--ob-border-w) solid var(--ob-line);
+  border-top-color: var(--ob-line-top);
+  box-shadow: var(--ob-shadow-lg), var(--ob-surface-glow);
+  color: var(--ob-ink);
+  font-family: var(--ob-font);
+}
+
+/* ── Title bar ───────────────────────────────────────────────────────── */
+.ob-win__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+  height: 44px;
+  background: rgb(var(--ob-white) / 0.04);
+  border-bottom: 1px solid var(--ob-line);
+}
+.ob-win--browser .ob-win__bar {
+  align-items: flex-end;
+  height: auto;
+  padding: 8px 12px 0;
+  gap: 12px;
+}
+
+/* Traffic lights */
+.ob-win__dots {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+.ob-win--browser .ob-win__dots {
+  padding-bottom: 8px;
+}
+.ob-win__dot {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  line-height: 1;
+  color: rgb(0 0 0 / 0.55);
+  font-size: 10px;
+  transition: filter var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-win__dot span {
+  opacity: 0;
+  transform: translateY(-0.5px);
+  transition: opacity var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-win__dots:hover .ob-win__dot span {
+  opacity: 1;
+}
+.ob-win__dot--close { background: #ff5f57; }
+.ob-win__dot--min { background: #febc2e; }
+.ob-win__dot--zoom { background: #28c840; }
+.ob-win__dot:hover { filter: brightness(1.08); }
+.ob-win__dot:focus-visible {
+  outline: 2px solid rgb(var(--ob-accent-edge) / 0.6);
+  outline-offset: 2px;
+}
+
+/* Mac title */
+.ob-win__title {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ob-ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Spacer mirrors the dot cluster width so the title is truly centred. */
+.ob-win__spacer {
+  flex: none;
+  width: 53px;
+}
+
+/* ── Windows / Linux controls (right side) ───────────────────────────── */
+.ob-win--os-windows .ob-win__bar,
+.ob-win--os-linux .ob-win__bar {
+  padding-right: 0;
+}
+.ob-win--os-windows.ob-win--browser .ob-win__bar,
+.ob-win--os-linux.ob-win--browser .ob-win__bar {
+  padding-right: 0;
+}
+/* Non-mac: title sits left, controls push to the right. */
+.ob-win--os-windows .ob-win__title,
+.ob-win--os-linux .ob-win__title {
+  text-align: left;
+  padding-left: 4px;
+}
+
+.ob-win__ctl {
+  display: flex;
+  align-items: stretch;
+  margin-left: auto;
+  flex: none;
+  align-self: stretch;
+}
+.ob-win--browser .ob-win__ctl {
+  align-self: flex-start;
+}
+
+.ob-win__ctl-btn {
+  appearance: none;
+  border: 0;
+  background: none;
+  color: var(--ob-ink-2);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  transition: background var(--ob-dur-fast) var(--ob-ease), color var(--ob-dur-fast) var(--ob-ease);
+}
+
+/* Windows 11: wide flat hit-areas, square; close goes red. */
+.ob-win__ctl--windows .ob-win__ctl-btn {
+  width: 44px;
+  height: 44px;
+}
+.ob-win--browser .ob-win__ctl--windows .ob-win__ctl-btn {
+  height: 40px;
+}
+.ob-win__ctl--windows .ob-win__ctl-btn:hover {
+  background: rgb(var(--ob-white) / 0.1);
+  color: var(--ob-ink-strong);
+}
+.ob-win__ctl--windows .ob-win__ctl-btn--close:hover {
+  background: #e81123;
+  color: #fff;
+}
+
+/* Linux (GNOME/Yaru): round pill buttons in a small cluster. */
+.ob-win__ctl--linux {
+  gap: 8px;
+  align-items: center;
+  padding: 0 12px;
+  align-self: center;
+}
+.ob-win--browser .ob-win__ctl--linux {
+  align-self: flex-start;
+  padding-top: 6px;
+}
+.ob-win__ctl--linux .ob-win__ctl-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgb(var(--ob-white) / 0.08);
+  border: 1px solid var(--ob-line);
+  font-size: 11px;
+}
+.ob-win__ctl--linux .ob-win__ctl-btn:hover {
+  background: rgb(var(--ob-white) / 0.16);
+  color: var(--ob-ink-strong);
+}
+.ob-win__ctl--linux .ob-win__ctl-btn--close:hover {
+  background: rgb(var(--ob-danger));
+  border-color: rgb(var(--ob-danger));
+  color: #fff;
+}
+
+/* Per-OS tab flavour. */
+.ob-win--os-windows .ob-win__tab { border-radius: 8px 8px 0 0; }
+.ob-win--os-linux .ob-win__tab { border-radius: var(--ob-r-sm); }
+.ob-win--os-linux.ob-win--browser .ob-win__bar { padding-bottom: 6px; align-items: center; }
+.ob-win--os-linux .ob-win__tab[data-active='true'] {
+  background: rgb(var(--ob-accent) / 0.16);
+  border-color: rgb(var(--ob-accent-edge) / 0.3);
+}
+
+/* ── Browser tabs ────────────────────────────────────────────────────── */
+.ob-win__tabs {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ob-win__tabs::-webkit-scrollbar { display: none; }
+
+.ob-win__tab {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 180px;
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--ob-r-sm) var(--ob-r-sm) 0 0;
+  background: none;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--ob-ink-3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-win__tab:hover {
+  color: var(--ob-ink-2);
+  background: rgb(var(--ob-white) / 0.04);
+}
+.ob-win__tab[data-active='true'] {
+  color: var(--ob-ink-strong);
+  background: var(--ob-bg-sunk);
+  border-color: var(--ob-line);
+}
+.ob-win__tab-icon {
+  display: inline-flex;
+  font-size: 0.95em;
+  color: rgb(var(--ob-accent-hot));
+}
+.ob-win__tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Toolbar (address bar etc.) ──────────────────────────────────────── */
+.ob-win__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--ob-bg-sunk);
+  border-bottom: 1px solid var(--ob-line);
+}
+
+/* ── Body ────────────────────────────────────────────────────────────── */
+.ob-win__body {
+  padding: 18px;
+  background: var(--ob-bg);
+  flex: 1;
+  min-height: 0;
+}

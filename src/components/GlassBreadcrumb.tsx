@@ -8,10 +8,21 @@ export interface BreadcrumbItem {
   onClick?: () => void;
 }
 
+/** Class names for each part of the trail. */
+export interface BreadcrumbSlots {
+  list?: string;
+  item?: string;
+  link?: string;
+  current?: string;
+  separator?: string;
+}
+
 export interface GlassBreadcrumbProps extends Omit<HTMLAttributes<HTMLElement>, 'onClick'> {
   items: BreadcrumbItem[];
   /** Separator between crumbs. @default '/' */
   separator?: ReactNode;
+  /** Reach any part without a wrapper selector. */
+  classNames?: BreadcrumbSlots;
   'aria-label'?: string;
 }
 
@@ -22,32 +33,33 @@ export interface GlassBreadcrumbProps extends Omit<HTMLAttributes<HTMLElement>, 
 export function GlassBreadcrumb({
   items,
   separator = '/',
+  classNames: slots,
   className,
   'aria-label': ariaLabel = 'Breadcrumb',
   ...rest
 }: GlassBreadcrumbProps) {
   return (
     <nav aria-label={ariaLabel} className={cn('ob-crumbs', className)} {...rest}>
-      <ol className="ob-crumbs__list">
+      <ol className={cn('ob-crumbs__list', slots?.list)}>
         {items.map((item, i) => {
           const last = i === items.length - 1;
           return (
-            <li key={i} className="ob-crumbs__item">
+            <li key={i} className={cn('ob-crumbs__item', slots?.item)}>
               {last ? (
-                <span className="ob-crumbs__current" aria-current="page">
+                <span className={cn('ob-crumbs__current', slots?.current)} aria-current="page">
                   {item.label}
                 </span>
               ) : item.href ? (
-                <a className="ob-crumbs__link" href={item.href} onClick={item.onClick}>
+                <a className={cn('ob-crumbs__link', slots?.link)} href={item.href} onClick={item.onClick}>
                   {item.label}
                 </a>
               ) : (
-                <button type="button" className="ob-crumbs__link" onClick={item.onClick}>
+                <button type="button" className={cn('ob-crumbs__link', slots?.link)} onClick={item.onClick}>
                   {item.label}
                 </button>
               )}
               {last ? null : (
-                <span className="ob-crumbs__sep" aria-hidden="true">
+                <span className={cn('ob-crumbs__sep', slots?.separator)} aria-hidden="true">
                   {separator}
                 </span>
               )}

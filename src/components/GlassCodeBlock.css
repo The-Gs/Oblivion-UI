@@ -1,0 +1,87 @@
+.ob-code {
+  border-radius: var(--ob-r-lg);
+  overflow: hidden;
+  border: 1px solid rgb(var(--ob-white) / 0.12);
+  box-shadow: var(--ob-shadow);
+  background: rgb(16 13 13 / 0.92);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.ob-code__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  height: 38px;
+  background: rgb(255 255 255 / 0.04);
+  border-bottom: 1px solid rgb(var(--ob-white) / 0.08);
+}
+
+.ob-code__dots { display: flex; gap: 7px; }
+.ob-code__d { width: 12px; height: 12px; border-radius: 50%; }
+.ob-code__d--r { background: #ff5f57; }
+.ob-code__d--y { background: #febc2e; }
+.ob-code__d--g { background: #28c840; }
+
+.ob-code__title {
+  font-family: var(--ob-font-mono);
+  font-size: 12px;
+  color: rgb(239 236 235 / 0.6);
+}
+.ob-code__bar-spacer { flex: 1; }
+
+.ob-code__lang {
+  font-family: var(--ob-font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgb(var(--ob-accent-hot));
+  padding: 2px 8px;
+  border-radius: var(--ob-r-full);
+  background: rgb(var(--ob-accent) / 0.16);
+}
+
+.ob-code__copy {
+  appearance: none;
+  border: 1px solid rgb(var(--ob-white) / 0.14);
+  background: rgb(var(--ob-white) / 0.05);
+  color: rgb(239 236 235 / 0.8);
+  font-family: var(--ob-font);
+  font-size: 11.5px;
+  padding: 4px 10px;
+  border-radius: var(--ob-r-sm);
+  cursor: pointer;
+}
+.ob-code__copy:hover {
+  color: #fff;
+  border-color: rgb(var(--ob-accent-edge) / 0.5);
+}
+
+.ob-code__body {
+  display: flex;
+  overflow-x: auto;
+}
+
+.ob-code__gutter {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 0 16px 16px;
+  text-align: right;
+  font-family: var(--ob-font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgb(239 236 235 / 0.28);
+  user-select: none;
+}
+
+.ob-code__pre {
+  margin: 0;
+  padding: 16px 18px;
+  font-family: var(--ob-font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgb(239 236 235 / 0.92);
+  white-space: pre;
+}

@@ -72,11 +72,11 @@
   --ob-alert-accent: rgb(var(--ob-accent-bright));
 }
 .ob-alert--success {
-  --ob-alert-accent: #4caf78;
+  --ob-alert-accent: rgb(var(--ob-success));
 }
 .ob-alert--warning {
-  --ob-alert-accent: #d8a84a;
+  --ob-alert-accent: rgb(var(--ob-warning));
 }
 .ob-alert--danger {
-  --ob-alert-accent: rgb(var(--ob-accent-hot));
+  --ob-alert-accent: rgb(var(--ob-danger));
 }

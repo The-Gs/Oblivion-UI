@@ -1,0 +1,73 @@
+.ob-nav {
+  display: flex;
+  font-family: var(--ob-font);
+}
+.ob-nav--vertical {
+  flex-direction: column;
+  gap: 2px;
+}
+.ob-nav--horizontal {
+  flex-direction: row;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.ob-nav__item {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  text-decoration: none;
+  color: var(--ob-ink-2);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--ob-r-sm);
+  cursor: pointer;
+  transition: all var(--ob-dur-fast) var(--ob-ease);
+}
+.ob-nav--horizontal .ob-nav__item {
+  width: auto;
+}
+
+.ob-nav__item:hover:not(:disabled) {
+  color: var(--ob-ink-strong);
+  background: rgb(var(--ob-white) / 0.06);
+}
+
+.ob-nav__item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ob-nav__item--active {
+  color: var(--ob-ink-strong);
+  background: rgb(var(--ob-accent) / 0.14);
+  border-color: rgb(var(--ob-accent-edge) / 0.3);
+}
+
+.ob-nav__icon {
+  display: inline-flex;
+  width: 18px;
+  justify-content: center;
+  color: rgb(var(--ob-accent-hot));
+  flex: none;
+}
+.ob-nav__item--active .ob-nav__icon {
+  color: rgb(var(--ob-accent-hot));
+}
+
+.ob-nav__label {
+  flex: 1;
+  min-width: 0;
+}
+
+.ob-nav__trailing {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--ob-ink-4);
+}

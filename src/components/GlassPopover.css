@@ -1,0 +1,25 @@
+.ob-pop__anchor {
+  display: inline-flex;
+}
+
+.ob-pop {
+  min-width: 220px;
+  max-width: min(360px, calc(100vw - 24px));
+  padding: 16px;
+  color: var(--ob-ink);
+  background: var(--ob-bg-sunk);
+  border: 1px solid var(--ob-line-lit);
+  border-top-color: var(--ob-line-lit-top);
+  border-radius: var(--ob-r-lg);
+  box-shadow: var(--ob-shadow-lg);
+  -webkit-backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  backdrop-filter: blur(var(--ob-glass-blur)) saturate(var(--ob-glass-sat));
+  animation: ob-pop-in var(--ob-dur) var(--ob-spring);
+  z-index: 70;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-pop {
+    animation: none;
+  }
+}

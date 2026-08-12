@@ -1,0 +1,114 @@
+.ob-cp {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 240px;
+  font-family: var(--ob-font);
+}
+
+.ob-cp__sv {
+  position: relative;
+  height: 150px;
+  border-radius: var(--ob-r-md);
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: none;
+  border: 1px solid var(--ob-line);
+}
+.ob-cp__sv-white,
+.ob-cp__sv-black {
+  position: absolute;
+  inset: 0;
+}
+.ob-cp__sv-white {
+  background: linear-gradient(to right, #fff, transparent);
+}
+.ob-cp__sv-black {
+  background: linear-gradient(to top, #000, transparent);
+}
+.ob-cp__sv-knob {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.4);
+  pointer-events: none;
+}
+
+.ob-cp__sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ob-cp__hue,
+.ob-cp__alpha {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  border-radius: var(--ob-r-full);
+  border: 1px solid var(--ob-line);
+  outline: none;
+  cursor: pointer;
+}
+.ob-cp__alpha {
+  background:
+    linear-gradient(to right, transparent, var(--cp-solid, #000)),
+    repeating-conic-gradient(#0000 0% 25%, #7773 0% 50%) 0 / 12px 12px;
+}
+
+.ob-cp__hue::-webkit-slider-thumb,
+.ob-cp__alpha::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgb(0 0 0 / 0.35);
+  box-shadow: var(--ob-shadow-sm);
+  cursor: grab;
+}
+.ob-cp__hue::-moz-range-thumb,
+.ob-cp__alpha::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgb(0 0 0 / 0.35);
+  cursor: grab;
+}
+
+.ob-cp__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ob-cp__preview {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--ob-r-sm);
+  border: 1px solid var(--ob-line-lit);
+  box-shadow: var(--ob-inset-top);
+}
+
+.ob-cp__hex {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--ob-font-mono);
+  font-size: 12.5px;
+  color: var(--ob-ink);
+  background: var(--ob-well);
+  border: 1px solid var(--ob-line);
+  border-radius: var(--ob-r-sm);
+  padding: 8px 10px;
+  outline: none;
+}
+.ob-cp__hex:focus {
+  border-color: rgb(var(--ob-accent-edge) / 0.55);
+  box-shadow: var(--ob-ring);
+}

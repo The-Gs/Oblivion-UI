@@ -8,6 +8,55 @@ import {
   GlassAvatarGroup,
   GlassBadge,
   GlassBreadcrumb,
+  GlassCallout,
+  GlassColorPicker,
+  GlassCommand,
+  GlassDescriptionList,
+  GlassDrawer,
+  GlassEmptyState,
+  GlassHoverCard,
+  GlassMeter,
+  GlassNavMenu,
+  GlassPopover,
+  GlassRangeSlider,
+  GlassScrollArea,
+  GlassSteps,
+  GlassTimeline,
+  GlassToggleGroup,
+  GlassWindow,
+  GlassMenuBar,
+  GlassDock,
+  GlassTerminal,
+  GlassNotification,
+  GlassContextMenu,
+  GlassStatusBar,
+  GlassDeviceFrame,
+  GlassCodeBlock,
+  GlassMiniPlayer,
+  GlassChatBubble,
+  GlassSpotlightCard,
+  GlassTiltCard,
+  GlassNumberTicker,
+  GlassMarquee,
+  GlassSpeedDial,
+  GlassActivityRings,
+  GlassGauge,
+  GlassSparkline,
+  GlassSplitPane,
+  GlassAlertDialog,
+  GlassTag,
+  GlassEditable,
+  GlassSidebar,
+  GlassCarousel,
+  GlassBarChart,
+  GlassLineChart,
+  Center,
+  AspectRatio,
+  ButtonGroup,
+  Heading,
+  Text,
+  useDisclosure,
+  useClipboard,
   GlassButton,
   GlassCalendar,
   GlassCard,
@@ -2153,6 +2202,1125 @@ function KbdPage() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   Overlays, navigation, feedback, forms — the expansion batch
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function PopoverPage() {
+  return (
+    <Page eyebrow="Overlays" title="Popover" lede="A click-triggered floating panel for rich content — positioned, flipped, and dismissed for you.">
+      <Demo center code={`<GlassPopover trigger={<GlassButton>Open</GlassButton>}>\n  <strong>Filters</strong>\n  <p>Any content — forms, detail cards, actions.</p>\n</GlassPopover>`}>
+        <GlassPopover
+          placement="bottom"
+          trigger={<GlassButton variant="secondary">Open popover</GlassButton>}
+        >
+          <strong style={{ display: 'block', marginBottom: 6, color: 'var(--ob-ink-strong)' }}>Filters</strong>
+          <p style={{ margin: 0, fontSize: 13, color: 'var(--ob-ink-2)' }}>
+            Any content fits here — forms, detail cards, quick actions.
+          </p>
+        </GlassPopover>
+      </Demo>
+    </Page>
+  );
+}
+
+function HoverCardPage() {
+  return (
+    <Page eyebrow="Overlays" title="Hover card" lede="A preview card that opens on hover or focus and stays put while you're over it.">
+      <Demo center code={`<GlassHoverCard trigger={<a href="#">@dana</a>}>\n  <ProfilePreview />\n</GlassHoverCard>`}>
+        <span style={{ color: 'var(--ob-ink-2)' }}>
+          Follows{' '}
+          <GlassHoverCard
+            placement="top"
+            trigger={<a href="#hovercard" style={{ color: 'rgb(var(--ob-accent-hot))' }}>@dana</a>}
+          >
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+              <GlassAvatar name="Dana Kade" />
+              <div>
+                <strong style={{ color: 'var(--ob-ink-strong)' }}>Dana Kade</strong>
+                <div style={{ fontSize: 12, color: 'var(--ob-ink-3)' }}>Sound design · 2.1k followers</div>
+              </div>
+            </div>
+          </GlassHoverCard>
+        </span>
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveDrawer() {
+  const [open, setOpen] = useState(false);
+  const [side, setSide] = useState<'left' | 'right' | 'top' | 'bottom'>('right');
+  return (
+    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      {(['left', 'right', 'top', 'bottom'] as const).map((sd) => (
+        <GlassButton key={sd} variant="secondary" size="sm" onClick={() => { setSide(sd); setOpen(true); }}>
+          {sd}
+        </GlassButton>
+      ))}
+      <GlassDrawer open={open} onClose={() => setOpen(false)} side={side} title="Panel"
+        footer={<GlassButton variant="primary" size="sm" onClick={() => setOpen(false)}>Done</GlassButton>}>
+        <p style={{ marginTop: 0 }}>A slide-in sheet from the {side}. Focus is trapped and scroll is locked.</p>
+      </GlassDrawer>
+    </div>
+  );
+}
+
+function DrawerPage() {
+  return (
+    <Page eyebrow="Overlays" title="Drawer" lede="A sheet that slides in from any edge, on the modal overlay plate. Focus-trapped, scroll-locked, Escape-dismissible.">
+      <Demo center code={`const [open, setOpen] = useState(false);\n\n<GlassDrawer open={open} onClose={() => setOpen(false)} side="right" title="Panel">\n  …\n</GlassDrawer>`}>
+        <LiveDrawer />
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveCommand() {
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+  const items = [
+    { id: 'new', label: 'New track', hint: '⌘N', icon: '✚', onSelect: () => toast('New track') },
+    { id: 'import', label: 'Import audio', icon: '↧', onSelect: () => toast('Import audio') },
+    { id: 'export', label: 'Export master', icon: '↥', onSelect: () => toast('Export master') },
+    { id: 'settings', label: 'Open settings', hint: '⌘,', icon: '⚙', onSelect: () => toast('Open settings') },
+    { id: 'theme', label: 'Toggle theme', icon: '◐', onSelect: () => toast('Toggle theme') },
+  ];
+  return (
+    <>
+      <GlassButton variant="secondary" onClick={() => setOpen(true)}>
+        Open palette <GlassKbd size="sm">⌘K</GlassKbd>
+      </GlassButton>
+      <GlassCommand open={open} onClose={() => setOpen(false)} items={items} />
+    </>
+  );
+}
+
+function CommandPage() {
+  return (
+    <Page eyebrow="Overlays" title="Command palette" lede="A ⌘K-style filterable, keyboard-driven action list. Arrows move, Enter selects, Escape closes.">
+      <Demo center code={`<GlassCommand open={open} onClose={close} items={[\n  { id: 'new', label: 'New track', hint: '⌘N', onSelect: create },\n]} />`}>
+        <LiveCommand />
+      </Demo>
+    </Page>
+  );
+}
+
+function StepsPage() {
+  const steps = [
+    { label: 'Upload', description: 'Add your stems' },
+    { label: 'Arrange', description: 'Build the timeline' },
+    { label: 'Master', description: 'Polish & export' },
+  ];
+  return (
+    <Page eyebrow="Navigation" title="Steps" lede="A progress stepper with complete / active / upcoming states. Horizontal or vertical.">
+      <Demo code={`<GlassSteps current={1} steps={[\n  { label: 'Upload' }, { label: 'Arrange' }, { label: 'Master' },\n]} />`}>
+        <div style={{ width: '100%' }}>
+          <GlassSteps current={1} steps={steps} />
+        </div>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'range', key: 'current', label: 'current', min: 0, max: 2, default: 1 },
+          { type: 'select', key: 'orientation', label: 'orientation', options: ['horizontal', 'vertical'], default: 'horizontal' },
+        ]}
+        render={(v) => (
+          <div style={{ width: v.orientation === 'vertical' ? 240 : '100%' }}>
+            <GlassSteps current={Number(v.current)} orientation={v.orientation as 'horizontal'} steps={steps} />
+          </div>
+        )}
+        code={(v) => `<GlassSteps current={${v.current}} orientation="${v.orientation}" steps={steps} />`}
+      />
+    </Page>
+  );
+}
+
+function TimelinePage() {
+  const items = [
+    { title: 'Session created', time: '09:12', tone: 'accent' as const, description: 'Project “Substrata” opened.' },
+    { title: 'Stems imported', time: '09:40', tone: 'success' as const },
+    { title: 'Render queued', time: '11:02', tone: 'warning' as const, description: 'Waiting on the mix bus.' },
+    { title: 'Mastered', time: '13:20', tone: 'success' as const },
+  ];
+  return (
+    <Page eyebrow="Navigation" title="Timeline" lede="A connected column of dated events, each node coloured by a semantic tone.">
+      <Demo code={`<GlassTimeline items={[\n  { title: 'Session created', time: '09:12', tone: 'accent' },\n  { title: 'Mastered', time: '13:20', tone: 'success' },\n]} />`}>
+        <div style={{ width: '100%', maxWidth: 420 }}>
+          <GlassTimeline items={items} />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function NavMenuPage() {
+  const items = [
+    { label: 'Overview', icon: '◈', active: true, trailing: '' },
+    { label: 'Tracks', icon: '♪', trailing: '12' },
+    { label: 'Effects', icon: '✦' },
+    { label: 'Settings', icon: '⚙' },
+  ];
+  return (
+    <Page eyebrow="Navigation" title="Nav menu" lede="A navigation list of links or buttons with an active state, vertical or horizontal.">
+      <Demo code={`<GlassNavMenu items={[\n  { label: 'Overview', icon: '◈', active: true },\n  { label: 'Tracks', icon: '♪', trailing: '12' },\n]} />`}>
+        <div style={{ width: 240 }}>
+          <GlassNavMenu items={items} />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function ScrollAreaPage() {
+  return (
+    <Page eyebrow="Layout" title="Scroll area" lede="A styled overflow container with a slim, themed scrollbar and soft edge fades.">
+      <Demo code={`<GlassScrollArea maxHeight={180}>\n  {/* long content */}\n</GlassScrollArea>`}>
+        <GlassScrollArea maxHeight={180} style={{ width: '100%', maxWidth: 360 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingRight: 12 }}>
+            {Array.from({ length: 14 }, (_, i) => (
+              <div key={i} style={{ padding: '10px 12px', borderRadius: 10, background: 'rgb(var(--ob-white) / 0.05)', color: 'var(--ob-ink-2)', fontSize: 13 }}>
+                Row {i + 1}
+              </div>
+            ))}
+          </div>
+        </GlassScrollArea>
+      </Demo>
+    </Page>
+  );
+}
+
+function MeterPage() {
+  return (
+    <Page eyebrow="Data" title="Meter" lede="A labelled progress meter with semantic tones and optional auto-colouring thresholds.">
+      <Demo code={`<GlassMeter label="Disk" value={82} showValue thresholds={{ 0.7: 'warning', 0.9: 'danger' }} />`}>
+        <div style={{ width: '100%', maxWidth: 420, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <GlassMeter label="CPU" value={42} showValue />
+          <GlassMeter label="Memory" value={68} showValue thresholds={{ 0.6: 'warning' }} />
+          <GlassMeter label="Disk" value={92} showValue thresholds={{ 0.7: 'warning', 0.9: 'danger' }} />
+        </div>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'range', key: 'value', label: 'value', min: 0, max: 100, default: 64 },
+          { type: 'select', key: 'tone', label: 'tone', options: ['accent', 'success', 'warning', 'danger'], default: 'accent' },
+          { type: 'toggle', key: 'showValue', label: 'showValue', default: true },
+        ]}
+        render={(v) => (
+          <div style={{ width: 320 }}>
+            <GlassMeter label="Usage" value={Number(v.value)} tone={v.tone as 'accent'} showValue={Boolean(v.showValue)} />
+          </div>
+        )}
+        code={(v) => `<GlassMeter label="Usage" value={${v.value}} tone="${v.tone}"${v.showValue ? ' showValue' : ''} />`}
+      />
+    </Page>
+  );
+}
+
+function EmptyStatePage() {
+  return (
+    <Page eyebrow="Feedback" title="Empty state" lede="A centred placeholder for empty lists, zero-results, and first-run screens.">
+      <Demo center code={`<GlassEmptyState icon="🎧" title="No tracks yet" description="Import stems to get started." action={<GlassButton variant="primary" size="sm">Import</GlassButton>} />`}>
+        <GlassEmptyState
+          icon="◎"
+          title="No tracks yet"
+          description="Import your stems or start from a template to fill this space."
+          action={<GlassButton variant="primary" size="sm">Import audio</GlassButton>}
+        />
+      </Demo>
+    </Page>
+  );
+}
+
+function CalloutPage() {
+  return (
+    <Page eyebrow="Feedback" title="Callout" lede="A lightweight inline note with a coloured left rail — lighter than an alert.">
+      <Demo code={`<GlassCallout tone="warning" title="Heads up" icon="⚠">\n  Renders are queued behind the mix bus.\n</GlassCallout>`}>
+        <div style={{ width: '100%', maxWidth: 460, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <GlassCallout tone="info" icon="ℹ" title="Note">Bounces are 24-bit by default.</GlassCallout>
+          <GlassCallout tone="success" icon="✓">Master exported to your library.</GlassCallout>
+          <GlassCallout tone="warning" icon="⚠" title="Heads up">Renders are queued behind the mix bus.</GlassCallout>
+          <GlassCallout tone="danger" icon="✕" title="Clipping">The master bus is over 0 dB.</GlassCallout>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function DescriptionListPage() {
+  const items = [
+    { term: 'Format', description: 'WAV · 24-bit / 48 kHz' },
+    { term: 'Duration', description: '4:12' },
+    { term: 'Tempo', description: '174 BPM' },
+    { term: 'Key', description: 'F minor' },
+  ];
+  return (
+    <Page eyebrow="Data" title="Description list" lede="A term/value list for specs, metadata, and detail panels. Horizontal or stacked.">
+      <Demo code={`<GlassDescriptionList items={[\n  { term: 'Format', description: 'WAV · 24-bit' },\n  { term: 'Tempo', description: '174 BPM' },\n]} />`}>
+        <div style={{ width: '100%', maxWidth: 420 }}>
+          <GlassDescriptionList items={items} />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveRangeSlider() {
+  const [range, setRange] = useState<[number, number]>([28, 72]);
+  return (
+    <div style={{ width: '100%', maxWidth: 420 }}>
+      <GlassRangeSlider value={range} onChange={setRange} label="Price" format={(r) => `$${r[0]} – $${r[1]}`} />
+    </div>
+  );
+}
+
+function RangeSliderPage() {
+  return (
+    <Page eyebrow="Forms" title="Range slider" lede="A dual-handle slider that selects a low/high range. Drag either thumb or the track; arrow keys step.">
+      <Demo code={`const [range, setRange] = useState([28, 72]);\n\n<GlassRangeSlider value={range} onChange={setRange} label="Price" />`}>
+        <LiveRangeSlider />
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveToggleGroup() {
+  const [value, setValue] = useState<string[]>(['bold']);
+  const items = [
+    { value: 'bold', label: 'B' },
+    { value: 'italic', label: 'I' },
+    { value: 'underline', label: 'U' },
+    { value: 'strike', label: 'S' },
+  ];
+  return <GlassToggleGroup items={items} value={value} onChange={setValue} aria-label="Text style" />;
+}
+
+function ToggleGroupPage() {
+  return (
+    <Page eyebrow="Forms" title="Toggle group" lede="A multi-select sibling of Segmented — turn any number of the connected pills on.">
+      <Demo center code={`const [value, setValue] = useState(['bold']);\n\n<GlassToggleGroup value={value} onChange={setValue} items={[\n  { value: 'bold', label: 'B' }, { value: 'italic', label: 'I' },\n]} />`}>
+        <LiveToggleGroup />
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveColorPicker() {
+  const [color, setColor] = useState('#b31f33');
+  return (
+    <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
+      <GlassColorPicker value={color} onChange={setColor} alpha />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+        <span style={{ width: 60, height: 60, borderRadius: 14, background: color, boxShadow: 'var(--ob-shadow)' }} />
+        <code style={{ fontSize: 12, color: 'var(--ob-ink-2)' }}>{color}</code>
+      </div>
+    </div>
+  );
+}
+
+function ColorPickerPage() {
+  return (
+    <Page eyebrow="Forms" title="Color picker" lede="A hand-rolled HSV picker — saturation/value square, hue and opacity sliders, hex field. Zero dependencies.">
+      <Demo center code={`const [color, setColor] = useState('#b31f33');\n\n<GlassColorPicker value={color} onChange={setColor} alpha />`}>
+        <LiveColorPicker />
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveWindow() {
+  const [tab, setTab] = useState('substrata');
+  const tabs = [
+    { id: 'substrata', label: 'Substrata', icon: '♪' },
+    { id: 'redline', label: 'Redline Pressure', icon: '♪' },
+    { id: 'hollow', label: 'Hollow Signal', icon: '♪' },
+  ];
+  return (
+    <GlassWindow
+      chrome="browser"
+      tabs={tabs}
+      activeTab={tab}
+      onTabChange={setTab}
+      onClose={() => {}}
+      onMinimize={() => {}}
+      onZoom={() => {}}
+      toolbar={
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%' }}>
+          <GlassKbd size="sm">←</GlassKbd>
+          <GlassKbd size="sm">→</GlassKbd>
+          <div style={{ flex: 1, padding: '6px 12px', borderRadius: 999, background: 'var(--ob-well)', border: '1px solid var(--ob-line)', fontSize: 12.5, color: 'var(--ob-ink-3)', fontFamily: 'var(--ob-font-mono)' }}>
+            oblivion.ui / {tab}
+          </div>
+        </div>
+      }
+      style={{ width: '100%', maxWidth: 520 }}
+    >
+      <div style={{ minHeight: 120 }}>
+        <h3 style={{ margin: '0 0 6px', color: 'var(--ob-ink-strong)' }}>{tabs.find((t) => t.id === tab)?.label}</h3>
+        <p style={{ margin: 0, color: 'var(--ob-ink-2)', fontSize: 13.5 }}>
+          Tab content renders here — the window is pure chrome around whatever you drop in.
+        </p>
+      </div>
+    </GlassWindow>
+  );
+}
+
+function WindowPage() {
+  return (
+    <Page eyebrow="Layout" title="Window" lede="A desktop-window frame in glass — traffic-light controls, a mac title or a browser tab strip, and a toolbar row. Pure chrome for demos and app shells.">
+      <Demo center code={`<GlassWindow chrome="mac" title="Mixer">\n  …\n</GlassWindow>`}>
+        <GlassWindow chrome="mac" title="Mixer.app" onClose={() => {}} onMinimize={() => {}} onZoom={() => {}} style={{ width: '100%', maxWidth: 460 }}>
+          <div style={{ minHeight: 100, color: 'var(--ob-ink-2)', fontSize: 14 }}>
+            A macOS-style window: three traffic lights, a centred title, your content below.
+          </div>
+        </GlassWindow>
+      </Demo>
+
+      <Demo center title="Browser chrome" desc="Pass `tabs` for a browser-like frame with a tab strip and a toolbar row." code={`<GlassWindow\n  chrome="browser"\n  tabs={[{ id: 'a', label: 'Substrata' }, …]}\n  activeTab={tab}\n  onTabChange={setTab}\n  toolbar={<AddressBar />}\n/>`}>
+        <LiveWindow />
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'select', key: 'os', label: 'os', options: ['mac', 'windows', 'linux'], default: 'mac' },
+          { type: 'select', key: 'chrome', label: 'chrome', options: ['mac', 'browser'], default: 'mac' },
+        ]}
+        render={(v) => (
+          <GlassWindow
+            os={v.os as 'mac'}
+            chrome={v.chrome as 'mac'}
+            title="Mixer.app"
+            tabs={v.chrome === 'browser' ? [{ id: 'a', label: 'Substrata' }, { id: 'b', label: 'Redline' }] : undefined}
+            onClose={() => {}}
+            onMinimize={() => {}}
+            onZoom={() => {}}
+            style={{ width: 380 }}
+          >
+            <div style={{ minHeight: 70, color: 'var(--ob-ink-2)', fontSize: 13.5 }}>
+              {v.os} · {v.chrome} — the traffic lights and tab shape follow the OS.
+            </div>
+          </GlassWindow>
+        )}
+        code={(v) => `<GlassWindow os="${v.os}" chrome="${v.chrome}" title="Mixer.app" … />`}
+      />
+    </Page>
+  );
+}
+
+function MenuBarPage() {
+  return (
+    <Page eyebrow="Chrome" title="Menu bar" lede="A macOS-style top menu bar — brand, app menus, right-aligned status glyphs and a live clock.">
+      <Demo code={`<GlassMenuBar brand="◆" menus={['File', 'Edit', 'View']} status={['🔊', '📶', '🔋']} />`}>
+        <div style={{ width: '100%' }}>
+          <GlassMenuBar brand="◆" menus={['Oblivion', 'File', 'Edit', 'View', 'Window']} status={['◐', '⇅', '▮']} />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function DockPage() {
+  return (
+    <Page eyebrow="Chrome" title="Dock" lede="A macOS dock — icons swell toward the cursor and settle when it leaves.">
+      <Demo center code={`<GlassDock items={[{ id: 'finder', icon: '🗂', label: 'Finder' }, …]} />`}>
+        <GlassDock
+          items={[
+            { id: 'finder', icon: '◈', label: 'Finder', active: true },
+            { id: 'notes', icon: '✎', label: 'Notes' },
+            { id: 'music', icon: '♪', label: 'Music' },
+            { id: 'term', icon: '❯', label: 'Terminal' },
+            { id: 'trash', icon: '🗑', label: 'Trash' },
+          ]}
+        />
+      </Demo>
+    </Page>
+  );
+}
+
+function TerminalPage() {
+  return (
+    <Page eyebrow="Chrome" title="Terminal" lede="A terminal window with a prompt, output lines, a blinking cursor, and an optional type-on.">
+      <Demo center code={`<GlassTerminal typing title="zsh" lines={[\n  { cmd: 'npm i oblivion-ui', out: 'added 1 package in 1.2s' },\n]} />`}>
+        <GlassTerminal
+          title="zsh — oblivion"
+          typing
+          lines={[
+            { cmd: 'npm i oblivion-ui', out: '＋ oblivion-ui@0.3.0' },
+            { cmd: 'npm run build', out: 'built dist/ in 574ms ✓' },
+          ]}
+        />
+      </Demo>
+    </Page>
+  );
+}
+
+function NotificationPage() {
+  const [show, setShow] = useState(true);
+  return (
+    <Page eyebrow="Chrome" title="Notification" lede="An OS-style notification banner — app icon, title, body, timestamp.">
+      <Demo center code={`<GlassNotification app="Mixer" icon="♪" title="Render complete" body="Substrata (VIP) mastered." time="now" />`}>
+        {show ? (
+          <GlassNotification
+            app="Mixer"
+            icon="♪"
+            title="Render complete"
+            body="Substrata (VIP) mastered and exported to your library."
+            time="now"
+            onClose={() => setShow(false)}
+            actions={
+              <>
+                <GlassButton size="sm" variant="secondary">View</GlassButton>
+                <GlassButton size="sm" variant="ghost" onClick={() => setShow(false)}>Dismiss</GlassButton>
+              </>
+            }
+          />
+        ) : (
+          <GlassButton variant="secondary" size="sm" onClick={() => setShow(true)}>Show again</GlassButton>
+        )}
+      </Demo>
+    </Page>
+  );
+}
+
+function ContextMenuPage() {
+  const { toast } = useToast();
+  const items = [
+    { key: 'open', label: 'Open', icon: '↗', hint: '⏎', onSelect: () => toast('Open') },
+    { key: 'rename', label: 'Rename', icon: '✎', onSelect: () => toast('Rename') },
+    { key: 'dup', label: 'Duplicate', icon: '⧉', onSelect: () => toast('Duplicate') },
+    { key: 's1', separator: true },
+    { key: 'del', label: 'Delete', icon: '🗑', danger: true, onSelect: () => toast('Delete') },
+  ];
+  return (
+    <Page eyebrow="Chrome" title="Context menu" lede="A right-click menu, portalled at the cursor and clamped to the viewport.">
+      <Demo center code={`<GlassContextMenu items={items}>\n  <div>Right-click me</div>\n</GlassContextMenu>`}>
+        <GlassContextMenu items={items}>
+          <div style={{ display: 'grid', placeItems: 'center', width: 260, height: 120, borderRadius: 14, border: '1.5px dashed var(--ob-line-lit)', color: 'var(--ob-ink-3)', fontSize: 13.5 }}>
+            Right-click anywhere here
+          </div>
+        </GlassContextMenu>
+      </Demo>
+    </Page>
+  );
+}
+
+function StatusBarPage() {
+  return (
+    <Page eyebrow="Chrome" title="Status bar" lede="An editor-style status bar — grouped, tinted segments (branch, errors, position).">
+      <Demo code={`<GlassStatusBar left={[{ key: 'br', icon: '⎇', label: 'main' }]} right={[…]} />`}>
+        <div style={{ width: '100%' }}>
+          <GlassStatusBar
+            left={[
+              { key: 'br', icon: '⎇', label: 'main', onClick: () => {} },
+              { key: 'err', icon: '✕', label: '0', tone: 'danger' },
+              { key: 'warn', icon: '⚠', label: '2', tone: 'warning' },
+            ]}
+            right={[
+              { key: 'pos', label: 'Ln 42, Col 8' },
+              { key: 'enc', label: 'UTF-8' },
+              { key: 'lang', label: 'TypeScript', tone: 'accent' },
+            ]}
+          />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function DeviceFramePage() {
+  return (
+    <Page eyebrow="Chrome" title="Device frame" lede="A phone bezel with a dynamic island or notch and a home indicator, to wrap mobile screens.">
+      <Demo center code={`<GlassDeviceFrame notch="island" width={280}>\n  <YourMobileScreen />\n</GlassDeviceFrame>`}>
+        <GlassDeviceFrame width={260}>
+          <div style={{ padding: '54px 18px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <h3 style={{ margin: 0, color: 'var(--ob-ink-strong)' }}>Now Playing</h3>
+            <GlassMiniPlayer title="Substrata" artist="Oblivion" artwork="♪" progress={0.42} playing elapsed="1:44" duration="4:12" />
+          </div>
+        </GlassDeviceFrame>
+      </Demo>
+    </Page>
+  );
+}
+
+function CodeBlockPage() {
+  return (
+    <Page eyebrow="Chrome" title="Code block" lede="A code window — traffic lights, a language tab, a copy button, and an optional line-number gutter.">
+      <Demo code={`<GlassCodeBlock language="tsx" title="App.tsx" lineNumbers code={source} />`}>
+        <GlassCodeBlock
+          language="tsx"
+          title="App.tsx"
+          lineNumbers
+          code={`import { GlassButton } from 'oblivion-ui';\n\nexport function App() {\n  return <GlassButton variant="primary">Ship it</GlassButton>;\n}`}
+        />
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveMiniPlayer() {
+  const [playing, setPlaying] = useState(true);
+  const [progress, setProgress] = useState(0.42);
+  return (
+    <GlassMiniPlayer
+      title="Substrata (VIP)"
+      artist="Oblivion"
+      artwork="♪"
+      progress={progress}
+      onSeek={setProgress}
+      elapsed="1:44"
+      duration="4:12"
+      playing={playing}
+      onPlayPause={() => setPlaying((p) => !p)}
+    />
+  );
+}
+
+function MiniPlayerPage() {
+  return (
+    <Page eyebrow="Chrome" title="Mini player" lede="A compact music player — artwork, a click-to-seek scrubber, and transport controls.">
+      <Demo center code={`<GlassMiniPlayer title="Substrata" artist="Oblivion" progress={0.42} playing onPlayPause={toggle} onSeek={setProgress} />`}>
+        <LiveMiniPlayer />
+      </Demo>
+    </Page>
+  );
+}
+
+function ChatBubblePage() {
+  return (
+    <Page eyebrow="Chrome" title="Chat bubble" lede="iMessage-style bubbles — sent (me) and received (them), with tails.">
+      <Demo code={`<GlassChatBubble from="them">Bounce ready?</GlassChatBubble>\n<GlassChatBubble from="me" time="now">Mastering now ✨</GlassChatBubble>`}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: 420 }}>
+          <GlassChatBubble from="them" author="Rui">Is the VIP bounce ready?</GlassChatBubble>
+          <GlassChatBubble from="me">Mastering it now — 2 min.</GlassChatBubble>
+          <GlassChatBubble from="me" time="now">Sent ✨</GlassChatBubble>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function SpotlightCardPage() {
+  return (
+    <Page eyebrow="Delight" title="Spotlight card" lede="A card with an accent glow that follows the cursor. Move your pointer across it.">
+      <Demo center code={`<GlassSpotlightCard>\n  <h3>Substrata</h3>\n  <p>Deep liquid rollers.</p>\n</GlassSpotlightCard>`}>
+        <GlassSpotlightCard style={{ maxWidth: 320 }}>
+          <h3 style={{ margin: '0 0 6px', color: 'var(--ob-ink-strong)' }}>Substrata</h3>
+          <p style={{ margin: 0, color: 'var(--ob-ink-2)', fontSize: 13.5 }}>
+            Deep liquid rollers with halftime switch-ups. Hover to light it up.
+          </p>
+        </GlassSpotlightCard>
+      </Demo>
+    </Page>
+  );
+}
+
+function TiltCardPage() {
+  return (
+    <Page eyebrow="Delight" title="Tilt card" lede="A card that tilts in 3D toward the cursor, with a moving sheen.">
+      <Demo center code={`<GlassTiltCard>\n  <h3>174 BPM</h3>\n</GlassTiltCard>`}>
+        <GlassTiltCard style={{ width: 260 }}>
+          <div style={{ fontFamily: 'var(--ob-font-mono)', fontSize: 12, color: 'var(--ob-ink-3)' }}>NOW RENDERING</div>
+          <h3 style={{ margin: '6px 0 0', fontSize: 32, color: 'var(--ob-ink-strong)' }}>174 BPM</h3>
+          <p style={{ margin: '6px 0 0', color: 'var(--ob-ink-2)', fontSize: 13 }}>Hover and move your cursor.</p>
+        </GlassTiltCard>
+      </Demo>
+    </Page>
+  );
+}
+
+function NumberTickerPage() {
+  const [n, setN] = useState(48200);
+  return (
+    <Page eyebrow="Delight" title="Number ticker" lede="A number that animates whenever its value changes.">
+      <Demo center code={`<GlassNumberTicker value={value} prefix="$" />`}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+          <span style={{ fontSize: 44 }}>
+            <GlassNumberTicker value={n} prefix="$" />
+          </span>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <GlassButton size="sm" variant="secondary" onClick={() => setN(Math.round(Math.random() * 90000))}>Randomize</GlassButton>
+            <GlassButton size="sm" variant="ghost" onClick={() => setN((v) => v + 5000)}>+5,000</GlassButton>
+          </div>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function MarqueePage() {
+  const tags = ['GLASS', 'NO GRADIENTS', 'ONE ACCENT', 'SPRING MOTION', 'ZERO DEPS', 'THEME STUDIO'];
+  return (
+    <Page eyebrow="Delight" title="Marquee" lede="A seamless scrolling strip — logos, tags, a ticker. Pauses on hover.">
+      <Demo code={`<GlassMarquee speed={16}>{items}</GlassMarquee>`}>
+        <GlassMarquee speed={16}>
+          {tags.map((t) => (
+            <GlassBadge key={t} variant="outline" mono>{t}</GlassBadge>
+          ))}
+        </GlassMarquee>
+      </Demo>
+    </Page>
+  );
+}
+
+function SpeedDialPage() {
+  const { toast } = useToast();
+  return (
+    <Page eyebrow="Delight" title="Speed dial" lede="A floating action button that fans its actions out on open.">
+      <Demo center code={`<GlassSpeedDial actions={[{ id: 'track', icon: '♪', label: 'New track', onClick }]} />`}>
+        <div style={{ height: 220, display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }}>
+          <GlassSpeedDial
+            actions={[
+              { id: 'track', icon: '♪', label: 'New track', onClick: () => toast('New track') },
+              { id: 'import', icon: '↧', label: 'Import', onClick: () => toast('Import') },
+              { id: 'record', icon: '●', label: 'Record', onClick: () => toast('Record') },
+            ]}
+          />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function ActivityRingsPage() {
+  return (
+    <Page eyebrow="Data" title="Activity rings" lede="Apple-Watch-style concentric progress rings, drawn in SVG and tinted by semantic tone.">
+      <Demo center code={`<GlassActivityRings rings={[{ value: 0.8, tone: 'accent' }, { value: 0.6, tone: 'success' }, { value: 0.4, tone: 'warning' }]}>\n  <span>3/5</span>\n</GlassActivityRings>`}>
+        <GlassActivityRings
+          rings={[
+            { value: 0.82, tone: 'accent', label: 'Mixing' },
+            { value: 0.6, tone: 'success', label: 'Mastered' },
+            { value: 0.4, tone: 'warning', label: 'Pending' },
+          ]}
+        >
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 700 }}>61%</div>
+            <div style={{ fontSize: 10, color: 'var(--ob-ink-3)' }}>done</div>
+          </div>
+        </GlassActivityRings>
+      </Demo>
+    </Page>
+  );
+}
+
+function GaugePage() {
+  return (
+    <Page eyebrow="Data" title="Gauge" lede="A radial dial for a single KPI, with an open sweep and threshold auto-colouring.">
+      <Demo center code={`<GlassGauge value={82} label="Disk" thresholds={{ 0.7: 'warning', 0.9: 'danger' }} />`}>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+          <GlassGauge value={42} label="CPU" />
+          <GlassGauge value={82} label="Disk" thresholds={{ 0.7: 'warning', 0.9: 'danger' }} />
+          <GlassGauge value={96} label="Heat" thresholds={{ 0.9: 'danger' }} />
+        </div>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'range', key: 'value', label: 'value', min: 0, max: 100, default: 64 },
+          { type: 'range', key: 'sweep', label: 'sweep', min: 180, max: 360, default: 270 },
+          { type: 'select', key: 'tone', label: 'tone', options: ['accent', 'success', 'warning', 'danger'], default: 'accent' },
+        ]}
+        render={(v) => <GlassGauge value={Number(v.value)} sweep={Number(v.sweep)} tone={v.tone as 'accent'} label="KPI" />}
+        code={(v) => `<GlassGauge value={${v.value}} sweep={${v.sweep}} tone="${v.tone}" label="KPI" />`}
+      />
+    </Page>
+  );
+}
+
+function SparklinePage() {
+  const data = [4, 6, 5, 8, 7, 10, 9, 12, 11, 14, 13, 16];
+  return (
+    <Page eyebrow="Data" title="Sparkline" lede="A tiny inline SVG chart to drop into stat tiles and table rows.">
+      <Demo code={`<GlassSparkline data={[4, 6, 5, 8, 7, 10, …]} tone="success" />`}>
+        <div style={{ display: 'flex', gap: 28, alignItems: 'center', flexWrap: 'wrap' }}>
+          <GlassSparkline data={data} tone="accent" />
+          <GlassSparkline data={[...data].reverse()} tone="danger" />
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+            <strong style={{ fontSize: 20, color: 'var(--ob-ink-strong)' }}>+18%</strong>
+            <GlassSparkline data={data} width={80} height={24} tone="success" />
+          </span>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function SplitPanePage() {
+  return (
+    <Page eyebrow="Layout" title="Split pane" lede="Two resizable panes with a draggable divider. Drag the handle, or focus it and use arrows.">
+      <Demo code={`<GlassSplitPane defaultSplit={0.4}>\n  <Sidebar />\n  <Editor />\n</GlassSplitPane>`}>
+        <div style={{ width: '100%', height: 200 }}>
+          <GlassSplitPane defaultSplit={0.4} style={{ height: '100%' }}>
+            <div style={{ padding: 16, color: 'var(--ob-ink-2)', fontSize: 13 }}>Sidebar — drag the divider →</div>
+            <div style={{ padding: 16, color: 'var(--ob-ink-2)', fontSize: 13 }}>Editor pane fills the rest.</div>
+          </GlassSplitPane>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function CustomizingPage() {
+  return (
+    <Page eyebrow="Getting started" title="Customizing" lede="Four layers of control, from a whole-kit reskin down to a single element.">
+      <Demo
+        title="1 · Theme tokens"
+        desc="Override any --ob-* variable on :root or a subtree to reskin everything. This is what the Theme Studio writes."
+        code={`:root {\n  --ob-accent: 34 197 94;   /* bare RGB triplet */\n  --ob-r-md: 6px;           /* tighter corners  */\n  --ob-border-w: 2px;       /* bolder rims      */\n}`}
+      >
+        <GlassCallout tone="accent" icon="✦" title="Theme Studio">
+          The ✦ Studio panel in the top bar writes these live, then copies them as a CSS block.
+        </GlassCallout>
+      </Demo>
+
+      <Demo
+        title="2 · Per-component CSS-var hooks"
+        desc="Reshape one instance without a theme. Each hook falls back to the global token."
+        code={`<GlassSegmented style={{ '--ob-seg-radius': '999px' }} items={items} />\n<GlassButton style={{ '--ob-btn-radius': '4px' }}>Square</GlassButton>\n<GlassStat style={{ '--ob-stat-value-size': '44px' }} … />`}
+      >
+        <GlassSegmented
+          defaultValue="a"
+          style={{ ['--ob-seg-radius' as string]: '999px' }}
+          items={[{ value: 'a', label: 'Pill' }, { value: 'b', label: 'Shape' }]}
+        />
+      </Demo>
+
+      <Demo
+        title="3 · Slot classNames"
+        desc="Reach an inner part directly — no wrapper selectors, no !important."
+        code={`<GlassCard\n  classNames={{ title: 'font-serif', footer: 'justify-center' }}\n  title="…" footer={<…/>}\n/>`}
+      >
+        <GlassBadge>classNames on Card, Stat, Breadcrumb, Steps, Timeline…</GlassBadge>
+      </Demo>
+
+      <Demo
+        title="4 · Tone prop"
+        desc="Buttons and badges remap their accent to a semantic token in one prop."
+        code={`<GlassButton variant="primary" tone="success">Save</GlassButton>\n<GlassBadge tone="danger">Failing</GlassBadge>`}
+      >
+        <div className="docs-row">
+          <GlassButton variant="primary" tone="success" size="sm">Success</GlassButton>
+          <GlassButton variant="primary" tone="warning" size="sm">Warning</GlassButton>
+          <GlassButton variant="primary" tone="danger" size="sm">Danger</GlassButton>
+          <GlassBadge tone="success">ok</GlassBadge>
+          <GlassBadge tone="danger">error</GlassBadge>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Parity batch — Chakra/shadcn staples
+   ═══════════════════════════════════════════════════════════════════════ */
+
+function TypographyPage() {
+  return (
+    <Page eyebrow="Layout" title="Typography" lede="Heading and Text primitives — sized, toned, and polymorphic via `as`.">
+      <Demo code={`<Heading level={1} size="3xl">Smoked glass</Heading>\n<Text tone="muted">Frosted surfaces, one accent.</Text>`}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <Heading level={1} size="3xl">Smoked glass</Heading>
+          <Heading level={3}>A quieter subhead</Heading>
+          <Text tone="muted">Body text in the muted tone — frosted surfaces, a single accent, motion that breathes.</Text>
+          <Text size="sm" tone="subtle" mono>--ob-ink-3 · mono · small</Text>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function LayoutExtrasPage() {
+  return (
+    <Page eyebrow="Layout" title="Center · Ratio · ButtonGroup" lede="The small structural helpers Chakra users reach for constantly.">
+      <Demo title="Center" desc="Centres children on both axes." code={`<Center style={{ height: 100 }}>Centered</Center>`}>
+        <Center style={{ height: 90, width: '100%', border: '1px dashed var(--ob-line-lit)', borderRadius: 12, color: 'var(--ob-ink-2)' }}>
+          Perfectly centered
+        </Center>
+      </Demo>
+      <Demo title="AspectRatio" desc="Locks a child to a ratio." code={`<AspectRatio ratio={16 / 9}><img … /></AspectRatio>`}>
+        <div style={{ width: 260 }}>
+          <AspectRatio ratio={16 / 9} style={{ border: '1px solid var(--ob-line)' }}>
+            <Center style={{ background: 'rgb(var(--ob-accent) / 0.14)', color: 'var(--ob-ink-2)', fontSize: 12 }}>16 : 9</Center>
+          </AspectRatio>
+        </div>
+      </Demo>
+      <Demo title="ButtonGroup" desc="Spaced, or `attached` into one connected control." code={`<ButtonGroup attached>\n  <GlassButton>Day</GlassButton>\n  <GlassButton>Week</GlassButton>\n</ButtonGroup>`}>
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+          <ButtonGroup>
+            <GlassButton variant="secondary" size="sm">Save</GlassButton>
+            <GlassButton variant="ghost" size="sm">Cancel</GlassButton>
+          </ButtonGroup>
+          <ButtonGroup attached>
+            <GlassButton variant="secondary" size="sm">Day</GlassButton>
+            <GlassButton variant="secondary" size="sm">Week</GlassButton>
+            <GlassButton variant="secondary" size="sm">Month</GlassButton>
+          </ButtonGroup>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function HooksPage() {
+  const disc = useDisclosure();
+  const clip = useClipboard('npm i oblivion-ui');
+  return (
+    <Page eyebrow="Getting started" title="Hooks" lede="The DX hooks you already know from Chakra — controlled state, disclosure, clipboard, media queries.">
+      <Demo title="useDisclosure" desc="Boolean open/close state for overlays." code={`const { open, onOpen, onClose } = useDisclosure();`}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <GlassButton variant="secondary" size="sm" onClick={disc.onToggle}>Toggle</GlassButton>
+          <GlassBadge variant={disc.open ? 'status' : 'neutral'} dot>{disc.open ? 'open' : 'closed'}</GlassBadge>
+        </div>
+      </Demo>
+      <Demo title="useClipboard" desc="Copy text and get a `copied` flag that auto-resets." code={`const { copied, copy } = useClipboard('npm i oblivion-ui');`}>
+        <GlassButton variant="primary" size="sm" onClick={clip.copy}>{clip.copied ? 'Copied ✓' : 'Copy install command'}</GlassButton>
+      </Demo>
+      <Demo title="useMediaQuery" desc="Track a media query, SSR-safe." code={`const isWide = useMediaQuery('(min-width: 900px)');`}>
+        <Text tone="muted" size="sm">Also exported: <code>useControllableState</code>, <code>useOnEscape</code>, <code>useOutsideClick</code>.</Text>
+      </Demo>
+    </Page>
+  );
+}
+
+function LiveAlertDialog() {
+  const { open, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const confirm = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      onClose();
+      toast('Deleted', { tone: 'danger' });
+    }, 900);
+  };
+  return (
+    <>
+      <GlassButton variant="primary" tone="danger" onClick={onOpen}>Delete project</GlassButton>
+      <GlassAlertDialog
+        open={open}
+        onClose={onClose}
+        title="Delete “Substrata”?"
+        description="This permanently removes the project and all its bounces. This cannot be undone."
+        confirmLabel="Delete"
+        onConfirm={confirm}
+        loading={loading}
+      />
+    </>
+  );
+}
+
+function AlertDialogPage() {
+  return (
+    <Page eyebrow="Overlays" title="Alert dialog" lede="A confirmation dialog — a focused modal with a cancel + confirm pair and an async-loading state.">
+      <Demo center code={`const { open, onOpen, onClose } = useDisclosure();\n\n<GlassAlertDialog open={open} onClose={onClose} title="Delete?" onConfirm={remove} />`}>
+        <LiveAlertDialog />
+      </Demo>
+    </Page>
+  );
+}
+
+function TagPage() {
+  const [tags, setTags] = useState(['synthwave', 'neurofunk', 'ambient', 'halftime']);
+  return (
+    <Page eyebrow="Feedback" title="Tag" lede="A compact, optionally removable tag — like a badge you can dismiss.">
+      <Demo code={`<GlassTag tone="accent" onClose={() => remove(t)}>{t}</GlassTag>`}>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {tags.map((t) => (
+            <GlassTag key={t} tone="accent" onClose={() => setTags((xs) => xs.filter((x) => x !== t))}>
+              {t}
+            </GlassTag>
+          ))}
+          {tags.length === 0 ? <Text tone="subtle" size="sm">All removed — refresh to reset.</Text> : null}
+        </div>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'select', key: 'tone', label: 'tone', options: ['neutral', 'accent', 'success', 'warning', 'danger'], default: 'neutral' },
+          { type: 'select', key: 'size', label: 'size', options: ['sm', 'md'], default: 'md' },
+          { type: 'toggle', key: 'closable', label: 'closable', default: true },
+        ]}
+        render={(v) => (
+          <GlassTag tone={v.tone as 'neutral'} size={v.size as 'md'} onClose={v.closable ? () => {} : undefined}>
+            Label
+          </GlassTag>
+        )}
+        code={(v) => `<GlassTag tone="${v.tone}" size="${v.size}"${v.closable ? ' onClose={remove}' : ''}>Label</GlassTag>`}
+      />
+    </Page>
+  );
+}
+
+function EditablePage() {
+  const [name, setName] = useState('Substrata (VIP)');
+  return (
+    <Page eyebrow="Forms" title="Editable" lede="Click-to-edit text — a label that swaps to an input on focus. Enter commits, Escape cancels.">
+      <Demo code={`const [name, setName] = useState('Substrata');\n\n<GlassEditable value={name} onChange={setName} />`}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Text tone="subtle" size="sm">Track name:</Text>
+          <GlassEditable value={name} onChange={setName} aria-label="Track name" />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function SidebarPage() {
+  const [collapsed, setCollapsed] = useState(false);
+  const sections = [
+    { label: 'Workspace', items: [
+      { id: 'over', label: 'Overview', icon: '◈', active: true },
+      { id: 'tracks', label: 'Tracks', icon: '♪', badge: '12' },
+      { id: 'fx', label: 'Effects', icon: '✦' },
+    ] },
+    { label: 'Account', items: [
+      { id: 'set', label: 'Settings', icon: '⚙' },
+      { id: 'help', label: 'Help', icon: '?' },
+    ] },
+  ];
+  return (
+    <Page eyebrow="Navigation" title="Sidebar" lede="A collapsible application sidebar — sections of nav items that fold to an icon rail.">
+      <Demo code={`<GlassSidebar sections={sections} header={<Brand />} footer={<User />} />`}>
+        <div style={{ height: 320 }}>
+          <GlassSidebar
+            sections={sections}
+            collapsed={collapsed}
+            onCollapsedChange={setCollapsed}
+            header={<strong style={{ color: 'var(--ob-ink-strong)' }}>◆ Oblivion</strong>}
+            footer={<div style={{ display: 'flex', alignItems: 'center', gap: 8 }}><GlassAvatar name="Dana Kade" size="sm" /><Text size="sm" truncate>Dana Kade</Text></div>}
+          />
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function CarouselPage() {
+  const slides = ['Substrata', 'Redline Pressure', 'Hollow Signal'];
+  const tones = ['accent', 'success', 'info'] as const;
+  return (
+    <Page eyebrow="Disclosure" title="Carousel" lede="A one-slide-at-a-time carousel with arrows and dot indicators.">
+      <Demo code={`<GlassCarousel>\n  <Slide /> <Slide /> <Slide />\n</GlassCarousel>`}>
+        <div style={{ width: '100%', maxWidth: 460 }}>
+          <GlassCarousel>
+            {slides.map((s, i) => (
+              <Center key={s} style={{ height: 160, background: `rgb(var(--ob-${tones[i]}) / 0.16)`, borderRadius: 14 }}>
+                <Heading level={3}>{s}</Heading>
+              </Center>
+            ))}
+          </GlassCarousel>
+        </div>
+      </Demo>
+    </Page>
+  );
+}
+
+function BarChartPage() {
+  const data = [
+    { label: 'Mon', value: 42, color: '#7c5cff' },
+    { label: 'Tue', value: 68, color: '#22d3ee' },
+    { label: 'Wed', value: 55, color: '#4cc882' },
+    { label: 'Thu', value: 91, color: '#f5a524' },
+    { label: 'Fri', value: 74, color: '#ff5f8f' },
+    { label: 'Sat', value: 30, tone: 'danger' as const },
+  ];
+  return (
+    <Page eyebrow="Data" title="Bar chart" lede="A responsive vertical bar chart. Name each point, print its value, and colour bars by semantic tone or any hex.">
+      <Demo title="Single value" desc="One bar per point, coloured per datum." code={`<GlassBarChart\n  showValues\n  data={[\n    { label: 'Mon', value: 42, color: '#7c5cff' },\n    { label: 'Tue', value: 68, color: '#22d3ee' },\n  ]}\n/>`}>
+        <div style={{ width: '100%', maxWidth: 460 }}>
+          <GlassBarChart data={data} showValues />
+        </div>
+      </Demo>
+
+      <Demo title="Multiple values (grouped)" desc="Several series per point, side by side, with a legend from the series names." code={`<GlassBarChart\n  labels={['Q1', 'Q2', 'Q3', 'Q4']}\n  series={[\n    { name: 'Revenue', data: [40, 72, 58, 90], color: '#22d3ee' },\n    { name: 'Costs', data: [28, 40, 35, 52], color: '#ff5f8f' },\n  ]}\n/>`}>
+        <div style={{ width: '100%', maxWidth: 460 }}>
+          <GlassBarChart
+            labels={['Q1', 'Q2', 'Q3', 'Q4']}
+            series={[
+              { name: 'Revenue', data: [40, 72, 58, 90], color: '#22d3ee' },
+              { name: 'Costs', data: [28, 40, 35, 52], color: '#ff5f8f' },
+              { name: 'Profit', data: [12, 32, 23, 38], color: '#4cc882' },
+            ]}
+          />
+        </div>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'toggle', key: 'stacked', label: 'stacked', default: false },
+          { type: 'toggle', key: 'showValues', label: 'showValues', default: false },
+          { type: 'range', key: 'height', label: 'height', min: 100, max: 260, default: 180, unit: 'px' },
+        ]}
+        render={(v) => (
+          <div style={{ width: 380 }}>
+            <GlassBarChart
+              stacked={Boolean(v.stacked)}
+              showValues={Boolean(v.showValues)}
+              height={Number(v.height)}
+              labels={['Q1', 'Q2', 'Q3', 'Q4']}
+              series={[
+                { name: 'Revenue', data: [40, 72, 58, 90], color: '#22d3ee' },
+                { name: 'Costs', data: [28, 40, 35, 52], color: '#ff5f8f' },
+              ]}
+            />
+          </div>
+        )}
+        code={(v) => `<GlassBarChart${v.stacked ? ' stacked' : ''}${v.showValues ? ' showValues' : ''} labels={labels} series={[\n  { name: 'Revenue', data, color: '#22d3ee' },\n  { name: 'Costs', data, color: '#ff5f8f' },\n]} />`}
+      />
+    </Page>
+  );
+}
+
+function LineChartPage() {
+  const a = [8, 12, 9, 16, 14, 20, 18, 24, 22, 27];
+  const b = [4, 6, 7, 9, 8, 12, 13, 15, 14, 19];
+  const names = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10'];
+  return (
+    <Page eyebrow="Data" title="Line chart" lede="A responsive SVG line/area chart. One or many series, point names on the axis, value labels, and any colour per series.">
+      <Demo code={`<GlassLineChart\n  area dots\n  labels={['W1', 'W2', …]}\n  series={[\n    { data: revenue, color: '#22d3ee' },\n    { data: costs, color: '#ff5f8f' },\n  ]}\n/>`}>
+        <div style={{ width: '100%', maxWidth: 460 }}>
+          <GlassLineChart
+            area
+            dots
+            series={[{ data: a, color: '#22d3ee', name: 'Revenue' }, { data: b, color: '#ff5f8f', name: 'Costs' }]}
+            labels={names}
+          />
+        </div>
+      </Demo>
+
+      <PgHead />
+      <Playground
+        controls={[
+          { type: 'text', key: 'color', label: 'line color', default: '#7c5cff' },
+          { type: 'toggle', key: 'area', label: 'area', default: true },
+          { type: 'toggle', key: 'dots', label: 'dots', default: true },
+          { type: 'toggle', key: 'showValues', label: 'showValues', default: false },
+        ]}
+        render={(v) => (
+          <div style={{ width: 380 }}>
+            <GlassLineChart
+              series={a}
+              color={String(v.color)}
+              labels={names}
+              area={Boolean(v.area)}
+              dots={Boolean(v.dots)}
+              showValues={Boolean(v.showValues)}
+            />
+          </div>
+        )}
+        code={(v) => `<GlassLineChart series={data} color="${v.color}"${v.area ? ' area' : ''}${v.dots ? ' dots' : ''}${v.showValues ? ' showValues' : ''} labels={names} />`}
+      />
+    </Page>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    Registry
    ═══════════════════════════════════════════════════════════════════════ */
 
@@ -2172,16 +3340,24 @@ export const GROUPS = [
   'Data',
   'Feedback',
   'Disclosure',
+  'Chrome',
+  'Delight',
   'Backdrop',
 ] as const;
 
 export const PAGES: DocPage[] = [
   { id: 'introduction', label: 'Introduction', group: 'Getting started', render: () => <IntroPage /> },
   { id: 'theming', label: 'Theming', group: 'Getting started', render: () => <ThemingPage /> },
+  { id: 'customizing', label: 'Customizing', group: 'Getting started', render: () => <CustomizingPage /> },
+  { id: 'hooks', label: 'Hooks', group: 'Getting started', render: () => <HooksPage /> },
 
   { id: 'surface', label: 'Surface', group: 'Layout', render: () => <SurfacePage /> },
   { id: 'primitives', label: 'Primitives', group: 'Layout', render: () => <PrimitivesPage /> },
+  { id: 'typography', label: 'Typography', group: 'Layout', render: () => <TypographyPage /> },
+  { id: 'layout-extras', label: 'Center · Ratio · Group', group: 'Layout', render: () => <LayoutExtrasPage /> },
   { id: 'card', label: 'Card', group: 'Layout', render: () => <CardPage /> },
+  { id: 'window', label: 'Window', group: 'Layout', render: () => <WindowPage /> },
+  { id: 'splitpane', label: 'Split pane', group: 'Layout', render: () => <SplitPanePage /> },
 
   { id: 'button', label: 'Button', group: 'Forms', render: () => <ButtonPage /> },
   { id: 'field', label: 'Field', group: 'Forms', render: () => <FieldPage /> },
@@ -2199,21 +3375,43 @@ export const PAGES: DocPage[] = [
   { id: 'switch', label: 'Switch', group: 'Forms', render: () => <SwitchPage /> },
   { id: 'slider', label: 'Slider', group: 'Forms', render: () => <SliderPage /> },
   { id: 'segmented', label: 'Segmented', group: 'Forms', render: () => <SegmentedPage /> },
+  { id: 'togglegroup', label: 'Toggle group', group: 'Forms', render: () => <ToggleGroupPage /> },
+  { id: 'editable', label: 'Editable', group: 'Forms', render: () => <EditablePage /> },
   { id: 'rating', label: 'Rating', group: 'Forms', render: () => <RatingPage /> },
+  { id: 'rangeslider', label: 'Range slider', group: 'Forms', render: () => <RangeSliderPage /> },
+  { id: 'colorpicker', label: 'Color picker', group: 'Forms', render: () => <ColorPickerPage /> },
 
   { id: 'menu', label: 'Dropdown menu', group: 'Overlays', render: () => <MenuPage /> },
   { id: 'modal', label: 'Modal', group: 'Overlays', render: () => <ModalPage /> },
+  { id: 'alertdialog', label: 'Alert dialog', group: 'Overlays', render: () => <AlertDialogPage /> },
+  { id: 'popover', label: 'Popover', group: 'Overlays', render: () => <PopoverPage /> },
+  { id: 'hovercard', label: 'Hover card', group: 'Overlays', render: () => <HoverCardPage /> },
+  { id: 'drawer', label: 'Drawer', group: 'Overlays', render: () => <DrawerPage /> },
+  { id: 'command', label: 'Command palette', group: 'Overlays', render: () => <CommandPage /> },
   { id: 'tooltip', label: 'Tooltip', group: 'Overlays', render: () => <TooltipPage /> },
   { id: 'toast', label: 'Toast', group: 'Overlays', render: () => <ToastPage /> },
 
   { id: 'tabs', label: 'Tabs', group: 'Navigation', render: () => <TabsPage /> },
   { id: 'breadcrumb', label: 'Breadcrumb', group: 'Navigation', render: () => <BreadcrumbPage /> },
   { id: 'pagination', label: 'Pagination', group: 'Navigation', render: () => <PaginationPage /> },
+  { id: 'steps', label: 'Steps', group: 'Navigation', render: () => <StepsPage /> },
+  { id: 'navmenu', label: 'Nav menu', group: 'Navigation', render: () => <NavMenuPage /> },
+  { id: 'sidebar', label: 'Sidebar', group: 'Navigation', render: () => <SidebarPage /> },
+  { id: 'timeline', label: 'Timeline', group: 'Navigation', render: () => <TimelinePage /> },
+
+  { id: 'scrollarea', label: 'Scroll area', group: 'Layout', render: () => <ScrollAreaPage /> },
 
   { id: 'datagrid', label: 'Data grid', group: 'Data', render: () => <DataGridPage /> },
   { id: 'table', label: 'Table', group: 'Data', render: () => <TablePage /> },
   { id: 'list', label: 'List', group: 'Data', render: () => <ListPage /> },
   { id: 'stat', label: 'Stat', group: 'Data', render: () => <StatPage /> },
+  { id: 'meter', label: 'Meter', group: 'Data', render: () => <MeterPage /> },
+  { id: 'gauge', label: 'Gauge', group: 'Data', render: () => <GaugePage /> },
+  { id: 'rings', label: 'Activity rings', group: 'Data', render: () => <ActivityRingsPage /> },
+  { id: 'sparkline', label: 'Sparkline', group: 'Data', render: () => <SparklinePage /> },
+  { id: 'barchart', label: 'Bar chart', group: 'Data', render: () => <BarChartPage /> },
+  { id: 'linechart', label: 'Line chart', group: 'Data', render: () => <LineChartPage /> },
+  { id: 'description', label: 'Description list', group: 'Data', render: () => <DescriptionListPage /> },
 
   { id: 'alert', label: 'Alert', group: 'Feedback', render: () => <AlertPage /> },
   { id: 'badge', label: 'Badge', group: 'Feedback', render: () => <BadgePage /> },
@@ -2221,8 +3419,30 @@ export const PAGES: DocPage[] = [
   { id: 'loading', label: 'Spinner & skeleton', group: 'Feedback', render: () => <LoadingPage /> },
   { id: 'avatar', label: 'Avatar', group: 'Feedback', render: () => <AvatarPage /> },
   { id: 'kbd', label: 'Keyboard key', group: 'Feedback', render: () => <KbdPage /> },
+  { id: 'callout', label: 'Callout', group: 'Feedback', render: () => <CalloutPage /> },
+  { id: 'empty', label: 'Empty state', group: 'Feedback', render: () => <EmptyStatePage /> },
 
   { id: 'accordion', label: 'Accordion', group: 'Disclosure', render: () => <AccordionPage /> },
+  { id: 'carousel', label: 'Carousel', group: 'Disclosure', render: () => <CarouselPage /> },
+
+  { id: 'tag', label: 'Tag', group: 'Feedback', render: () => <TagPage /> },
+
+  { id: 'menubar', label: 'Menu bar', group: 'Chrome', render: () => <MenuBarPage /> },
+  { id: 'dock', label: 'Dock', group: 'Chrome', render: () => <DockPage /> },
+  { id: 'terminal', label: 'Terminal', group: 'Chrome', render: () => <TerminalPage /> },
+  { id: 'notification', label: 'Notification', group: 'Chrome', render: () => <NotificationPage /> },
+  { id: 'contextmenu', label: 'Context menu', group: 'Chrome', render: () => <ContextMenuPage /> },
+  { id: 'statusbar', label: 'Status bar', group: 'Chrome', render: () => <StatusBarPage /> },
+  { id: 'device', label: 'Device frame', group: 'Chrome', render: () => <DeviceFramePage /> },
+  { id: 'codeblock', label: 'Code block', group: 'Chrome', render: () => <CodeBlockPage /> },
+  { id: 'miniplayer', label: 'Mini player', group: 'Chrome', render: () => <MiniPlayerPage /> },
+  { id: 'chat', label: 'Chat bubble', group: 'Chrome', render: () => <ChatBubblePage /> },
+
+  { id: 'spotlight', label: 'Spotlight card', group: 'Delight', render: () => <SpotlightCardPage /> },
+  { id: 'tilt', label: 'Tilt card', group: 'Delight', render: () => <TiltCardPage /> },
+  { id: 'ticker', label: 'Number ticker', group: 'Delight', render: () => <NumberTickerPage /> },
+  { id: 'marquee', label: 'Marquee', group: 'Delight', render: () => <MarqueePage /> },
+  { id: 'speeddial', label: 'Speed dial', group: 'Delight', render: () => <SpeedDialPage /> },
 
   { id: 'orbs', label: 'Orbs', group: 'Backdrop', render: () => <OrbsPage /> },
 ];

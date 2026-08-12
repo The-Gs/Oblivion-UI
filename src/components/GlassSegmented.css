@@ -4,7 +4,7 @@
   padding: 3px;
   background: var(--ob-well);
   border: 1px solid var(--ob-line);
-  border-radius: var(--ob-r-md);
+  border-radius: var(--ob-seg-radius, var(--ob-r-md));
   font-family: var(--ob-font);
 }
 

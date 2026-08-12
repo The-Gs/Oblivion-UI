@@ -1,0 +1,60 @@
+.ob-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-family: var(--ob-font);
+  width: 100%;
+}
+
+.ob-meter__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ob-meter__label {
+  font-size: 12.5px;
+  color: var(--ob-ink-2);
+}
+
+.ob-meter__value {
+  font-family: var(--ob-font-mono);
+  font-size: 11.5px;
+  color: var(--ob-ink-3);
+}
+
+.ob-meter__track {
+  position: relative;
+  height: 8px;
+  border-radius: var(--ob-r-full);
+  background: var(--ob-well);
+  overflow: hidden;
+}
+.ob-meter--sm .ob-meter__track {
+  height: 6px;
+}
+
+.ob-meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: rgb(var(--ob-accent));
+  box-shadow: 0 0 12px rgb(var(--ob-accent) / 0.5);
+  transition: width var(--ob-dur) var(--ob-spring);
+}
+.ob-meter__fill[data-tone='success'] {
+  background: rgb(var(--ob-success));
+  box-shadow: 0 0 12px rgb(var(--ob-success) / 0.5);
+}
+.ob-meter__fill[data-tone='warning'] {
+  background: rgb(var(--ob-warning));
+  box-shadow: 0 0 12px rgb(var(--ob-warning) / 0.5);
+}
+.ob-meter__fill[data-tone='danger'] {
+  background: rgb(var(--ob-danger));
+  box-shadow: 0 0 12px rgb(var(--ob-danger) / 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-meter__fill { transition: none; }
+}

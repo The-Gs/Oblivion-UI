@@ -14,6 +14,13 @@ export function ThemeSwitcher() {
   const [copied, setCopied] = useState(false);
   const current = THEMES.find((t) => t.id === theme) ?? THEMES[0]!;
 
+  // The dropdown and the Studio are two separate theme sources — picking a
+  // preset here clears any Studio overrides so the two never stack.
+  const pickTheme = (id: (typeof THEMES)[number]['id']) => {
+    window.dispatchEvent(new CustomEvent('ob:theme-picked'));
+    setTheme(id);
+  };
+
   const openCss = () => {
     // Read after the current paint so any just-applied theme is reflected.
     requestAnimationFrame(() => {
@@ -43,7 +50,7 @@ export function ThemeSwitcher() {
           key: t.id,
           label: t.label,
           trailing: t.id === theme ? '✓' : undefined,
-          onSelect: () => setTheme(t.id),
+          onSelect: () => pickTheme(t.id),
         }))}
       />
 
